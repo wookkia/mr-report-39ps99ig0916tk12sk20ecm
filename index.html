@@ -1,0 +1,1872 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>모닝루틴 리포트</title></head><body><title>모닝루틴 리포트</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.css">
+<style>
+  :root{
+    --font:Pretendard,"Pretendard Variable",-apple-system,"Segoe UI","Malgun Gothic",system-ui,sans-serif;
+    --em:#9333a8;
+    --bg:#eef1f6; --grid:#dde3ec;
+    --card:#ffffff; --card2:#f6f8fb;
+    --ink:#16202e; --muted:#5b6b7d; --faint:#8a99a9;
+    --line:#dce3ec; --accent:#1f5fa8; --accent-soft:#e7eff8;
+    --amber:#a8660f; --amber-soft:#f6ecdc;
+    --ok:#2f7d55;
+    --shadow:0 1px 2px rgba(22,32,46,.06),0 8px 24px -12px rgba(22,32,46,.18);
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --bg:#0d131b; --grid:#182231;
+      --card:#151f2b; --card2:#111a24;
+      --ink:#e7eef7; --muted:#9fb0c2; --faint:#6d7f92;
+      --line:#243244; --accent:#5aa2e6; --accent-soft:#16283c;
+      --amber:#d69a4e; --amber-soft:#2a2216;
+      --ok:#6cc394; --em:#d19af0;
+      --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -14px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0d131b; --grid:#182231;
+    --card:#151f2b; --card2:#111a24;
+    --ink:#e7eef7; --muted:#9fb0c2; --faint:#6d7f92;
+    --line:#243244; --accent:#5aa2e6; --accent-soft:#16283c;
+    --amber:#d69a4e; --amber-soft:#2a2216;
+    --ok:#6cc394; --em:#d19af0;
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -14px rgba(0,0,0,.6);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:var(--font);
+    line-height:1.6; -webkit-font-smoothing:antialiased;
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:26px 26px; background-position:-1px -1px;
+  }
+  .wrap{max-width:980px; margin:0 auto; padding:clamp(20px,4vw,44px) clamp(16px,3vw,28px) 72px}
+  a{color:var(--accent); text-underline-offset:2px}
+  .mono{font-family:var(--font); font-variant-numeric:tabular-nums}
+  /* 이탤릭은 화면에서 구분이 약해 색상으로 강조 (기울임 대신 색) */
+  em, i{font-style:normal; color:var(--em); font-weight:600}
+  /* PDF 저장 버튼 (플로팅) */
+  .pdfbtn{position:fixed; right:18px; bottom:18px; z-index:50; cursor:pointer;
+    font-family:var(--font); font-size:13px; font-weight:600; color:var(--card);
+    background:var(--accent); border:none; border-radius:999px; padding:10px 16px;
+    box-shadow:var(--shadow)}
+  .pdfbtn:hover{filter:brightness(1.08)}
+  .pdf-note{position:fixed; right:18px; bottom:62px; z-index:50; max-width:320px;
+    font-family:var(--font); font-size:12px; line-height:1.55; color:var(--ink);
+    background:var(--amber-soft); border:1px solid var(--amber); border-radius:10px;
+    padding:11px 14px; box-shadow:var(--shadow)}
+  .pdf-note b{color:var(--amber)}
+  @media print{
+    body{background:#fff !important; background-image:none !important}
+    .pdfbtn, .pdf-note, .sec, .today-bar .when{display:none !important}
+    .today{box-shadow:none; border:none; margin-top:8px}
+    .wrap{max-width:none; padding:0}
+    a{color:var(--ink)}
+  }
+
+  /* Header */
+  header.hd{
+    display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between;
+    gap:18px; padding-bottom:20px; border-bottom:2px solid var(--ink);
+  }
+  .brand{display:flex; flex-direction:column; gap:6px}
+  .eyebrow{font-family:var(--font); font-size:12px; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--accent); font-weight:600}
+  h1{font-size:clamp(26px,4.5vw,38px); font-weight:700; margin:0; letter-spacing:-.01em; text-wrap:balance}
+  .sub{color:var(--muted); font-size:14.5px; max-width:52ch}
+  .clock{text-align:right; color:var(--muted); font-size:12.5px; line-height:1.5}
+  .clock .big{display:block; color:var(--ink); font-size:15px; font-weight:600}
+
+  /* Today card */
+  .today{
+    margin-top:26px; background:var(--card); border:1px solid var(--line);
+    border-radius:14px; box-shadow:var(--shadow); overflow:hidden;
+  }
+  .today-bar{
+    display:flex; align-items:center; gap:12px; padding:14px 20px;
+    background:var(--accent-soft); border-bottom:1px solid var(--line);
+  }
+  .tag{font-family:var(--font); font-size:11.5px; font-weight:600;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--accent);
+    background:var(--card); border:1px solid var(--line); border-radius:999px; padding:3px 10px}
+  .today-bar .when{color:var(--muted); font-size:13px; margin-left:auto}
+  .today-body{padding:34px 24px 40px; text-align:center}
+  .status-dot{width:9px; height:9px; border-radius:50%; background:var(--amber); display:inline-block; margin-right:7px;
+    box-shadow:0 0 0 4px var(--amber-soft)}
+  .empty-h{font-size:20px; font-weight:600; margin:14px 0 8px}
+  .empty-p{color:var(--muted); font-size:14.5px; max-width:46ch; margin:0 auto}
+  .pending{display:inline-flex; align-items:center; font-family:var(--font);
+    font-size:12.5px; color:var(--amber); background:var(--amber-soft);
+    border-radius:999px; padding:5px 13px; margin-bottom:6px}
+
+  /* Today — populated report */
+  .today-body.report{padding:26px clamp(18px,3.5vw,30px) 36px; text-align:left}
+  .report .r-head h3{font-size:clamp(18px,2.6vw,22px); font-weight:700; margin:0 0 5px; letter-spacing:-.01em}
+  .report .r-head .meta{font-family:var(--font); font-size:12px; color:var(--faint); margin-bottom:8px}
+  .report .r-head .lead{color:var(--muted); font-size:13.5px; margin:0 0 4px}
+  .r-sec{margin-top:26px}
+  .r-sec > h4{display:flex; align-items:baseline; gap:9px; font-size:13px; font-weight:600;
+    letter-spacing:.03em; margin:0 0 11px; color:var(--accent)}
+  .r-sec > h4 .k{font-family:var(--font); font-size:11px; color:var(--faint)}
+  .report ul{margin:0; padding-left:19px}
+  .report li{margin:8px 0; font-size:13.5px}
+  .report li strong{font-weight:600}
+  .src{border:1px solid var(--line); border-radius:10px; background:var(--card2); padding:12px 15px; margin:10px 0}
+  .src .s-name{font-size:12px; font-weight:600; color:var(--muted); letter-spacing:.02em; margin-bottom:4px}
+  .src p{margin:0; font-size:13px}
+  .src .links{margin-top:7px; font-size:12px; display:flex; flex-wrap:wrap; gap:4px 16px}
+  .note-amber{background:var(--amber-soft); border:1px solid var(--amber); border-radius:10px;
+    padding:12px 15px; font-size:12.5px; color:var(--ink); margin-bottom:11px}
+  .note-amber b{color:var(--amber)}
+
+  /* Section titles */
+  .sec{margin-top:40px}
+  .sec-h{display:flex; align-items:baseline; gap:12px; margin-bottom:16px}
+  .sec-h h2{font-size:15px; font-weight:600; margin:0; letter-spacing:.02em}
+  .sec-h .rule{flex:1; height:1px; background:var(--line)}
+  .sec-h .idx{font-family:var(--font); font-size:12px; color:var(--faint)}
+
+  /* Weekday strip */
+  .week{display:grid; grid-template-columns:repeat(5,1fr); gap:10px}
+  @media (max-width:640px){.week{grid-template-columns:repeat(2,1fr)}}
+  .day{
+    background:var(--card); border:1px solid var(--line); border-radius:11px;
+    padding:14px 14px 16px; display:flex; flex-direction:column; gap:9px; min-height:118px;
+  }
+  .day .d{font-family:var(--font); font-size:12px; font-weight:600; color:var(--faint); letter-spacing:.06em}
+  .day .t{font-size:14px; font-weight:600; line-height:1.4}
+  .day .m{font-size:12px; color:var(--muted); margin-top:auto}
+  .day.on{border-color:var(--accent); box-shadow:0 0 0 1px var(--accent) inset}
+  .day.on .d{color:var(--accent)}
+  .day.on::after{content:"TODAY"; font-family:var(--font); font-size:9.5px; letter-spacing:.14em;
+    color:var(--card); background:var(--accent); align-self:flex-start; padding:2px 7px; border-radius:5px; margin-top:2px}
+  /* 요일 버튼(클릭 시 지난 리포트) */
+  .week .day{font:inherit; text-align:left; cursor:pointer; color:inherit; -webkit-appearance:none; appearance:none;
+    transition:border-color .12s, box-shadow .12s}
+  .week .day:hover{border-color:var(--accent)}
+  .week .day:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+  .week .day.sel{border-color:var(--accent); box-shadow:0 0 0 2px var(--accent) inset; background:var(--accent-soft)}
+  .day .cnt{font-family:var(--font); font-size:10.5px; font-weight:600; color:var(--accent);
+    background:var(--accent-soft); border-radius:999px; padding:1px 7px; align-self:flex-start}
+  .sec-hint{font-size:11.5px; color:var(--faint); margin-left:2px}
+  /* 요일별 지난 리포트 패널 */
+  .day-reports{margin-top:12px; background:var(--card); border:1px solid var(--line); border-radius:11px; padding:6px}
+  .dr-head{display:flex; align-items:center; gap:10px; padding:8px 10px 6px}
+  #drTitle{font-size:13px; font-weight:600}
+  .dr-close{margin-left:auto; cursor:pointer; border:none; background:transparent; color:var(--faint); font-size:14px; line-height:1; padding:4px}
+  .dr-close:hover{color:var(--ink)}
+  .dr-list{list-style:none; margin:0; padding:0 4px 6px}
+  .dr-list button{width:100%; text-align:left; cursor:pointer; font:inherit; color:var(--ink);
+    background:transparent; border:none; border-radius:8px; padding:9px 10px; font-size:13px; display:flex; gap:8px; align-items:baseline}
+  .dr-list button:hover{background:var(--card2)}
+  .dr-list .dt{font-family:var(--font); font-variant-numeric:tabular-nums; color:var(--faint); font-size:11.5px; white-space:nowrap}
+  .dr-empty{padding:9px 12px 12px; color:var(--muted); font-size:12.5px}
+  .arch-flash{animation:archflash 1.6s ease}
+  @keyframes archflash{0%,100%{background:transparent}18%{background:var(--accent-soft)}}
+
+  /* How it works */
+  .flow{display:grid; grid-template-columns:repeat(3,1fr); gap:12px}
+  @media (max-width:640px){.flow{grid-template-columns:1fr}}
+  .step{background:var(--card2); border:1px solid var(--line); border-radius:11px; padding:16px 16px 18px}
+  .step .n{font-family:var(--font); font-size:12px; color:var(--accent); font-weight:600}
+  .step .st{font-size:14px; font-weight:600; margin:6px 0 4px}
+  .step .sp{font-size:12.5px; color:var(--muted); line-height:1.55}
+
+  /* Archive */
+  details.arch{background:var(--card); border:1px solid var(--line); border-radius:11px; padding:2px 4px}
+  details.arch summary{cursor:pointer; padding:14px 16px; font-size:14px; font-weight:600; list-style:none;
+    display:flex; align-items:center; gap:10px}
+  details.arch summary::-webkit-details-marker{display:none}
+  details.arch summary::before{content:"\25B8"; color:var(--faint); transition:transform .15s}
+  details.arch[open] summary::before{transform:rotate(90deg)}
+  .arch-empty{padding:6px 18px 18px; color:var(--muted); font-size:13px}
+  .arch-item{padding:4px 18px 18px}
+  .arch-item h4{font-size:13.5px; margin:0 0 4px}
+  .arch-item p{font-size:12.5px; color:var(--muted); margin:0}
+  details.sub-arch{border:1px solid var(--line); border-radius:9px; background:var(--card2); padding:2px 4px; margin-top:4px}
+  details.sub-arch > summary{cursor:pointer; padding:11px 13px; font-size:13px; font-weight:600; color:var(--muted);
+    list-style:none; display:flex; align-items:center; gap:9px}
+  details.sub-arch > summary::-webkit-details-marker{display:none}
+  details.sub-arch > summary::before{content:"\25B8"; color:var(--faint); transition:transform .15s}
+  details.sub-arch[open] > summary::before{transform:rotate(90deg)}
+  details.sub-arch .body{padding:2px 14px 14px}
+
+  footer{margin-top:48px; padding-top:20px; border-top:1px solid var(--line);
+    color:var(--faint); font-size:12px; font-family:var(--font); line-height:1.7}
+  footer a{color:var(--faint)}
+</style>
+
+<div class="wrap">
+  <header class="hd">
+    <div class="brand">
+      <span class="eyebrow">BIM &middot; Construction Intelligence</span>
+      <h1>모닝루틴 리포트</h1>
+      <span class="sub">매일 아침(월~금) BIM&middot;건설 업계 현황을 자동 조사해 이 페이지에 게시합니다. 최신 리포트가 항상 맨 위에 옵니다.</span>
+    </div>
+    <div class="clock">
+      <span class="big mono">08:00 KST</span>
+      월–금 자동 실행<br>
+      <span class="mono">최종 갱신 2026-09-21</span>
+    </div>
+  </header>
+
+  <section class="today">
+    <div class="today-bar">
+      <span class="tag">오늘의 리포트</span>
+      <span class="when mono">2026-09-21 (월) &middot; BIM 업계 동향</span>
+    </div>
+    <div class="today-body report">
+      <div class="r-head">
+        <h3>BIM 업계 동향 — 발주 문서는 AI가 초안을 잡고 사내 자동화는 엔지니어가 직접 만든다</h3>
+        <p class="meta">2026-09-21 (월) &middot; Asia/Seoul &middot; 조사범위: 최근 7일(09-14&sim;09-21) &middot; 방법: CERIK 건설동향브리핑 목록 확인 + 전문지(koscaj&middot;대한경제&middot;엔지니어링데일리) BIM 카테고리&middot;검색결과 조회, 절대 날짜범위 조합 검색 &middot; 지난주(09-14) 다룬 LH&rarr;GH BIM 기술이전 건은 후속 소식이 없어 이번 회차에서 제외</p>
+        <p class="lead">이번 주 국내 BIM 소식은 한 방향으로 모입니다. 한국건설기술연구원(KICT)은 발주기관의 BIM 입찰 문서 작성을 돕는 AI 도구를 준비 중이고 &lsquo;2026 대경 스마트건설대상&rsquo;에서 AI대상을 받은 건화는 외부 솔루션 대신 <strong>사내 엔지니어가 직접 만든 자동화 도구</strong>로 성과를 냈습니다. 같은 주 CERIK 건설동향브리핑은 청년층의 건설업 인식과 AI 성과창출을 나란히 다뤘고 데이터센터&middot;AI 신사업이 하반기 채용 확대의 배경이라는 보도도 겹쳤습니다. 발주&middot;현장&middot;인력 세 갈래 모두에서 &lsquo;AI를 누가, 어떻게 만드는가&rsquo;가 이번 주의 공통 질문이었던 셈입니다.</p>
+      </div>
+
+      <div class="r-sec">
+        <h4><span class="k">01</span> 핵심 요약</h4>
+        <ul>
+          <li><strong>KICT, 공공 BIM 발주를 지원하는 AI 통합도구 개발 착수</strong> &mdash; 발주지원&middot;성과평가 AI 에이전트와 BIM 계약 특별조항&middot;약관 추천 알고리즘을 묶어, BIM 발주 경험이 부족한 기관의 입찰안내서&middot;과업지시서 작성을 돕습니다.</li>
+          <li><strong>&lsquo;2026 대경 스마트건설대상&rsquo; AI대상은 건화</strong> &mdash; 외부 IT업체 의존을 줄이고 현업 엔지니어가 자동화 도구를 직접 만드는 방식으로 AI&middot;3D BIM 결합 CDE 플랫폼을 구축, 설계 효율 30%&middot;수주 경쟁력 20% 이상 개선을 보고했습니다.</li>
+          <li><strong>CERIK 건설동향브리핑 1075호(09-18)</strong>가 청년층의 건설업 인식과 AI 성과창출을 함께 다뤘고 같은 주 파이낸셜뉴스가 짚은 데이터센터&middot;AI 신사업발 하반기 채용 확대와 맥락이 겹칩니다.</li>
+          <li><strong>지난주(09-14) 다룬 LH&rarr;GH BIM 기술이전은 이번 주 후속 소식 없음</strong> &mdash; 대신 관심이 발주 지원&middot;사내 자동화&middot;인력 쪽으로 옮겨갔습니다.</li>
+        </ul>
+      </div>
+
+      <div class="r-sec">
+        <h4><span class="k">02</span> 상세 발견사항 (소스별)</h4>
+
+        <div class="src">
+          <div class="s-name">① BIM 발주 실무에도 AI 활용 (대한전문건설신문&middot;koscaj, 2026-09-17)</div>
+          <p>한국건설기술연구원(KICT)이 공공 건설사업의 BIM 발주 전 과정을 지원하는 AI 통합도구 개발을 추진 중입니다. &ldquo;발주지원 및 성과평가 지원 AI 에이전트&rdquo;와 &ldquo;BIM 계약 특별조항 및 약관 추천 AI 알고리즘&rdquo;이 핵심 기능이며 과거 BIM 발주 사례를 학습한 AI가 입찰안내서&middot;과업지시서 작성 과정에서 실시간으로 답하고 문서를 자동 생성합니다. BIM 발주 경험이 부족한 기관의 업무 부담을 줄이는 데 초점을 뒀습니다.<br>
+          <strong>&rsaquo; 우리 관점 시사점:</strong> 발주기관의 문서 작성 역량이 BIM 발주 확대의 걸림돌 중 하나였던 만큼, 이 도구가 실제 배포되면 신규 발주기관 유입 문턱이 낮아질 수 있음 &mdash; 화요일 입찰 리포트에서 BIM 발주 건수 변화를 계속 지켜볼 것.</p>
+          <div class="links">
+            <a href="https://www.koscaj.com/news/articleView.html?idxno=326549">대한전문건설신문 &middot; BIM 발주 실무에도 AI 활용</a>
+          </div>
+        </div>
+
+        <div class="src">
+          <div class="s-name">② [2026 대경 스마트건설대상] AI대상 &mdash; 건화 (대한경제&middot;dnews, 2026-09-16)</div>
+          <p>건화는 건설엔지니어링 분야 전사적 AI 전환을 추진하며 외부 IT업체 의존도를 줄이는 &lsquo;자생적 혁신 생태계&rsquo;를 강조했습니다. 현장 데이터로 고위험 작업을 관제하는 KH-SMS, 인력&middot;업무를 분석해 자원을 배치하는 KH-WMS, 입찰 패턴을 분석하는 KH-BMS 세 플랫폼을 자체 개발했고 설계 분야에서는 <strong>AI와 3D BIM을 결합한 CDE 플랫폼</strong>, RAG 기반 설계기준 검증 시스템, 단지설계 자동화 툴을 구축했습니다. 그 결과 설계 자동화&middot;업무 프로그램 20여 건을 개발해 업무 효율&middot;설계 품질을 30% 이상, 수주 경쟁력을 20% 이상 끌어올렸다고 밝혔습니다.<br>
+          <strong>&rsaquo; 우리 관점 시사점:</strong> 외부 솔루션 대신 사내 엔지니어가 도구를 직접 만드는 방식이 수상으로 인정받았다는 점은, NeXura 같은 외부 공급자 입장에서 완제품 공급보다 <strong>내재화를 돕는 플랫폼&middot;SDK 형태</strong>의 포지셔닝이 더 통할 수 있다는 신호로 읽힘.</p>
+          <div class="links">
+            <a href="https://www.dnews.co.kr/uhtml/view.jsp?idxno=202609111248229130631">대한경제 &middot; 2026 대경 스마트건설대상 AI대상-건화</a>
+          </div>
+        </div>
+
+        <div class="src">
+          <div class="s-name">③ 건설동향브리핑 1075호 &mdash; 청년층 건설업 인식&middot;AI 성과창출 (CERIK, 2026-09-18, 목록 요약 기준)</div>
+          <p>한국건설산업연구원(CERIK)의 최신 건설동향브리핑 1075호가 &ldquo;해외 주요국의 청년층 건설업 인식과 인력 유입 정책&rdquo;, &ldquo;AI 성과 창출&rdquo;을 함께 다뤘습니다. 원문 PDF 대신 CERIK 목록 페이지의 요약을 확인한 수준이라 세부 통계는 이번 회차에서 확보하지 못했습니다.<br>
+          <strong>&rsaquo; 우리 관점 시사점:</strong> 인력난이 AI&middot;자동화 투자 명분을 강화하는 흐름과 맞물려 있어, 목요일 R&amp;D 리포트가 다루는 &lsquo;생성형 AI 자동화&rsquo; 문헌과의 접점을 계속 모니터링할 것.</p>
+          <div class="links">
+            <a href="https://www.cerik.re.kr/report/briefing">CERIK 건설동향브리핑 목록 &middot; 1075호(2026-09-18)</a>
+          </div>
+        </div>
+
+        <div class="src">
+          <div class="s-name">④ 데이터센터&middot;AI 힘주는 건설업계, 하반기 젊은피 대거 수혈 (파이낸셜뉴스, 2026-09-14, 배경참고)</div>
+          <p>국내 10대 건설사 중 8곳이 신입 채용을 진행 중이며 데이터센터&middot;AI 사업 확대가 주요 배경으로 꼽혔습니다. 기사 자체에는 BIM에 대한 직접 언급은 없어 배경 자료로만 인용합니다.<br>
+          <strong>&rsaquo; 우리 관점 시사점:</strong> 데이터센터 발주가 늘면 전력&middot;냉각 설비까지 통합하는 BIM 수요도 함께 늘어날 가능성이 있음 &mdash; 화요일 입찰 리포트 키워드에 &lsquo;데이터센터&rsquo;를 추가해 발주 동향을 별도로 추적할 가치가 있음.</p>
+          <div class="links">
+            <a href="https://www.fnnews.com/news/202609141840210167">파이낸셜뉴스 &middot; 데이터센터&middot;AI 힘주는 건설업계, 하반기 젊은피 대거 수혈</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="r-sec">
+        <h4><span class="k">03</span> 시사점 / 액션 아이디어</h4>
+        <ul>
+          <li><strong>정부 지원 BIM 발주 도구 등장을 화요일 입찰 리포트와 연계 추적</strong> &mdash; KICT 도구가 실제 배포되면 BIM 발주 경험이 없던 기관의 신규 공고가 늘어날 수 있어, 발주기관 다양성 변화를 지켜볼 것.</li>
+          <li><strong>내재화 지원형 포지셔닝 검토</strong> &mdash; 건화 사례처럼 사내 엔지니어가 도구를 직접 만드는 흐름이 확산되면, NeXura도 완제품 판매보다 API&middot;SDK 형태로 고객사 내재화를 돕는 옵션을 함께 준비할 필요가 있음.</li>
+          <li><strong>데이터센터 발주를 BIM 수요의 새 축으로 모니터링</strong> &mdash; 전력&middot;냉각 설비 통합 모델링 수요가 늘어날 가능성에 대비해 화요일 입찰 키워드에 추가.</li>
+          <li><strong>인력난&middot;AI 자동화 투자의 상관관계를 목&middot;금요일 리포트와 교차 확인</strong> &mdash; CERIK이 짚은 청년 인력 유입 정책이 실제 BIM 자동화 R&amp;D 투자로 이어지는지 다음 회차 이후 계속 확인.</li>
+        </ul>
+      </div>
+
+      <div class="r-sec">
+        <h4><span class="k">04</span> 이번 조사 방법 개선 제안</h4>
+        <div class="note-amber">
+          <b>CERIK 원문 PDF 미확보:</b> 1075호는 목록 페이지 요약만 확보했고 상세페이지 URL(예: report/briefing/detail/번호)을 찾지 못해 원문 조회에는 이르지 못했습니다. 다음 회차엔 상세페이지 링크를 먼저 찾아 원문 확인을 시도할 것을 제안합니다.
+        </div>
+        <ul>
+          <li><strong>국토부 정책브리핑(korea.kr) 개별 보도자료 검색 방식 재검토</strong> &mdash; 이번 주 새로 게시된 BIM 관련 보도자료를 dtl.jsp 개별 문서 검색으로는 찾지 못함. 다음 회차엔 정책브리핑 뉴스 검색을 날짜순으로 필터링하는 방식을 시도할 것.</li>
+          <li><strong>데이터센터 키워드를 화요일 나라장터 검색어에 추가 검토</strong> &mdash; 데이터센터 발주 증가와 BIM 수요 접점을 다음 화요일 리포트에서 확인.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><span class="idx">01</span><h2>요일별 분석 주제</h2><span class="rule"></span><span class="sec-hint">요일을 눌러 지난 리포트 보기</span></div>
+    <div class="week">
+      <button type="button" class="day on" data-dow="월"><span class="d">MON · 월</span><span class="t">BIM 업계 동향</span><span class="m">전문지·뉴스 브리핑</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="화"><span class="d">TUE · 화</span><span class="t">입찰·수주 동향</span><span class="m">나라장터·KAIA 공고</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="수"><span class="d">WED · 수</span><span class="t">실무자 의견</span><span class="m">커뮤니티 인사이트</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="목"><span class="d">THU · 목</span><span class="t">연구개발 동향</span><span class="m">Scholar·AURIC 논문</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="금"><span class="d">FRI · 금</span><span class="t">역량강화 인사이트</span><span class="m">전문가 연설 분석</span><span class="cnt" hidden></span></button>
+    </div>
+    <div class="day-reports" id="dayReports" hidden>
+      <div class="dr-head"><span id="drTitle"></span><button type="button" class="dr-close" id="drClose" title="닫기">✕</button></div>
+      <ul class="dr-list" id="drList"></ul>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><span class="idx">02</span><h2>동작 방식</h2><span class="rule"></span></div>
+    <div class="flow">
+      <div class="step"><span class="n">STEP 1</span><div class="st">클라우드 조사</div><p class="sp">매일 08:00, 오늘 요일 주제로 웹 조사를 수행하고 HTML 리포트를 작성합니다.</p></div>
+      <div class="step"><span class="n">STEP 2</span><div class="st">이 페이지 갱신</div><p class="sp">이 고정 페이지를 제자리에서 업데이트해 최신 리포트를 맨 위에 배치합니다.</p></div>
+      <div class="step"><span class="n">STEP 3</span><div class="st">알림 · 자동 열기</div><p class="sp">푸시 알림을 보내고 PC를 켜면 이 페이지가 Chrome에 자동으로 열립니다.</p></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><span class="idx">03</span><h2>지난 리포트</h2><span class="rule"></span></div>
+    <details class="arch">
+      <summary>아카이브 · 지난 리포트 (최신순)</summary>
+      <div class="arch-item">
+        <details class="sub-arch">
+          <summary>2026-09-18 (금) &middot; 역량강화 인사이트 &mdash; 오토데스크가 그린 &lsquo;연결된 프로젝트 인텔리전스&rsquo;, 그 옆에 놓인 로컬 AI&middot;조직 문화라는 숙제</summary>
+          <div class="body">
+            <div class="r-head">
+              <h3>역량강화 인사이트 — 오토데스크가 그린 &lsquo;연결된 프로젝트 인텔리전스&rsquo;, 그 옆에 놓인 로컬 AI&middot;조직 문화라는 숙제</h3>
+              <p class="meta">2026-09-18 (금) &middot; Asia/Seoul &middot; 방법: AI&middot;디지털트윈&middot;스마트건설 분야 리더 발표 분석(공식 컨퍼런스 리캡&middot;블로그 + YouTube 링크 보강) &middot; 대상: Autodesk University 2026(9-15&sim;17, 라스베이거스) 신규 발표 중심 + Bluebeam&middot;LH 리더십 발언 보강 &middot; 직전 두 금요일(09-04&middot;09-11)과 중복 방지</p>
+              <p class="lead">지난 두 회차(09-04&middot;09-11)에서 Siemens&middot;NVIDIA&middot;Bentley 키노트와 오토데스크의 <em>neural CAD</em> 최초 발표(AU 2025)를 이미 다뤘고 09-11 개선 제안은 &ldquo;다음 회차(9-18)엔 오토데스크 유니버시티 2026(9-15&sim;17) 신규 발표를 최우선으로 다룰 것&rdquo;을 예약해뒀습니다. 이번 회차는 그 약속대로 <strong>AU 2026 데이1 키노트</strong>를 중심에 놓고 같은 행사에서 나온 <strong>AMD의 로컬 AI 워크스테이션</strong> 발표와 <strong>Bluebeam CEO의 AEC 기술도입 장벽 진단</strong>을 더했습니다. 09-04&middot;09-11 리포트가 남긴 &lsquo;해외 소프트웨어 벤더 편중&rsquo; 개선 과제를 이번엔 <strong>[특별관심: 정부기관 통합이전]</strong> 항목에서 <strong>LH 신임 사장의 &lsquo;AI 대전환&rsquo; 발언</strong>을 국내 리더 사례로 넣어 부분적으로 메웠습니다 &mdash; 다만 이 발언 자체가 LH 기능분리 논의를 직접 언급하지는 않아, 접점은 시점이 겹치는 수준임을 밝혀둡니다.</p>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">01</span> 핵심 요약</h4>
+              <ul>
+                <li><strong>오토데스크 유니버시티 2026 데이1 키노트</strong>(9-15, Andrew Anagnost&middot;Raji Arasu) &mdash; 메시지를 &lsquo;개별 기능 자동화&rsquo;에서 <strong>프로젝트 단위로 데이터를 잇는 &lsquo;커넥티드 브레인&rsquo;(project intelligence)</strong>으로 재정의. 독립형 에이전트 &lsquo;Autodesk Assistant&rsquo;를 새로 공개했고 <strong>Forma&middot;Revit에는 AI 기반 건설 에이전트</strong>가, Civil 3D에는 <strong>Forma Connected Client</strong> 통합이 각각 추가됐습니다.</li>
+                <li><strong>AMD, 같은 행사에서 로컬(온디바이스) AI 워크스테이션 공개</strong> &mdash; HP ZBook Ultra G3a(Ryzen AI Max PRO 400, 통합메모리 최대 192GB)가 <strong>최대 3,000억 개 파라미터 모델을 클라우드 없이 자체 구동</strong>할 수 있다고 발표. 대형 CAD&middot;BIM 모델과 로컬 LLM을 함께 다루는 용도로 AEC 업계를 직접 겨냥했습니다.</li>
+                <li><strong>Bluebeam CEO Usman Shuja</strong> &mdash; &lsquo;AEC 기술전망 2026&rsquo; 보고서(전문가 1,000명+ 설문)를 소개하며 &ldquo;2026년 AEC 기술 도입의 가장 큰 장벽은 비용이 아니라 <strong>복잡성&middot;조직문화&middot;연결성</strong>&rdquo;이라고 진단. 응답 기업의 27%만 AI를 자동화&middot;의사결정에 실제로 쓰지만 그 얼리어답터의 95%는 건물 생애주기 전반에서 AI를 상시 활용 중입니다.</li>
+                <li><strong>[특별관심: 정부기관 통합이전] 이성훈 LH 사장, 취임 두 달 만에 &lsquo;AI 대전환&rsquo; 제시</strong>(2026-07 취임&middot;09-05 기고) &mdash; BIM 토공설계 자동화, AI 통합관제 &lsquo;늘봄 A-Eye&rsquo;, 디지털트윈 도시개발 세 축을 제시하고 &ldquo;얼마나 빠르고 안전하게 좋은 집을 공급했는가&rdquo;를 AI 경쟁력의 기준으로 삼겠다고 밝혔습니다. LH의 개발&middot;주거복지 기능분리 논의가 진행 중인 시점과 겹치지만 기고문 자체는 그 논의를 언급하지 않습니다.</li>
+              </ul>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">02</span> 상세 발견사항 (발표별)</h4>
+
+              <div class="src">
+                <div class="s-name">① 오토데스크 유니버시티 2026 데이1 키노트 &mdash; Andrew Anagnost&middot;Raji Arasu (Autodesk 공식 뉴스룸&middot;AEC Magazine 조회 성공, 09-11 예약 과제)</div>
+                <p>9-15 라스베이거스 베네치안에서 열린 AU 2026 개막 키노트 &ldquo;Building AI for the Real World&rdquo;에서 Anagnost는 &ldquo;연결된 프로젝트 데이터와 산업 맥락이 실행 가능한 인텔리전스를 만든다&rdquo;는 <strong>프로젝트 인텔리전스</strong> 개념을 회사 전체의 축으로 제시했습니다. 제품에 내장된 기능과 별개로 <strong>독립형 에이전트 &lsquo;Autodesk Assistant&rsquo;</strong>를 새로 공개했습니다. 사용자가 하려는 작업을 설명하면 관련 Autodesk 도구와 파트너 에이전트를 알아서 조합하도록 했습니다. AEC 쪽에서는 <strong>Civil 3D가 &lsquo;Forma Connected Client&rsquo;로 편입</strong>됐고 <strong>Forma&middot;Revit에 AI 기반 건설 에이전트</strong>가 추가돼 &ldquo;반복적 검토를 줄이고 중요한 의사결정에 집중&rdquo;하도록 돕는다고 설명했습니다. 설비관리 소프트웨어 <strong>MaintainX 인수</strong>로 설계&middot;시공&middot;운영 전 생애주기를 잇겠다는 방향도 재확인했습니다. Clara Shih와의 별도 대담에서는 조직 내 AI 도입을 &ldquo;신뢰할 수 있고 측정 가능한 가치&rdquo;로 연결하는 방법을 다뤘습니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> 09-04 리포트에서 다룬 &lsquo;neural CAD&rsquo;가 개별 형상 생성 기술이었다면, 이번 &lsquo;project intelligence&rsquo;는 그 결과물을 <strong>프로젝트 데이터 전체와 잇는 상위 계층</strong> &mdash; NeXura CDE도 개별 검토 기능 나열보다 프로젝트 데이터를 관통하는 상위 인텔리전스 계층을 로드맵에 명시할 근거로 참고할 만함. Forma&middot;Revit AI 건설 에이전트의 실제 기능 범위는 국내 배포 전까지 계속 추적할 것.</p>
+                <div class="links">
+                  <a href="https://adsknews.autodesk.com/en/news/autodesk-design-make-vision-au-2026/">Autodesk 공식 뉴스룸 &middot; AU 2026 Design&middot;Make 비전</a>
+                  <a href="https://aecmag.com/ai/anagnost-pitches-project-intelligence-across-autodesk">AEC Magazine &middot; Anagnost pitches &lsquo;project intelligence&rsquo;</a>
+                  <a href="https://www.youtube.com/watch?v=dC-DqjnZonk">YouTube &middot; AU 2026 데이1 키노트 라이브스트림</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">② AMD, AU 2026에서 로컬 AI 워크스테이션 공개 (AMD 공식 블로그 조회 성공, 신규)</div>
+                <p>AMD는 같은 행사에서 <strong>Ryzen AI Max PRO 400 시리즈</strong>를 탑재한 HP ZBook Ultra G3a(16인치 모바일 워크스테이션)를 소개했습니다. 통합메모리를 이전 세대보다 50% 늘린 <strong>최대 192GB</strong>까지 지원해, 대형 CAD&middot;BIM 모델과 로컬 LLM, ComfyUI 같은 이미지 생성 작업을 <strong>클라우드 연결 없이 워크스테이션 한 대에서</strong> 처리할 수 있다고 설명했습니다. 최대 <strong>3,000억 개 파라미터 모델</strong>을 구동할 수 있어, AEC 기업에 클라우드 기반 AI의 현실적 대안으로 제시됐습니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> 대형 BIM 모델&middot;민감정보를 다루는 공공 프로젝트에서는 클라우드 전송 자체가 부담일 수 있음 &mdash; NeXura가 온프레미스&middot;로컬 추론 옵션을 준비해두면 보안&middot;망분리 요건이 있는 발주처 제안에서 차별화 요소가 될 수 있음. 다만 300B급 모델 실사용 성능은 이번 발표만으로 확인되지 않아 검증 필요.</p>
+                <div class="links">
+                  <a href="https://www.amd.com/en/blogs/2026/amd-brings-local-ai-to-autodesk-university-2026.html">AMD 공식 블로그 &middot; AU 2026 로컬 AI 발표</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">③ Bluebeam CEO Usman Shuja &mdash; &lsquo;AEC 기술전망 2026&rsquo; 진단 (Bluebeam 공식 발표&middot;Construction Today 인터뷰 조회 성공, 신규)</div>
+                <p>Bluebeam이 2025-10 발표한 &lsquo;Building the Future: AEC Technology Outlook 2026&rsquo; 보고서(글로벌 AEC 전문가 1,000명+ 설문)를 소개하며 Shuja는 &ldquo;2026년 AEC 기술 도입의 가장 큰 장벽은 비용이 아니라 <strong>복잡성&middot;조직문화&middot;연결성</strong>&rdquo;이라고 진단했습니다. 조사에서는 AEC 기업의 <strong>27%만 AI를 자동화&middot;문제해결&middot;의사결정에 실제로 사용</strong>하지만 이 얼리어답터의 <strong>95%는 건물 생애주기 전반에서 AI를 상시 활용</strong>하고 절반 가까이가 일정관리&middot;기획&middot;문서분석에서 500&sim;1,000시간을 절감했다고 응답했습니다. Shuja는 &ldquo;성공하려면 도구뿐 아니라 훈련과, 팀&middot;프로젝트 단계&middot;워크플로를 잇는 통합적 접근이 필요하다&rdquo;며 건설 전문성과 디지털 역량을 함께 갖춘 인력(&lsquo;dual athletes&rsquo;)을 강조했습니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> &lsquo;도구 배포&rsquo;와 &lsquo;조직 도입&rsquo; 사이의 간극이 기술 자체보다 크다는 진단은 NeXura 도입 지원 방식에도 그대로 적용 &mdash; 소프트웨어 공급에 그치지 않고 워크플로 연결&middot;교육을 함께 설계해야 27%에서 95%로 넘어가는 격차를 좁힐 수 있음.</p>
+                <div class="links">
+                  <a href="https://press.bluebeam.com/2025/10/new-bluebeam-report-shows-early-ai-adopters-in-aec-seeing-significant-roi-despite-uneven-adoption/">Bluebeam 뉴스룸 &middot; AEC 기술전망 2026 보고서</a>
+                  <a href="https://construction-today.com/news/construction-today-hears-from-usman-shuja-bluebeam-ceo-about-how-to-navigate-the-ai-evolution-and-strengthen-its-efficacy/">Construction Today &middot; Usman Shuja 인터뷰</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">④ [특별관심: 정부기관 통합이전] 이성훈 LH 사장 &lsquo;AI 대전환&rsquo; 기고 (아주경제 조회 성공, 국내 리더 사례 신규 편입)</div>
+                <p>2026-07 취임한 이성훈 LH 사장이 09-05 기고에서 &lsquo;AI 대전환&rsquo;을 핵심 추진과제로 제시했습니다. ①<strong>AI 기반 BIM 토공설계 자동화</strong>로 반복 설계작업을 자동화하고 여러 대안을 빠르게 비교, ②AI 통합관제 시스템 <strong>&lsquo;늘봄 A-Eye&rsquo;</strong>로 안전관리자가 일일이 확인하던 CCTV를 24시간 자동 분석해 위험을 감지, ③<strong>디지털트윈</strong>으로 실제 시공 전 가상공간에서 도시를 구현하는 세 축입니다. 기고는 &ldquo;얼마나 빠르고 안전하게 좋은 집을 공급했느냐&rdquo;를 LH의 AI 경쟁력 평가 기준으로 삼겠다고 밝혔습니다. 신임 사장의 취임과 이 발표 시점은 LH의 개발&middot;주거복지 기능분리 논의(정부기관 통합이전 국면)와 겹치지만 <strong>기고문 자체에는 기능분리 관련 언급이 없어</strong> 접점은 &lsquo;우연한 시점 중첩&rsquo; 수준으로 판단합니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> BIM 토공설계 자동화가 신임 사장의 3대 핵심과제 중 하나로 명시된 만큼, 향후 LH 발주 과업지시서에 유사 요건이 반영될 가능성이 있음 &mdash; 화&middot;목요일 리포트의 LH 관련 모니터링과 연결해 계속 추적할 것.</p>
+                <div class="links">
+                  <a href="https://www.ajunews.com/view/20260904111057070">아주경제 &middot; 이성훈 LH 사장 &lsquo;AI 대전환&rsquo; 기고</a>
+                  <a href="https://www.fntimes.com/html/view.php?ud=202609091603453683048b718333_18">한국금융신문 &middot; LH &lsquo;AI 도시&rsquo; 공개(WSCE 2026)</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">03</span> 시사점 / 액션 아이디어</h4>
+              <ul>
+                <li><strong>&lsquo;프로젝트 인텔리전스&rsquo;를 NeXura CDE 로드맵의 상위 개념으로 명시</strong> &mdash; 개별 검토&middot;자동화 기능 나열에 그치지 말고 프로젝트 데이터를 관통해 잇는 상위 계층을 별도 항목으로 설계.</li>
+                <li><strong>로컬(온디바이스) AI 추론 옵션을 보안 민감 프로젝트용으로 검토</strong> &mdash; 대형 BIM 모델을 클라우드 전송 없이 처리해야 하는 망분리&middot;공공 발주 요건에 대응할 대안으로 하드웨어 스펙 요구사항을 문서화해둘 것.</li>
+                <li><strong>도구 배포보다 워크플로 연결&middot;교육을 우선</strong> &mdash; Bluebeam의 27%→95% 격차 진단을 참고해, NeXura 도입 지원 시 소프트웨어 공급과 함께 팀 간 워크플로 연결&middot;교육 프로그램을 묶어 제공.</li>
+                <li><strong>LH의 &lsquo;AI 3대 축&rsquo;(설계자동화&middot;안전관제&middot;디지털트윈)을 발주 요구사항 변화 신호로 모니터링</strong> &mdash; 특히 BIM 토공설계 자동화는 향후 LH 발주 과업 요건에 구체적으로 반영될 가능성이 있어 화요일 입찰 리포트와 연계 추적.</li>
+              </ul>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">04</span> 이번 조사 방법 개선 제안</h4>
+              <div class="note-amber">
+                <b>09-11 예약 과제(AU 2026 우선 반영) 완료 + 국내 리더 첫 편입:</b> 이번 회차로 지난주 예약해둔 AU 2026 신규 발표를 다뤘고 09-04&middot;09-11이 지적한 &lsquo;해외 벤더 편중&rsquo;도 특별관심 항목을 통해 LH 사장 사례로 처음 메웠습니다. 특별관심 기간은 09-19로 종료되므로, 국내 리더 편입은 이후 별도 규칙으로 상시화할 필요가 있습니다.
+              </div>
+              <ul>
+                <li><strong>국내 리더 발언 분기 1회 이상 편입을 상시 규칙으로 명문화 제안</strong> &mdash; 특별관심 기간에 우연히 성사된 이번 편입을, 다음 승인 시 config.json Fri 섹션에 &lsquo;분기 1회 국내 인사 포함&rsquo; 조건으로 고정할 것을 제안.</li>
+                <li><strong>키노트 캘린더 공백기 계속 활용</strong> &mdash; 09-11에서 정리한 캘린더대로 다음은 10월 Bentley Year in Infrastructure, 11월 Trimble Dimensions&middot;국내 스마트건설 EXPO(킨텍스) 예약.</li>
+                <li><strong>YouTube 자막 직접 조회는 이번에도 미시행</strong> &mdash; AU 2026 키노트 영상 링크는 확보했으나 자막 파싱 대신 공식 뉴스룸&middot;전문지 리캡으로 대체. 09-04&middot;09-11에 이어 세 번째로 남는 과제라 다음 회차엔 짧은 구간이라도 자막 조회를 한 번 시도해볼 것.</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+      <div class="arch-item">
+        <details class="sub-arch">
+          <summary>2026-09-17 (목) &middot; 연구개발 동향 &mdash; IDS&middot;BIM 편집 벤치마크는 아직 &lsquo;사람 검수&rsquo; 필수 수준, 에이전틱 AI는 프로토타입에서 표준 인프라로</summary>
+          <div class="body">
+            <div class="r-head">
+              <h3>연구개발 동향 — IDS&middot;BIM 편집 벤치마크는 아직 &lsquo;사람 검수&rsquo; 필수 수준, 에이전틱 AI는 프로토타입에서 표준 인프라로</h3>
+              <p class="meta">2026-09-17 (목) &middot; Asia/Seoul &middot; 방법: 관련도 우선 + 최신성 보정(하이브리드) &middot; 소스: arXiv / Google Scholar(scisbd, 이번엔 정상) &middot; 키워드: IDS&middot;정보요구사항 검증, BIM 자연어 편집, 에이전틱 AI 인프라&middot;MCP</p>
+              <p class="lead">지난 두 회차(09-03&middot;09-10)에서 다룬 <em>Adaptive Exploration</em>&middot;<em>IFCMemoryBench</em>&middot;<em>SGR-BIM</em>&middot;Fonsati IDS 논문&middot;휴스턴대 LLM 규정검토&middot;<em>BIM2RDT</em>&middot;<em>IfcLLM</em>&middot;<em>CityLLM</em>&middot;시공 단계 디지털트윈 QA&middot;4D/5D 예측 제어 프레임워크는 중복 방지를 위해 제외했습니다. 09-10 개선 제안(&ldquo;규정검토&middot;검증 계열은 완전히 배제하기보다 격주로 재편입&rdquo;)을 반영해 이번엔 <strong>IDS(정보요구사항 명세) 자동생성 검증</strong> 1건을 다시 들였고 나머지는 <strong>BIM 모델의 자연어 편집</strong>과 <strong>에이전틱 AI를 위한 재사용 인프라(MCP&middot;스킬 허브)</strong> 두 갈래로 분산해 표본을 채웠습니다. Google Scholar(<span class="mono">scisbd=1</span>) 직접 조회는 지난 회차 CAPTCHA 차단과 달리 이번엔 <strong>정상 작동</strong>했습니다(⑤). <strong>[특별관심: 정부기관 통합이전]</strong>은 오늘 주제(연구개발 동향)와의 접점을 다시 검색했으나, 194&rarr;74개 통폐합 명단(ZDNet 09-03 보도)에 국토교통과학기술진흥원(KAIA)&middot;한국건설기술연구원 등 건설&middot;BIM R&amp;D 관련 기관은 포함되지 않아 지난 회차에 이어 접점 없음으로 남깁니다(LH 기능분리는 월&middot;화 리포트에서 계속 추적 중).</p>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">01</span> 핵심 요약</h4>
+              <ul>
+                <li><strong>IDS(정보요구사항 명세) 자동생성 벤치마크 신규 공개</strong> &mdash; 166개 예제&middot;83개 실무 시나리오로 10개 LLM을 평가한 결과, 형식 정확도(Facet F1) 최고는 GPT-5.5의 65.6%, 의미 충실도(Content pass rate) 최고는 Claude Opus 4.5의 33.1%에 그쳐 완전 자동화는 아직 이릅니다.</li>
+                <li><strong>BIM &lsquo;편집&rsquo; 벤치마크에서 LLM 성능이 &lsquo;생성&rsquo;보다 훨씬 저조</strong> &mdash; 자연어 지시로 기존 IFC 모델을 고치는 324개 과제에서 최고 모델도 평균 성능 49.5%, 과제를 완전히 끝낸 비율은 3.4% 미만.</li>
+                <li><strong>에이전틱 AI 재사용 인프라 표준화 시도 두 건 동시 확인</strong> &mdash; 스킬&middot;테스트케이스를 표준 패키지로 공유하는 &lsquo;Buildrix&rsquo;, MCP 인터페이스와 BIM API를 어댑터 계약으로 분리하는 참조 아키텍처 &mdash; &lsquo;개별 프로토타입&rsquo;에서 &lsquo;재사용 가능한 표준 인프라&rsquo;로 옮겨가는 신호로 읽힙니다.</li>
+                <li><strong>Google Scholar 직접 조회 이번엔 정상</strong> &mdash; 지난 회차(09-10) CAPTCHA 차단과 대비. 접근 성공/실패가 회차마다 바뀌는 패턴이 계속 확인됩니다.</li>
+                <li><strong>[특별관심: 정부기관 통합이전]</strong> &mdash; 194&rarr;74개 통폐합 명단(발전 5사&middot;항만&middot;철도&middot;LH 분리 등)에 KAIA&middot;한국건설기술연구원 등 건설&middot;BIM R&amp;D 기관은 포함되지 않음을 재확인. 학술 문헌에서도 이 주제를 다룬 새 소식은 없어 접점 없음으로 남깁니다.</li>
+              </ul>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">02</span> 상세 발견사항 (문헌별)</h4>
+
+              <div class="src">
+                <div class="s-name">① Ishigaki-IDS-Bench &mdash; IDS(정보요구사항 명세) 자동생성 벤치마크 (arXiv 원문 확인, 신규 &middot; 규정검토&middot;검증 계열 재도입)</div>
+                <p><strong>Ishigaki-IDS-Bench: A Benchmark for Generating Information Delivery Specification from BIM Information Requirements</strong> &mdash; Ryo Kanazawa&middot;Koyo Hidaka&middot;Teppei Miyamoto 외, arXiv 2605.22079(2026-05-21 제출, 2026-08-25 최신 개정). 일본어&middot;영어로 BIM/IDS 전문가 6인이 작성한 <strong>166개 예제&middot;83개 실무 시나리오</strong>로 구성된, <strong>IDS 생성 과제의 첫 공개 벤치마크</strong>입니다. 10개 LLM을 제로샷으로 평가했고 buildingSMART의 <span class="mono">IDSAuditTool</span>로 형식 유효성을, facet 단위 macro-F1로 내용 충실도를 각각 측정했습니다. <strong>형식 정확도(Facet F1) 최고 65.6%(GPT-5.5)</strong>, <strong>내용 충실도(Content pass rate) 최고 33.1%(Claude Opus 4.5)</strong>로, &lsquo;문법은 맞지만 의미는 틀린&rsquo; 결과가 흔함을 수치로 보여줍니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> NeXura가 CDE 정보요구사항(EIR/IDS)을 자동 생성하는 기능을 만든다면, 최고 모델도 의미적 충실도가 33%대에 그친다는 점을 감안해 <strong>완전자동화가 아니라 &lsquo;초안 생성 + 전문가 검수&rsquo; 워크플로</strong>로 설계해야 함. 형식 검증(IDSAuditTool)은 자동화 가능하지만 내용 검증은 당분간 사람 개입이 필수.</p>
+                <div class="links">
+                  <a href="https://arxiv.org/abs/2605.22079">arXiv 2605.22079 &middot; Ishigaki-IDS-Bench</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">② BIM-Edit &mdash; 자연어 지시 기반 IFC 모델 편집 벤치마크 (arXiv 원문 확인, 신규)</div>
+                <p><strong>BIM-Edit: Benchmarking Large Language Models for IFC-Based Building Information Modeling</strong> &mdash; Bharathi Kannan Nithyanantham&middot;Clemens Kujat&middot;Tobias Sesterhenn 외, arXiv 2606.20146(2026-06-18 제출, 2026-06-23 개정 v3). 기존 CAD&middot;BIM 벤치마크가 대부분 &lsquo;생성&rsquo;에 초점을 둔 것과 달리, 이 연구는 <strong>기존 모델을 자연어로 고치는 &lsquo;편집&rsquo;</strong> 능력을 평가합니다. 실제 건물 11종&middot;합성 장면 36종에서 직접&middot;공간&middot;위상 지시 세 유형, <strong>324개 편집 과제</strong>를 기하학적 정확도&middot;의미 유효성&middot;위상 일관성 3개 지표로 채점한 결과, <strong>최고 모델도 평균 성능 49.5%, 과제를 완전히 끝낸 비율은 3.4% 미만</strong>이었습니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> &lsquo;자연어로 모델 수정&rsquo; 기능은 순수 생성보다 훨씬 어려운 과제임을 수치로 확인 &mdash; NeXura가 유사 기능을 검토한다면 전체 모델 편집이 아니라 <strong>단일 속성 변경처럼 아주 좁은 범위</strong>의 파일럿부터 시작하고 위상&middot;관계 보존 여부를 사람이 반드시 재확인하는 구조로 설계할 것.</p>
+                <div class="links">
+                  <a href="https://arxiv.org/abs/2606.20146">arXiv 2606.20146 &middot; BIM-Edit</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">③ Buildrix &mdash; 건설&middot;건물 엔지니어링 에이전틱 AI 스킬 공유&middot;벤치마크 플랫폼 (arXiv 원문 확인, 신규)</div>
+                <p><strong>Buildrix: An Open Platform for Sharing and Benchmarking Agentic AI Skills in Building Engineering</strong> &mdash; Zixin Jiang&middot;Bing Dong, arXiv 2606.25139(2026-06-23 제출). 현재 건물 엔지니어링 분야의 에이전틱 AI 적용이 <strong>재사용 불가능한 개별 프로토타입</strong>에 머물러 있다는 문제의식에서, <strong>CLI 패키지(스킬&middot;테스트케이스 생성&middot;검증&middot;배포) + 웹 허브(공개 과제&middot;동료검토&middot;벤치마크 결과) + 로컬 에이전트 하니스(스킬 탐색&middot;도구 프로비저닝&middot;다단계 워크플로 실행)</strong> 세 요소로 구성된 플랫폼을 제시합니다. 스킬은 &ldquo;과업지시&middot;실행 스크립트&middot;의존성&middot;부속자료를 담은 표준화된 자기완결형 패키지&rdquo;로 정의되며 전문가가 검증한 정량 테스트케이스가 재현 가능한 벤치마크의 &lsquo;골든 케이스&rsquo;가 됩니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> NeXura 내부에서도 품질검토&middot;IDS 생성 등 각종 에이전트 스킬을 &lsquo;과업지시+실행스크립트+검증 테스트&rsquo;로 묶은 표준 패키지 형태로 정리해두면, 재사용성과 회귀 검증이 동시에 확보됨 &mdash; 사내 에이전트 스킬 관리 체계 설계 시 참고할 만한 구조.</p>
+                <div class="links">
+                  <a href="https://arxiv.org/abs/2606.25139">arXiv 2606.25139 &middot; Buildrix</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">④ MCP-서버를 통한 에이전틱 BIM 인터페이스 모듈형 참조 아키텍처 (arXiv 원문 확인, Borrmann&middot;Beetz 그룹)</div>
+                <p><strong>A Modular Reference Architecture for MCP-Servers Enabling Agentic BIM Interaction</strong> &mdash; Tobias Heimig-Elschner&middot;Changyu Du&middot;Anna Scheuvens&middot;André Borrmann&middot;Jakob Beetz, arXiv 2601.00809(2025-12-21 제출, 2026-03-28 개정). Model Context Protocol(MCP)이 LLM의 도구 호출 방식을 표준화했지만 <strong>BIM 쪽 구현은 여전히 도구별 임기응변식</strong>이라 재사용&middot;평가&middot;워크플로 이식이 어렵다는 문제를 지적하고 <strong>어댑터 계약(adapter contract)으로 MCP 인터페이스와 개별 BIM API를 분리</strong>하는 마이크로서비스 기반 아키텍처를 제안합니다. IfcOpenShell 기반 프로토타입으로 대표 시나리오를 검증해 &ldquo;신뢰할 수 있는 워크플로를 가능하게 하고 결합도를 낮추며 체계적 연구를 위한 재사용 가능한 토대를 제공한다&rdquo;는 결과를 얻었습니다. 같은 저자그룹(Borrmann)의 <em>IFCMemoryBench</em>(09-10 다룸)와 달리 이 논문은 <strong>인터페이스&middot;인프라 계층</strong>에 초점을 둔 점이 다릅니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> NeXura가 Claude 기반 MCP 서버로 IFC&middot;BIM 도구를 연결한다면, 이 논문의 &lsquo;어댑터 계약으로 MCP와 BIM API를 분리&rsquo;하는 설계를 그대로 참고할 수 있음 &mdash; IfcOpenShell 대신 다른 BIM 엔진으로 바꿔도 MCP 인터페이스 쪽 코드를 재사용할 수 있는 구조가 핵심.</p>
+                <div class="links">
+                  <a href="https://arxiv.org/abs/2601.00809">arXiv 2601.00809 &middot; Modular Reference Architecture for MCP-Servers</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">⑤ Google Scholar 접근 정상 복귀 &amp; 방법 점검</div>
+                <p><span class="mono">scholar.google.co.kr</span>에 <span class="mono">scisbd=1</span>(최신순)로 직접 접속한 결과, 지난 회차(09-10)의 <span class="mono">/sorry/</span> CAPTCHA 차단과 달리 이번엔 정상적으로 검색 결과 목록이 로드됐습니다(2회 연속 안정&rarr;1회 차단&rarr;이번 정상). arXiv 검색과 병행해 표본을 교차 확인했습니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> Scholar 직접 조회 성공/실패가 회차마다 뒤바뀌는 패턴이 3회 연속(안정&middot;안정&middot;차단&middot;정상) 관찰돼, &lsquo;표준 1차 소스&rsquo;로 승격하기보다 <strong>매 회차 첫 시도&rarr;즉시 폴백</strong> 절차를 계속 유지하는 편이 안전.</p>
+                <div class="links">
+                  <a href="https://scholar.google.co.kr/scholar?q=BIM+openBIM+IFC&scisbd=1&hl=ko">Google Scholar &middot; BIM/openBIM/IFC 최신순 검색(이번 회차 정상 접속)</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">03</span> 시사점 / 액션 아이디어</h4>
+              <ul>
+                <li><strong>IDS&middot;정보요구사항 자동생성은 &lsquo;초안+전문가 검수&rsquo; 워크플로로 설계</strong> &mdash; Ishigaki-IDS-Bench의 낮은 내용 충실도(33%대)를 감안해, 형식 검증만 자동화하고 의미 검증은 사람이 맡는 구조를 기본값으로.</li>
+                <li><strong>BIM &lsquo;자연어 편집&rsquo; 기능은 매우 좁은 범위의 파일럿부터</strong> &mdash; BIM-Edit의 완료율(3.4% 미만)을 감안해, 전체 모델 편집이 아니라 단일 속성&middot;단순 변경으로 범위를 제한하고 위상 보존 여부를 반드시 사람이 재확인.</li>
+                <li><strong>사내 에이전트 스킬을 Buildrix식 표준 패키지로 정리</strong> &mdash; 품질검토&middot;IDS 생성 등 각 스킬을 과업지시+실행스크립트+검증 테스트 묶음으로 관리해 재사용성&middot;회귀 검증 확보.</li>
+                <li><strong>MCP 서버 설계에 어댑터 계약 패턴 적용 검토</strong> &mdash; NeXura의 BIM 도구 연동 시 MCP 인터페이스와 BIM 엔진 API를 분리해두면 엔진 교체&middot;확장에 유리.</li>
+              </ul>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">04</span> 이번 조사 방법 개선 제안</h4>
+              <div class="note-amber">
+                <b>규정검토&middot;검증 계열 격주 재편입 첫 시행:</b> 지난 회차 개선 제안대로 이번엔 IDS 벤치마크 1건을 다시 들이고 나머지는 BIM 편집&middot;에이전틱 인프라로 분산했습니다. 다음 회차는 다시 자연어 질의&middot;분류체계 등 이번에 비운 세부주제를 채울 차례입니다.
+              </div>
+              <ul>
+                <li><strong>&lsquo;에이전틱 AI 인프라&middot;MCP&rsquo;를 배경맥락 주제 목록에 정식 추가 제안</strong> &mdash; 이번 회차에 Buildrix&middot;MCP 아키텍처 두 건이 동시에 나온 것은 우연이 아니라 분야 성숙 신호로 보임. 다음 승인 시 playbook.md 목요일 &lsquo;배경맥락 주제&rsquo; 목록에 이 항목을 명시적으로 추가할 것을 제안.</li>
+                <li><strong>Google Scholar 접근성 로그를 회차별로 누적 기록</strong> &mdash; 안정&middot;안정&middot;차단&middot;정상 순으로 패턴이 불규칙해, 요일&middot;시간대별 차단 여부를 표로 누적하면 원인(트래픽 패턴&middot;IP 평판 등) 추정에 도움이 될 수 있음.</li>
+                <li><strong>같은 저자그룹 후속작 추적을 계속 정례화</strong> &mdash; Borrmann&middot;Beetz 그룹처럼 인터페이스&middot;벤치마크 양쪽에 논문을 내는 그룹은 다음 회차에도 신규 프리프린트 우선 확인 대상으로 유지.</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+      <div class="arch-item">
+        <details class="sub-arch">
+          <summary>2026-09-15 (화) &middot; 입찰&middot;수주 동향 파악 — 나라장터 14일 조회 2주 연속 &lsquo;0건&rsquo;, 대신 국토부 산하 건설기관이 &lsquo;한국건설산업진흥원&rsquo;으로 통합 확정</summary>
+          <div class="body">
+            <div class="r-head">
+              <h3>BIM 입찰&middot;수주 동향 — 나라장터 14일 조회 2주 연속 0건, 대신 국토부 산하 건설기관이 &lsquo;한국건설산업진흥원&rsquo;으로 통합 확정</h3>
+              <p class="meta">2026-09-15 (화) &middot; Asia/Seoul &middot; 조사범위: 최근 14일(2026-09-01&sim;09-15, 자동수집 <span class="mono">.state\bids-2026-09-15.md</span>) &middot; 1차 소스: 나라장터 입찰공고정보서비스(Open API, 자동수집) &middot; 보조: KAIA 국토교통 R&D 공고 국가철도공단 사전규격공개(신규 시도), WebSearch 폴백 &middot; 키워드: BIM, 건설정보모델링, 디지털트윈, 스마트건설, 3차원설계, 공간정보, CIM</p>
+              <p class="lead">오늘 화요일 실행 시 자동 수집된 나라장터 결과는 <strong>&lsquo;BIM&rsquo;&middot;&lsquo;건설정보모델링&rsquo;&middot;&lsquo;디지털트윈&rsquo;&middot;&lsquo;스마트건설&rsquo;&middot;&lsquo;3차원설계&rsquo;&middot;&lsquo;공간정보&rsquo;&middot;&lsquo;CIM&rsquo; 7개 키워드 모두 매칭 0건</strong>이었습니다. 직전 회차(09-08, 최근 14일: 08-25&sim;09-08)도 0건이었던 것과 같은 패턴이라 2주 연속입니다. WebSearch 폴백에서도 이번 14일 창 안에 새로 게시된 BIM&middot;디지털트윈 관련 나라장터 공고는 확인하지 못했고(창 밖 참고 사례는 ②), KAIA 국토교통 R&D 공고 목록에도 이번 달 BIM 특정 신규 공고는 없었습니다. 대신 오늘 새로 시도한 <strong>국가철도공단 사전규격공개 목록 직접조회</strong>는 성공해 향후 발주기관별 사전규격 페이지를 1차 소스 후보로 확장할 근거를 얻었습니다(④). <strong>[특별관심: 정부기관 통합이전]</strong>은 오늘 주제(통합기관 신축청사&middot;시설통합 발주)와 접점이 있어 별도 항목(⑤)에서 다룹니다 &mdash; 국토부 산하 건설산업정보원과 건설기술교육원이 &lsquo;한국건설산업진흥원&rsquo;으로 통합 확정된 것이 이번 주 가장 구체적인 신규 소식입니다.</p>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">01</span> 핵심 요약</h4>
+              <ul>
+                <li><strong>나라장터 Open API 14일 조회 결과 0건, 2주 연속</strong> &mdash; 7개 키워드(BIM&middot;건설정보모델링&middot;디지털트윈&middot;스마트건설&middot;3차원설계&middot;공간정보&middot;CIM) 모두 매칭 없음. 직전 09-08 조사(08-25&sim;09-08)도 0건.</li>
+                <li><strong>WebSearch 폴백도 이번 14일 창 안의 신규 나라장터 공고는 확인 못함</strong> &mdash; 다만 창 밖 사례로 LH &lsquo;BIM 기반 공정&middot;기성관리 자동화 소프트웨어 개발 용역&rsquo;(6월 게시)과 K-water &lsquo;BIM S/W(Add-In) 개발 용역&rsquo;(4월 게시)을 확인, 반복 발주 패턴 참고자료로 기록.</li>
+                <li><strong>KAIA 국토교통 R&D 공고 목록에 이번 달 BIM 특정 신규 공고 없음</strong>(직접조회).</li>
+                <li><strong>[신규 보조소스] 국가철도공단 &lsquo;사전규격공개&rsquo; 목록 직접조회 성공</strong>(85건) &mdash; 현재는 BIM&middot;디지털트윈&middot;공간정보 항목이 없지만 발주기관별 사전규격 페이지 직접조회가 가능함을 확인. 향후 LH&middot;도로공사&middot;수자원공사 등으로 확장 검토.</li>
+                <li><strong>[특별관심: 정부기관 통합이전]</strong> &mdash; 국토부 산하 건설산업정보원&middot;건설기술교육원이 &lsquo;한국건설산업진흥원&rsquo;으로 통합 확정(09-04 보도, 신규 확인). 발전 5사 통합과 2차 지방이전도 일정이 조금 더 구체화됨(자세한 내용은 ⑤).</li>
+              </ul>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">02</span> 상세 발견사항 (소스별)</h4>
+
+              <div class="src">
+                <div class="s-name">① 나라장터 입찰공고정보서비스 Open API 14일 자동수집 (1차 소스)</div>
+                <p><span class="mono">run-morning.ps1</span>이 화요일 실행 시 <span class="mono">test-bid-api.ps1</span>을 호출해 최근 14일(2026-09-01 00:00&sim;2026-09-15 23:59)을 조회했고 결과는 <span class="mono">.state\bids-2026-09-15.md</span>에 <strong>&ldquo;총 0건&rdquo;</strong>으로 저장됐습니다. 검색어는 BIM&middot;건설정보모델링&middot;디지털트윈&middot;스마트건설&middot;3차원설계&middot;공간정보&middot;CIM 7개이며 플레이북 지침에 따라 이 파일을 그대로 1차 데이터로 사용하고 API를 재호출하지 않았습니다. 직전 09-08 회차(.state\bids-2026-09-08.md, 08-25&sim;09-08)도 동일하게 0건이어서 이번 결과가 일회성 공백이 아니라 <strong>2주 연속 패턴</strong>임을 확인했습니다. 다만 저장 파일에는 오퍼레이션(용역&middot;공사&middot;물품)별 세부 건수가 남지 않아, 어느 오퍼레이션에서 계속 0건이 나는지는 이번 회차에서 진단하지 못했습니다(개선 제안 참조).<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> 나라장터 공고명 부분일치 키워드만으로는 BIM&middot;디지털트윈 관련 공고를 거의 잡아내지 못하는 구조적 한계가 있어, 공고명 외 키워드(과업내용&middot;규격서)까지 걸러낼 수 있는 보조 채널이 필요.</p>
+                <div class="links">
+                  <a href="https://www.data.go.kr/data/15129394/openapi.do">공공데이터포털 &middot; 나라장터 입찰공고정보서비스 API 명세(참고 인증키 미노출)</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">② WebSearch 폴백 &mdash; 이번 창 밖 BIM 실제 발주 사례 (참고자료)</div>
+                <p>이번 14일 창 안에서는 신규 나라장터 BIM 공고를 찾지 못했지만 민간 입찰정보 큐레이션(비드프로)에서 <strong>LH &lsquo;BIM 기반 공정&middot;기성관리 자동화 소프트웨어 개발 용역&rsquo;</strong>(공고번호 2602047-00, 게시 2026-06-10&sim;마감 07-21)과 <strong>한국수자원공사 &lsquo;K-water BIM S/W(Add-In) 개발 용역&rsquo;</strong>(공고번호 B5202601301-00, 게시 2026-04-20&sim;마감 06-02)을 확인했습니다. 둘 다 이번 조사범위(09-01&sim;09-15) 밖이라 &lsquo;신규&rsquo;로 집계하지 않지만 대형 공공 발주기관이 <strong>BIM 자동화 소프트웨어를 자체 개발 용역으로 발주</strong>하는 흐름이 반복되고 있음을 보여주는 참고 사례입니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> LH&middot;K-water처럼 BIM 의무화 대상 대형 발주기관들이 소프트웨어 자체 개발에 나서는 사례가 쌓이고 있어, 이런 유형의 용역이 향후 유사 발주기관(도로공사&middot;철도공단 등)으로 확산될지 계속 추적할 가치가 있음.</p>
+                <div class="links">
+                  <a href="https://www.bidpro.co.kr/n0_ipchal/konggo/svc/konggo_view.asp?num=3127181">비드프로 &middot; LH, BIM 기반 공정&middot;기성관리 자동화 SW 개발 용역(06-10, 창 밖 참고)</a>
+                  <a href="https://www.bidpro.co.kr/n0_ipchal/konggo/svc/konggo_view.asp?num=3093785">비드프로 &middot; K-water BIM S/W(Add-In) 개발 용역(04-20, 창 밖 참고)</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">③ KAIA 국토교통 R&amp;D 공고 (직접조회, 보조 소스)</div>
+                <p>KAIA(국토교통과학기술진흥원) 사업공고 목록을 직접 조회했으나, 이번 달 BIM을 특정한 신규 R&amp;D 공고는 확인되지 않았습니다. 목록에는 R&amp;D 기획과제, 혁신제품 지정, 창업지원 등 일반 공고가 주를 이뤘습니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> KAIA는 공고 발생 빈도 자체가 낮은 채널이라, 화요일마다 매번 직접조회하되 결과가 없는 게 정상 패턴일 수 있음 &mdash; 월 1회 정도로 조회 주기를 조정하는 방안도 고려할 만함.</p>
+                <div class="links">
+                  <a href="https://www.kaia.re.kr/portal/bbs/list/B0000029.do?menuNo=200110">KAIA &middot; 국토교통R&amp;D 공고(목록)</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">④ [신규 보조소스] 국가철도공단 사전규격공개 직접조회</div>
+                <p>디지털트윈 관련 사전규격을 찾는 과정에서 <strong>국가철도공단의 사전규격공개 페이지가 직접조회 가능</strong>함을 확인했습니다. 전체 85건 중 최근 게시분(09-11&sim;09-14, 영상감시장치&middot;공조설비&middot;지장물검지 영상분석시스템 등)을 확인했으나 BIM&middot;디지털트윈&middot;공간정보 관련 항목은 없었습니다. 다만 이 페이지가 안정적으로 조회된다는 점 자체가, 플레이북에 없던 <strong>새로운 1차 소스 후보</strong>를 찾았다는 의미가 있습니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> 나라장터 통합검색이 놓치는 공고를 발주기관 개별 사전규격 페이지에서 더 빨리 잡아낼 수 있음 &mdash; LH&middot;한국도로공사&middot;한국수자원공사 등 BIM 의무화 대상 대형 발주기관의 사전규격 페이지도 같은 방식으로 확장할 가치가 있음.</p>
+                <div class="links">
+                  <a href="https://ebid.kr.or.kr/open/info/preStnrdList.do?menuNo=200200">국가철도공단 &middot; 사전규격공개 목록</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">⑤ [특별관심: 정부기관 통합이전] &lsquo;한국건설산업진흥원&rsquo; 신설 &amp; 발전 5사&middot;2차 지방이전 진행상황</div>
+                <p>09-04 보도로 새로 확인된 내용은, 국토부 산하 <strong>건설산업정보원의 정보관리&middot;정책연구 기능과 건설기술교육원의 교육&middot;훈련 기능을 합쳐 &lsquo;한국건설산업진흥원&rsquo;으로 통합</strong>한다는 계획입니다. 데이터 분석부터 교육훈련, 정책지원까지 한 기관이 통합 지원하는 체계를 표방합니다. 같은 통폐합 흐름 안에서 <strong>발전 5사(남동&middot;중부&middot;서부&middot;남부&middot;동서발전)의 &lsquo;한국발전&rsquo; 통합</strong>도 로드맵이 구체화됐습니다 &mdash; 09월 중 통합준비위원회를 구성하고 발전 5사가 <strong>회계&middot;법률&middot;세무&middot;IT 용역을 공동 발주</strong>하며 575개 시스템 중 핵심 시스템부터 통합, 2027년 10월 통합법인 출범 목표입니다(다만 건물&middot;BIM보다는 IT시스템 통합 성격이 강해 관련도는 &lsquo;낮음&rsquo;으로 표기). 2차 공공기관 지방이전(350여 곳)은 지난주 리포트에서 확인한 &lsquo;청사 신축보다 임차 우선&rsquo; 방침에 더해, <strong>기존 혁신도시를 중심으로 이전 기관을 집적&middot;배치</strong>한다는 원칙이 이번에 추가로 확인됐습니다. 4분기 지방시대위원회 최종계획 확정, 2027년 이전 착수 일정은 변동 없습니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> &lsquo;한국건설산업진흥원&rsquo;은 정보관리+정책연구+교육훈련 기능을 합친 신설기관이라, 향후 <strong>BIM 표준&middot;교육 관련 용역 발주가 이 기관으로 모일 가능성</strong>이 있음 &mdash; 목요일 연구개발 리포트와 화요일 입찰 리포트 양쪽에서 &lsquo;한국건설산업진흥원&rsquo; 설립 일정&middot;공고를 모니터링 대상으로 추가할 것. 발전5사 통합은 건설&middot;BIM 발주와 직접 관련은 낮지만 혁신도시 집적배치 원칙은 임차&middot;이전 용역 발주 지역을 좁히는 데 참고할 만함.</p>
+                <div class="links">
+                  <a href="https://www.koscaj.com/news/articleView.html?idxno=326287">대한전문건설신문(09-04) &middot; LH 개발&middot;주거복지 분리&middot;&middot;&middot;건설산업정보원&middot;기술교육원도 통합</a>
+                  <a href="https://www.mt.co.kr/economy/2026/09/04/2026090411161853758">머니투데이(09-04) &middot; 발전 5사 통합 &lsquo;한국발전&rsquo; 로드맵&middot;&middot;&middot;내년 10월 통합법인 출범</a>
+                  <a href="https://www.kwnews.co.kr/article/20260903500374">강원일보(09-03) &middot; 2차 공공기관 이전 기존 혁신도시로&middot;&middot;&middot;4분기 발표</a>
+                  <a href="https://www.news1.kr/economy/trend/6278731">뉴스1 &middot; 발전 5사 통합&middot;LH 분리&hellip; 공공기관 109개 통폐합(참고)</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">03</span> 시사점 / 액션 아이디어</h4>
+              <ul>
+                <li><strong>&lsquo;한국건설산업진흥원&rsquo; 설립 일정&middot;공고를 상시 모니터링 대상에 추가</strong> &mdash; 정보관리+정책연구+교육훈련 통합기관이라 BIM 표준&middot;교육 관련 발주가 집중될 가능성.</li>
+                <li><strong>발주기관별 &lsquo;사전규격공개&rsquo; 페이지 직접조회를 LH&middot;도로공사&middot;수자원공사로 확장</strong> &mdash; 국가철도공단에서 확인한 방식을 다른 대형 발주기관에도 적용해 나라장터 통합검색의 사각지대를 줄일 것.</li>
+                <li><strong>임차&middot;이전 용역과 신축 BIM 설계용역 구분 모니터링 유지</strong> &mdash; 혁신도시 집적배치 원칙이 확인된 만큼, 4분기 최종계획 발표 후 해당 지역 임차&middot;용역 공고를 우선 추적.</li>
+                <li><strong>비드프로 등 민간 큐레이션의 창 밖 사례를 &lsquo;반복 발주 패턴&rsquo; 트래커로 별도 관리</strong> &mdash; LH&middot;K-water 사례처럼 시점이 어긋나 놓치는 공고를 월 단위로 다시 훑어보는 보완 절차 검토.</li>
+              </ul>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">04</span> 이번 조사 방법 개선 제안</h4>
+              <div class="note-amber">
+                <b>나라장터 Open API 2주 연속 0건 &mdash; 우연이 아닌 구조적 문제일 가능성:</b> 공고명 부분일치 키워드만으로는 매칭이 거의 발생하지 않습니다. 반면 오늘 새로 시도한 국가철도공단 사전규격 페이지 직접조회는 안정적으로 작동했습니다.
+              </div>
+              <ul>
+                <li><strong>config.json Tue 섹션 개선 3가지 제안</strong> &mdash; (a) <span class="mono">scopeDays</span>를 14&rarr;21로 확대, (b) <span class="mono">keywords</span>에 실제 공고문에 자주 쓰이는 표현(&lsquo;설계자동화&rsquo;&middot;&lsquo;BIM설계지원&rsquo;&middot;&lsquo;공간정보플랫폼&rsquo;) 추가, (c) <span class="mono">sites</span>에 국가철도공단류 발주기관별 사전규격 페이지 추가.</li>
+                <li><strong>test-bid-api.ps1 로그에 오퍼레이션별(용역&middot;공사&middot;물품) 결과 건수 기록 제안</strong> &mdash; 현재 <span class="mono">.state\bids-*.md</span>에는 총합만 남아 있어, 어느 오퍼레이션에서 계속 0건이 나는지 진단할 수 없음. 다음 승인 시 스크립트에 오퍼레이션별 건수 로그를 추가하면 원인 파악이 쉬워짐.</li>
+                <li><strong>비드프로&middot;모두입찰 등 민간 큐레이션을 폴백 소스로 상시 활용</strong> &mdash; 나라장터 API가 놓치는 공고(과업내용 기반 매칭)를 이런 사이트들이 더 잘 잡아내는 경향을 이번에도 확인.</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+      <div class="arch-item">
+        <details class="sub-arch">
+          <summary>2026-09-14 (월) &middot; BIM 업계 동향 &mdash; LH, 경기주택도시공사(GH)에 단지분야 BIM 원천기술 이전… 통폐합 국면에서 공공기관 간 BIM 표준 공유가 먼저 움직였다</summary>
+          <div class="body">
+            <div class="r-head">
+              <h3>BIM 업계 동향 — LH, 경기주택도시공사(GH)에 단지분야 BIM 원천기술 이전… 통폐합 국면에서 공공기관 간 BIM 표준 공유가 먼저 움직였다</h3>
+              <p class="meta">2026-09-14 (월) &middot; Asia/Seoul &middot; 조사범위: 최근 7일(2026-09-07&sim;09-14) &middot; 1차 소스: CERIK 건설동향브리핑(직접 조회) + 대한전문건설신문(koscaj, 카테고리 조회) &middot; 보조: WebSearch(절대 날짜범위 조합) &middot; 키워드: BIM, 건설 디지털전환, 스마트건설</p>
+              <p class="lead">이번 주 가장 뚜렷한 BIM 업계 신호는 <strong>LH(한국토지주택공사)가 독자 개발한 단지분야 BIM 원천기술을 경기주택도시공사(GH)에 이전</strong>한 것입니다(09-10 업무협약, 09-11&sim;14 보도 확산). 같은 주간에 국토교통부는 새만금&middot;광주 등 4개 도시를 대상으로 한 <strong>&lsquo;K-AI 시티 실행전략&rsquo;</strong>(09-09 부산 발표)을 내놓았고 LH는 &lsquo;2026 월드 스마트시티 엑스포&rsquo;(09-09&sim;11)에서 AI 기반 미래도시 모델을 선보이는 등 스마트시티&middot;디지털트윈과 맞닿은 정책&middot;행사가 한 주간 몰렸습니다. CERIK 건설동향브리핑(1074호, 09-11)&middot;정책브리핑은 직접 조회가 안정적이었던 반면, 엔지니어링데일리&middot;대한경제&middot;캐드앤그래픽스는 이번 7일 범위 내 BIM 신규기사를 찾지 못해 <strong>대한전문건설신문(koscaj) 카테고리 조회 + WebSearch</strong>로 보강했습니다(아래 개선 제안 참조). <strong>[특별관심: 정부기관 통합이전]</strong>은 오늘 주제(정책&middot;업계 동향)와 접점이 있어 별도 항목(⑤)에서 다룹니다 &mdash; LH의 BIM 기술 이전 시점이 LH 기능분리 국면과 겹치는 정황과, 공공기관 2차 지방이전에 따른 청사&middot;조달 시나리오의 새로 확인된 세부내용입니다.</p>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">01</span> 핵심 요약</h4>
+              <ul>
+                <li><strong>LH, 단지분야 BIM 원천기술을 GH에 이전</strong>(09-10 협약) &mdash; &ldquo;단지분야 BIM 적용지침&rdquo;과 공사비 산출&middot;우&middot;오수 수리계산&middot;토공설계 자동화를 지원하는 &ldquo;BIM 설계지원 원천기술&rdquo;을 이전. LH는 08월 부산도시공사에 이어 <strong>두 번째로 지방 공기업에 BIM 기술을 전수</strong>했고 목적은 공공기관 중복투자 축소&middot;단지분야 BIM 기준 통합&middot;3기 신도시 협력체계 구축.</li>
+                <li><strong>국토부 &lsquo;K-AI 시티 실행전략&rsquo; 발표</strong>(09-09, 부산 벡스코) &mdash; 원주&middot;천안&middot;아산&middot;새만금&middot;광주 4곳을 시범도시로 선정. 특히 <strong>새만금&middot;광주는 도시설계 단계부터 AI&middot;로봇 기술을 반영하는 &lsquo;모델도시형&rsquo;</strong>으로 조성, 2030년까지 AI 특화 시범도시 목표.</li>
+                <li><strong>LH, &lsquo;2026 월드 스마트시티 엑스포&rsquo; 참가</strong>(09-09&sim;11, 부산) &mdash; &lsquo;WONDER LH: AI ON THE LAND&rsquo; 전시관 운영, 도시 데이터를 AI가 분석해 계획&middot;운영에 연결하는 미래도시 모델 공개. &lsquo;LH COMPAS 국제 콘퍼런스&rsquo;(09-10)에서는 기후변화 대응 신도시 설계 방안을 논의.</li>
+                <li><strong>CERIK 건설동향브리핑 1074호</strong>(09-11) &mdash; 2027년 SOC 예산이 전년 대비 1.2조 원 늘어난 28.9조 원으로 편성되고 도심 비주거시설의 주거시설 전환 활성화 방안이 다뤄짐. BIM 직접 언급은 아니지만 발주 물량 전망의 배경 지표로 참고할 값.</li>
+                <li><strong>[특별관심: 정부기관 통합이전]</strong> &mdash; LH의 BIM 기술 이전이 LH 기능분리(개발&middot;주거복지) 논의와 시점이 겹치는 점, 그리고 공공기관 2차 지방이전(350여 곳)에 따른 청사 신축&middot;임차 발주 시나리오가 조금 더 구체화됨(자세한 내용은 ⑤).</li>
+              </ul>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">02</span> 상세 발견사항 (소스별)</h4>
+
+              <div class="src">
+                <div class="s-name">① LH &rarr; GH 단지분야 BIM 원천기술 이전 (다중 매체 확인)</div>
+                <p>LH와 GH(경기주택도시공사)는 09-10 업무협약을 체결하고 LH가 <strong>공공기관 최초로 제정한 &lsquo;단지분야 BIM 적용지침&rsquo;</strong>과 자체 개발한 <strong>&lsquo;BIM 설계지원 원천기술&rsquo;</strong>을 이전하기로 했습니다. 해당 기술은 단지 분야 BIM 설계 시 공사비 산출, 우&middot;오수 수리계산, 토공설계 자동화를 지원하는 소프트웨어입니다. LH는 이에 앞서 08월 부산도시공사와도 같은 방식의 BIM 기술이전 협약을 완료한 바 있어, 이번이 <strong>두 번째 사례</strong>입니다. 목적은 공공기관 간 중복투자 축소, 단지분야 BIM 적용 기준 통합, 3기 신도시 조성사업 협력체계 구축, 업무 생산성 향상으로 설명됩니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> 공공 발주기관이 &lsquo;자체 개발 &rarr; 표준화 &rarr; 타 기관 전수&rsquo; 흐름을 반복하고 있다는 신호 &mdash; 우리도 사내 BIM 표준&middot;템플릿을 &lsquo;외부에 이전 가능한 형태&rsquo;로 문서화해두면, 향후 공공기관과의 표준 정합성 논의에서 유리한 위치를 선점할 수 있음.</p>
+                <div class="links">
+                  <a href="https://www.fnnews.com/news/202609110939056049">파이낸셜뉴스 &middot; LH, 공사비&middot;토공설계 자동화 BIM 기술 GH에 이전</a>
+                  <a href="https://biz.heraldcorp.com/article/10869933">헤럴드경제 &middot; LH, 공공부문 BIM 발전 이끈다</a>
+                  <a href="https://www.mt.co.kr/estate/2026/09/11/2026091109191640156">머니투데이 &middot; LH, 공공기관에 BIM 기술 이전</a>
+                  <a href="https://www.koscaj.com/news/articleView.html?idxno=326435">대한전문건설신문(09-14) &middot; LH, GH에 독자 개발 BIM 기술 이전</a>
+                  <a href="https://www.businesskorea.co.kr/news/articleView.html?idxno=276702">Businesskorea &middot; LH, 독자 개발 &lsquo;단지 BIM 기술&rsquo; GH에 전수</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">② 국토부 &lsquo;K-AI 시티 실행전략&rsquo; (다중 매체 확인)</div>
+                <p>국토교통부가 09-09 부산 벡스코에서 발표한 실행전략은 AI를 도시 운영 전반에 접목하는 국정과제 이행계획으로, <strong>원주&middot;천안&middot;아산&middot;새만금&middot;광주</strong> 4곳을 시범도시로 선정했습니다. 이 중 기업 투자가 예정된 새만금&middot;광주는 <strong>도시설계 단계부터 AI&middot;로봇 기술을 반영하는 &lsquo;모델도시형&rsquo;</strong>으로 조성되며 2027년까지 법&middot;제도&middot;사업 기반을 마련하고 2030년까지 AI 특화 시범도시를 완성하는 일정입니다. △AI 혁신서비스 발굴 △AI 시티 인프라 구축 △AI 특화 시범도시 조성&middot;운영 △선도모델 확산 △법&middot;제도 기반 마련의 5대 과제로 구성됩니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> &lsquo;도시설계 단계부터 AI&middot;로봇 반영&rsquo;은 단지&middot;지구 단위 계획에서 BIM&middot;CIM(도시정보모델링) 데이터를 처음부터 AI 활용을 전제로 구조화해야 한다는 의미 &mdash; 지난 목요일 리포트에서 다룬 CityLLM(도시 스케일 자연어 질의) 같은 연구가 바로 이 지점에 쓰일 수 있음.</p>
+                <div class="links">
+                  <a href="https://www.fnnews.com/news/202609081936388979">파이낸셜뉴스 &middot; 원주&middot;천안아산&middot;새만금&middot;광주에 &lsquo;K-AI 시티&rsquo;</a>
+                  <a href="https://www.koscaj.com/news/articleView.html?idxno=326378">대한전문건설신문 &middot; 국토부, &lsquo;K-AI 시티&rsquo; 본격 추진</a>
+                  <a href="https://www.fetv.co.kr/news/articleView.html?idxno=309879">FETV &middot; 국토부, AI 시범도시 조성</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">③ LH &lsquo;2026 월드 스마트시티 엑스포&rsquo; 참가 &middot; LH COMPAS (다중 매체 확인)</div>
+                <p>09-09&sim;11 부산 벡스코에서 열린 &lsquo;2026 월드 스마트시티 엑스포(WSCE)&rsquo;(10주년, 국토부&middot;과기정통부&middot;부산시 주최)에서 LH는 &lsquo;WONDER LH: AI ON THE LAND&rsquo; 전시관을 운영, 도시 데이터를 AI가 이해&middot;분석해 도시계획&middot;개발&middot;관리운영&middot;생활서비스에 연결하는 미래도시 모델을 5개 섹션으로 공개했습니다. 09-10에는 AI 데이터 분석 플랫폼을 활용한 <strong>&lsquo;LH COMPAS 국제 콘퍼런스&rsquo;</strong>가 열려 폭염 등 기후변화에 대응하는 신도시 더위 회피 설계 방안을 논의했고 &lsquo;LH COMPAS 국토도시 데이터 분석 공모전&rsquo; 시상식도 함께 진행됐습니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> LH가 자체 데이터 분석 플랫폼(COMPAS)을 대외 콘퍼런스&middot;공모전으로 운영한다는 점은, LH가 단순 발주자를 넘어 <strong>데이터 표준 제정자</strong> 역할을 계속 넓히고 있다는 신호 &mdash; ①의 BIM 기술이전과 같은 맥락(표준 전파)으로 읽힘.</p>
+                <div class="links">
+                  <a href="https://www.koscaj.com/news/articleView.html?idxno=326370">대한전문건설신문 &middot; LH, &lsquo;2026 월드 스마트시티 엑스포&rsquo;서 AI 기반 미래도시</a>
+                  <a href="https://www.asiatoday.co.kr/kn/view.php?key=20260909010003405">아시아투데이 &middot; LH, AI 기반 미래도시 선봬</a>
+                  <a href="https://www.industrynews.co.kr/news/articleView.html?idxno=85758">인더스트리뉴스 &middot; LH, AI 기반 미래도시 모델 공개</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">④ CERIK 건설동향브리핑 1074호 (직접 조회 성공, 1차 소스)</div>
+                <p>건설산업연구원(CERIK)이 09-11 발간한 1074호는 <strong>2027년 SOC 예산이 전년 대비 1.2조 원 증가한 28.9조 원</strong>으로 편성된 배경과, 도심 비주거시설(오피스&middot;상가 등)을 주거시설로 전환하는 활성화 방안을 다뤘습니다(연구원 엄근용&middot;김성환). BIM을 직접 다루진 않았지만 SOC 예산 확대는 500억 원 이상 BIM 의무화 대상 공공공사 물량과 직결되는 배경지표라 함께 기록합니다. 참고로 직전 1073호(09-04, 국제표준 기반 건설 로봇 안전기준)는 이번 7일 조사범위(09-07&sim;14) 밖이라 본문에서는 제외했습니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> SOC 예산 증가 자체를 &lsquo;BIM 물량 증가&rsquo;로 단정하긴 이르지만 화요일 나라장터 공고 추적 시 SOC 관련 발주 증가 여부를 함께 확인할 근거로 참고.</p>
+                <div class="links">
+                  <a href="https://www.cerik.re.kr/report/briefing/3129">CERIK 건설동향브리핑 1074호</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">⑤ [특별관심: 정부기관 통합이전] BIM 기술이전 시점의 함의 &amp; 청사&middot;조달 시나리오 새 확인 내용</div>
+                <p>①의 LH&rarr;GH BIM 기술이전은 LH의 개발&middot;주거복지 기능분리가 논의되는 국면과 시점이 겹칩니다. 기능분리 자체가 BIM 기술이전의 직접적 원인이라는 근거는 확인되지 않았지만(과도한 인과관계 단정은 피함), &ldquo;조직이 쪼개지기 전에 축적된 BIM 표준&middot;기술을 다른 공공기관에 먼저 넓혀 둔다&rdquo;는 정황으로는 읽을 만합니다. 한편 공공기관 2차 지방이전(350여 곳) 관련해서는, 09-03&sim;04 발표 내용 중 이번에 <strong>새로 확인한 세부내용</strong>으로 &mdash; 청사 신축은 <strong>공소청&middot;중수청&middot;경찰청 등 별도 청사가 필요한 기관만 순차 진행</strong>되고 나머지 다수 기관은 <strong>청사 신축을 기다리지 않고 2027년부터 민간건물 임차로 우선 착수</strong>한다는 방침이 확인됐습니다. 즉 &lsquo;즉각적인 대형 신축 발주 러시&rsquo;는 아니며 <strong>세종&middot;혁신도시 지역의 청사 임차&middot;이전 관련 용역 발주</strong>가 먼저 늘어날 전망입니다(교통&middot;교육&middot;의료&middot;문화 인프라 조달 수요 동반 증가 전망). 구체적인 발주 계획은 올해 4분기 지방시대위원회 최종계획 확정 이후 윤곽이 잡힙니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> 500억 원 이상 BIM 의무화가 적용될 만한 대형 신축 청사는 아직 소수(별도청사 필요기관)로 제한적 &mdash; 단기적으로는 BIM 발주보다 임차&middot;이전 관련 일반용역이 먼저 늘 가능성이 높으므로, 화요일 나라장터 공고 추적에서 &lsquo;임차&middot;이전 용역&rsquo;과 &lsquo;신축 BIM 설계용역&rsquo;을 구분해서 모니터링할 필요.</p>
+                <div class="links">
+                  <a href="https://www.jodaleconomy.com/news/articleView.html?idxno=3112">조달경제신문(09-04) &middot; 청사부터 상수도까지&hellip; 조달 발주 시나리오</a>
+                  <a href="https://view.asiae.co.kr/article/2026090311071759697">아시아경제(09-03) &middot; 공소청&middot;중수청&middot;경찰청, 청사 신축 후 이전 추진</a>
+                  <a href="https://www.news1.kr/economy/trend/6278731">뉴스1 &middot; 발전 5사 통합&middot;LH 분리&hellip; 공공기관 109개 통폐합(참고)</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">03</span> 시사점 / 액션 아이디어</h4>
+              <ul>
+                <li><strong>사내 BIM 표준&middot;템플릿의 &lsquo;이전 가능한 형태&rsquo; 문서화</strong> &mdash; LH&middot;GH&middot;부산도시공사 사례처럼 공공기관 간 BIM 기술&middot;지침 전수가 반복되는 추세. 우리 표준도 외부 공유&middot;정합성 검토를 전제로 정리해두면 공공기관 협업 시 유리.</li>
+                <li><strong>CIM(도시정보모델링) 역량을 K-AI 시티 흐름에 맞춰 점검</strong> &mdash; 새만금&middot;광주 모델도시형은 단지가 아닌 도시 스케일 설계를 요구 &mdash; 목요일 리포트의 CityLLM류 연구를 실제 제안서 역량으로 연결하는 방안 검토.</li>
+                <li><strong>화요일 입찰 추적에 &lsquo;임차&middot;이전 용역 vs BIM 설계용역&rsquo; 구분 태그 추가</strong> &mdash; 공공기관 2차 지방이전 발주가 4분기부터 본격화될 전망이므로, 두 유형을 구분해 미리 모니터링 체계를 갖춰둘 것.</li>
+                <li><strong>LH COMPAS류 데이터 공모전&middot;콘퍼런스 참여 검토</strong> &mdash; 발주기관이 주최하는 데이터 분석 공모전은 레퍼런스 확보와 발주기관 접점 확대에 유리한 채널.</li>
+              </ul>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">04</span> 이번 조사 방법 개선 제안</h4>
+              <div class="note-amber">
+                <b>엔지니어링데일리&middot;대한경제&middot;캐드앤그래픽스 직접 조회 → 검색 기반 대체:</b> 세 매체 모두 BIM 검색결과/카테고리 페이지를 직접 조회했지만 이번 7일 범위 내 신규 기사를 찾지 못했습니다(엔지니어링데일리는 최신 글이 08-28, 캐드앤그래픽스는 행사 일정 위주). 반면 <strong>대한전문건설신문(koscaj)</strong>은 WebSearch 조합으로 09-10&middot;09-12&middot;09-14 기사를 모두 확인할 수 있었습니다.
+              </div>
+              <ul>
+                <li><strong>koscaj를 CERIK과 함께 &lsquo;1차 소스&rsquo;로 승격 제안</strong> &mdash; 이번 회차에 LH&middot;국토부 관련 최신 소식을 가장 빠르고 안정적으로 잡아냈습니다. 다음 승인 시 config.json Mon 섹션의 <span class="mono">primarySites</span>에 koscaj 검색결과 URL 추가를 제안.</li>
+                <li><strong>CERIK 항목에 &lsquo;BIM 직접&rsquo; / &lsquo;건설산업 전반(배경)&rsquo; 태그 구분</strong> &mdash; 이번 1074호처럼 BIM을 직접 다루지 않는 호가 많으므로, 리포트에서 두 유형을 구분 표기하면 독자가 관련도를 바로 파악하기 쉬움.</li>
+                <li><strong>공공기관 BIM 기술이전 협약을 반복 패턴으로 추적</strong> &mdash; LH&rarr;부산도시공사(08월)&rarr;GH(09월) 순으로 이어지고 있어, 통폐합 국면에서 다른 공공기관으로도 확산될 가능성. 다음 회차부터 &lsquo;BIM 기술이전 협약&rsquo; 키워드를 상시 검색어에 추가 제안.</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+      <div class="arch-item">
+        <details class="sub-arch">
+          <summary>2026-09-11 (금) &middot; 역량강화 인사이트 &mdash; 올해 리더들의 프레임이 &lsquo;약속&rsquo;에서 &lsquo;증명(proof point)&rsquo;으로: 디지털 컨스트럭션 위크 2026이 보여준 &lsquo;측정 가능한 성과&rsquo; 규율</summary>
+          <div class="body">
+            <div class="r-head">
+              <h3>역량강화 인사이트 &mdash; 올해 리더들의 프레임이 &lsquo;약속&rsquo;에서 &lsquo;증명(proof point)&rsquo;으로: 디지털 컨스트럭션 위크 2026이 보여준 &lsquo;측정 가능한 성과&rsquo; 규율</h3>
+              <p class="meta">2026-09-11 (금) &middot; Asia/Seoul &middot; 방법: AI&middot;디지털트윈&middot;스마트건설 분야 리더 발표 분석(YouTube + 공식 컨퍼런스 리캡&middot;블로그) &middot; 대상: 디지털 컨스트럭션 위크 2026(6월, 런던) 중심 + 3DEXPERIENCE World 2026(2월) 신규 &middot; 직전 금요일(09-04) 리포트와 중복 축소</p>
+              <p class="lead">직전 금요일(09-04) 리포트에서 이미 <strong>CES 2026(지멘스 Digital Twin Composer)&middot;오토데스크 유니버시티 2025(neural CAD)&middot;NVIDIA GTC 2026&middot;Bentley</strong> 키노트를 상세히 다뤘습니다. 이번 회차는 같은 내용을 되풀이하지 않고 <strong>그 이후 새로 확인된 것</strong>과 <strong>건설 업계에 더 직접적인 발표</strong>에 집중합니다. 핵심은 6월 런던 <strong>디지털 컨스트럭션 위크 2026</strong>에서 네메첵 그룹 최고AI책임자 Julian Geiger가 규정한 &ldquo;2025년은 기대의 해, 2026년은 <em>증명(proof point)</em>의 해&rdquo;라는 프레임입니다. YouTube 자막 직접 조회는 이번에도 불안정해 공식 세션 페이지&middot;벤더 블로그&middot;업계지 리캡을 1차로 쓰고 영상 링크는 보강용으로 붙였습니다(&lsquo;검색&middot;리캡 기반&rsquo; 명시). <strong>[특별관심: 정부기관 통합이전]</strong>은 오늘 주제(전문가 키노트)와의 접점을 검색했으나, AI&middot;디지털트윈 키노트에서 한국 공공기관 통폐합(9-03 발표: 194&rarr;74개, 350여 곳 2차 지방이전 4분기 최종계획 예정)을 다룬 발언은 확인되지 않아 접점 없음으로 남깁니다(발주 관점 추적은 화요일 리포트에서 계속).</p>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">01</span> 핵심 요약</h4>
+              <ul>
+                <li><strong>올해 리더 공통 프레임 = &lsquo;약속에서 증명으로(from promises to proof points)&rsquo;</strong> &mdash; 디지털 컨스트럭션 위크 2026(런던 엑셀, 6-03&sim;04, 9,000명+)에서 네메첵 그룹 최고AI책임자 Julian Geiger가 &ldquo;2025년은 AI 기대&middot;낙관의 해, 2026년은 <em>측정 가능한 성과</em>를 요구하는 해&rdquo;라고 규정. 건설 프로젝트의 <strong>약 90%가 공기&middot;예산 초과</strong>라는 문제를 AI&middot;디지털트윈&middot;BIM 결합 도구세트로 겨냥.</li>
+                <li><strong>AI는 &lsquo;단독 해법&rsquo;이 아니라 &lsquo;반복작업을 맡는 협업 파트너&rsquo;</strong> &mdash; Geiger는 AI를 사람이 창의&middot;인간 중심 설계에 집중하도록 반복작업을 떠맡는 존재로 규정. 09-04 리포트의 Anagnost &ldquo;정답 생성이 아니라 옵션 평가 보조&rdquo;와 같은 프레임이 건설 전용 컨퍼런스에서도 재확인됨.</li>
+                <li><strong>인력 전략이 키노트의 명시 의제로 올라옴</strong> &mdash; Geiger는 &ldquo;신규 인재를 유치하고 기존 전문가를 재교육하려면 업계가 디지털 전환을 적극 받아들여야 한다&rdquo;고 강조. 기술 도입과 인재 확보를 한 묶음으로 다룸.</li>
+                <li><strong>[09-04 대비 신규] 젠슨 황, 3DEXPERIENCE World 2026(휴스턴, 2-03)에서 &ldquo;모든 것이 가상 트윈으로 표현될 것&rdquo;</strong> &mdash; &ldquo;AI는 물&middot;전기 같은 인프라&rdquo;, 공장이 &ldquo;정적 자산에서 설계&middot;시뮬레이션&middot;운영되는 <em>살아있는 시스템</em>&rdquo;으로. 09-04에서 다룬 GTC 2026(3월)보다 앞선 발언으로, &lsquo;디지털트윈 재정의&rsquo; 메시지가 상반기 내내 일관됐음을 보강.</li>
+                <li><strong>[후속 확인] 지멘스 Digital Twin Composer는 2026년 중반 Xcelerator 마켓플레이스 출시 예정</strong> &mdash; 09-04에서 &lsquo;상반기 중 출시&rsquo;로 소개한 도구의 배포 시점이 구체화. 오토데스크 유니버시티 2026은 <strong>9-15&sim;17(다음 주)</strong> &mdash; 신규 발표는 다음 회차(9-18)에서 우선 다룰 것.</li>
+              </ul>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">02</span> 상세 발견사항 (발표별)</h4>
+
+              <div class="src">
+                <div class="s-name">① 디지털 컨스트럭션 위크 2026 &mdash; Julian Geiger(네메첵 그룹 최고AI책임자) 메인 발표 [이번 회차 핵심, 신규] (업계지 리캡 기반)</div>
+                <p>런던 엑셀에서 6-03&sim;04 열린 디지털 컨스트럭션 위크 2026(230개+ CPD 세션, 150개+ 전시사, 9,000명+). Geiger의 메시지는 &ldquo;2025년 = AI 하이프&middot;낙관, 2026년 = <strong>proof point(기술이 실제로 업계 문제 해결에 진입한다는 증거)</strong> 요구&rdquo;. 건설 부문의 구조적 문제로 <strong>프로젝트의 약 90%가 공기&middot;예산 초과</strong>, 원자재 낭비, 낮은 환경성과를 지목하고 AI를 단독 해법이 아니라 <strong>디지털트윈&middot;BIM과 묶인 도구세트</strong>로 제시. 인력 측면에서 &ldquo;신규 인재 유치 + 기존 전문가 재교육&rdquo;을 위해 업계의 디지털 전환 수용이 필요하다고 강조. 행사에서 제시된 &lsquo;proof point&rsquo; 예시로 AI Visualizer(Archicad&middot;Allplan&middot;Vectorworks), Bluebeam Cloud의 3D Drawings&middot;자동 물량산출&middot;AI-REVIEW&middot;&lsquo;Stitching&rsquo; 등이 언급됨. 행사 총평은 &ldquo;디지털 전환이 야망 단계를 지나 <strong>실행(delivery) 단계</strong>로 이동&rdquo;.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> &lsquo;proof point&rsquo; 프레이밍을 사내 파일럿 운영 규율로 채택 &mdash; 파일럿마다 <strong>측정지표(검토 시간&middot;재작업률&middot;정산 리스크 절감)를 착수 전에 정의</strong>하고 종료 시 실측치를 남기면, 도입 논의가 &lsquo;기대&rsquo;에서 &lsquo;근거&rsquo;로 옮겨감. 지난 수요일 리포트의 &lsquo;기술보다 도입&middot;역할정의가 병목&rsquo; 진단과도 맞물림.</p>
+                <div class="links">
+                  <a href="https://www.pbctoday.co.uk/news/digital-construction-news/ai-from-promises-to-proof-points-at-digital-construction-week-2026/162751">PBC Today &middot; AI: from promises to proof points at DCW 2026</a>
+                  <a href="https://www.digitalconstructionweek.com/sessions/turning-ai-into-performance-across-the-built-world/">DCW 2026 &middot; &lsquo;Turning AI into performance across the built world&rsquo; 세션</a>
+                  <a href="https://www.pbctoday.co.uk/news/digital-construction-news/digital-construction-week-2026-welcomes-over-9000-professionals-industry-looks-to-future/162888">PBC Today &middot; DCW 2026 결산(9,000명+)</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">② 3DEXPERIENCE World 2026 &mdash; 젠슨 황(NVIDIA CEO) 기조 [09-04 대비 신규] (NVIDIA 공식 블로그 기반)</div>
+                <p>휴스턴, 2-03. 다쏘시스템 무대에서 젠슨 황은 &ldquo;<strong>AI는 물&middot;전기에 비견되는 인프라</strong>&rdquo;라며 NVIDIA&ndash;다쏘 협업으로 엔지니어가 &ldquo;100배&middot;1,000배&middot;궁극적으로 100만 배 큰 스케일&rdquo;로 일하게 된다고 발언. 공장은 &ldquo;정적 물리 자산&rdquo;에서 &ldquo;가상 트윈으로 <strong>설계&middot;시뮬레이션&middot;운영되는 살아있는 시스템</strong>&rdquo;으로 이동하며 &ldquo;<strong>모든 것이 가상 트윈으로 표현될 것</strong>&rdquo;이라고 정리. AI 동반자는 엔지니어를 대체하지 않고 증폭한다 &mdash; &ldquo;설계자마다 동료(companions) 한 팀&rdquo;. 09-04 리포트가 다룬 GTC 2026(3월)보다 앞선 발언으로, &lsquo;디지털트윈 재정의&rsquo; 논지가 연초부터 일관됐음을 확인.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> &lsquo;설계&middot;시뮬레이션&middot;<em>운영</em>&rsquo;을 한 흐름으로 보는 관점은, NeXura 디지털트윈 로드맵을 &lsquo;준공 후 정적 모델 납품&rsquo;이 아니라 <strong>운영 데이터 연계(6D/7D)까지 포함</strong>해 설계할 근거. 지난 목요일 리포트의 &lsquo;6D/7D 확장 전 5D 지식그래프부터&rsquo; 순서와 일관.</p>
+                <div class="links">
+                  <a href="https://blogs.nvidia.com/blog/huang-3dexperience-2026/">NVIDIA 블로그 &middot; &lsquo;Everything Will Be Represented in a Virtual Twin&rsquo; (3DEXPERIENCE World 2026)</a>
+                  <a href="https://www.youtube.com/results?search_query=Jensen+Huang+3DEXPERIENCE+World+2026+keynote">YouTube &middot; 3DEXPERIENCE World 2026 키노트 영상 검색</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">③ 09-04에서 다룬 키노트의 그 후 (후속 업데이트)</div>
+                <p><strong>지멘스 Digital Twin Composer</strong>(CES 2026, Roland Busch) &mdash; 착공 전 가상모델을 실시간 데이터와 연결해 &ldquo;시간축을 앞뒤로 이동하며 날씨 변화&middot;설계 변경의 영향을 정밀 시각화&rdquo;하는 도구로, <strong>2026년 중반 Siemens Xcelerator 마켓플레이스 출시 예정</strong>(09-04 시점 &lsquo;상반기 중&rsquo;에서 구체화). Busch는 지능이 &ldquo;공장&middot;<em>건물</em>&middot;그리드&middot;교통&rdquo; 전반에 통합된다고 재확인. <strong>오토데스크 유니버시티 2026</strong>은 <strong>9-15&sim;17 라스베이거스</strong> &mdash; 09-04에서 다룬 neural CAD/Forma의 후속 발표가 예상되므로 다음 회차(9-18)에서 우선 다룰 것.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> &lsquo;시간축 이동 + 날씨&middot;설계변경 영향 시각화&rsquo;는 4D/5D를 정적 공정표가 아니라 <strong>시나리오 비교 도구</strong>로 쓰는 방식 &mdash; 공공 대형현장(BIM 의무화 500억 원+) 제안서에 &lsquo;공정 리스크 시나리오 비교&rsquo;를 차별화 포인트로 준비할 만함.</p>
+                <div class="links">
+                  <a href="https://blogs.sw.siemens.com/tecnomatix/igniting-the-industrial-ai-future-roland-busch-at-ces-2026-introducing-digital-twin-composer/">Siemens Tecnomatix &middot; Digital Twin Composer (CES 2026)</a>
+                  <a href="https://conferences.autodesk.com/flow/autodesk/au2026/web/page/overview">Autodesk University 2026 &middot; 9-15&sim;17 개요</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">④ 조사 방법 메모 &mdash; YouTube 직접 조회 vs 컨퍼런스 리캡</div>
+                <p>플레이북상 금요일 1차 소스는 YouTube이지만 영상 자막&middot;설명 직접 추출은 이번에도 불안정했습니다. 대형 키노트는 <strong>벤더 공식 블로그&middot;컨퍼런스 세션 페이지&middot;업계지 리캡</strong>에 발언 요지가 정리돼 있어 이를 1차로 쓰고 YouTube는 <strong>영상 링크 보강용</strong>으로만 활용했습니다. 9월은 대형 키노트 공백기(GTC=3월, DCW=6월)이고 직전 금요일(09-04)과 소스가 겹칠 위험이 커, 이번엔 &lsquo;중복 축소 + 델타 중심&rsquo; 방식으로 정리했습니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> 금요일 조사 절차를 &lsquo;공식 리캡 우선 + YouTube 링크 보강 + 직전 금요일 대비 델타만&rsquo;으로 명문화하면 회차 간 중복&middot;품질 편차가 줄어듦(아래 개선 제안).</p>
+                <div class="links">
+                  <a href="https://www.nvidia.com/gtc/keynote/">NVIDIA &middot; GTC 2026 키노트 온디맨드</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">03</span> 시사점 / 액션 아이디어</h4>
+              <ul>
+                <li><strong>&lsquo;proof point&rsquo; 운영 규칙 도입</strong> &mdash; 사내 AI&middot;BIM 파일럿마다 착수 전에 성공 지표(시간&middot;재작업&middot;정산 리스크 절감 등)를 수치로 정의하고 종료 시 실측치를 기록. 다음 분기 도입 의사결정의 근거 데이터로 축적.</li>
+                <li><strong>디지털트윈 로드맵을 &lsquo;운영 연계&rsquo; 기준으로 재정렬</strong> &mdash; 준공 모델 납품에서 멈추지 말고 센서&middot;운영 데이터와 연결되는 6D/7D 파이프라인을 전제로 설계(목요일 리포트의 5D 지식그래프 &rarr; 6D/7D 순서와 연결).</li>
+                <li><strong>인재 재교육을 전환 전략의 명시 항목으로</strong> &mdash; Geiger의 &lsquo;유치+재교육&rsquo; 프레임을 사내 BIM 담당자 역할정의&middot;업스킬 프로그램으로 구체화(수요일 &lsquo;BIM 매니저 정체성&rsquo; 논쟁과 연결).</li>
+                <li><strong>&lsquo;시나리오 비교&rsquo;를 제안 차별화 포인트로</strong> &mdash; Digital Twin Composer식 &lsquo;시간축 이동 + 날씨&middot;설계변경 영향 시각화&rsquo;를 공공 대형현장(500억 원+ BIM 의무) 제안서에 공정 리스크 비교 도구로 녹여내는 방안 검토.</li>
+              </ul>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">04</span> 이번 조사 방법 개선 제안</h4>
+              <div class="note-amber">
+                <b>직전 금요일(09-04)과 소스 중복:</b> 금요일 주제(리더 키노트)는 대형 컨퍼런스가 몰린 시기(1&sim;3월, 6월) 밖에서는 새 소재가 부족해 직전 회차와 겹치기 쉽습니다. 이번엔 09-04에서 다룬 CES&middot;AU 2025&middot;GTC&middot;Bentley를 재서술하지 않고 DCW 2026(6월, 건설 전용)과 3DEXPERIENCE World 2026(2월, 신규 확인)만 본문에 담고 나머지는 &lsquo;후속 업데이트&rsquo;로 압축했습니다.
+              </div>
+              <ul>
+                <li><strong>금요일 절차를 &lsquo;공식 리캡 우선 + YouTube 링크 보강 + 직전 금요일 대비 델타&rsquo;로 명문화</strong> &mdash; 1차: 컨퍼런스 공식 세션 페이지&middot;벤더 블로그&middot;신뢰 업계지 리캡 / 2차: YouTube 영상 링크 / 3차: 직전 금요일 리포트와 대조해 중복 제거. 다음 승인 시 config.json Fri 섹션&middot;플레이북에 반영 제안.</li>
+                <li><strong>키노트 캘린더를 미리 고정</strong> &mdash; CES(1월)&middot;3DEXPERIENCE World(2월)&middot;GTC(3월)&middot;Hannover Messe(4월)&middot;DCW 런던(6월)&middot;오토데스크 유니버시티(9월)&middot;Bentley YII(10월)&middot;Trimble Dimensions(11월). 공백 주에는 최근 3&sim;6개월 키노트에서 미처 다루지 않은 발언을 재활용.</li>
+                <li><strong>국내 인사 키노트 균형 편입</strong> &mdash; 현재 표본이 해외 벤더 CEO 위주. 국내 스마트건설 EXPO(11월, 킨텍스)&middot;한국BIM학회 학술대회&middot;대형 건설사 오픈이노베이션 데이 등에서 국내 리더 발언을 분기 1회 이상 포함하는 방안. (이번 주 코리아빌드 BUILD CON SUMMIT 2026에서 삼성전자 상무가 &lsquo;디지털트윈 기반 AI 에이전트&rsquo; 성과를 발표한 사례가 있어 국내 트랙도 소재가 있음.)</li>
+                <li><strong>다음 회차(9-18) 예약 주제</strong> &mdash; 오토데스크 유니버시티 2026(9-15&sim;17) 키노트 신규 발표를 최우선으로 다룰 것.</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+      <div class="arch-item">
+        <details class="sub-arch">
+          <summary>2026-09-10 (목) · 연구개발 동향 — IFC 자연어 질의가 건물 스케일에서 도시 스케일(CIM)로 확장, 시공 단계 디지털트윈은 &lsquo;검사 지연&rsquo; 해소 쪽으로 이동</summary>
+          <div class="body">
+            <div class="r-head">
+              <h3>연구개발 동향 — IFC 자연어 질의가 건물 스케일에서 도시 스케일(CIM)로 확장, 시공 단계 디지털트윈은 &lsquo;검사 지연&rsquo; 해소 쪽으로 이동</h3>
+              <p class="meta">2026-09-10 (목) &middot; Asia/Seoul &middot; 방법: 관련도 우선 + 최신성 보정(하이브리드) &middot; 소스: arXiv / Google Scholar(scisbd, 이번엔 차단) &middot; 키워드: openBIM&middot;IFC, 디지털트윈&middot;CIM, BIM 자동화, BIM 품질&middot;검증, 6D/7D 데이터 파이프라인</p>
+              <p class="lead">지난 회차(09-03)에서 다룬 <em>Adaptive Exploration</em>&middot;<em>IFCMemoryBench</em>&middot;<em>SGR-BIM</em>&middot;Fonsati IDS 논문&middot;휴스턴대 LLM 규정검토&middot;<em>BIM2RDT</em>는 중복 방지를 위해 제외했습니다. 지난 회차 개선 제안(&ldquo;자동 규정검토 편중, 분류체계&middot;6D/7D는 의도적으로 채울 것&rdquo;)을 반영해 이번엔 <strong>IFC 자연어 질의</strong>(분류&middot;온톨로지 인접), <strong>시공 단계 디지털트윈 품질보증</strong>, <strong>4D/5D 예측 제어</strong> 세 갈래로 표본을 분산했습니다. Google Scholar(<span class="mono">scisbd=1</span>) 직접 조회는 이번 회차에 <strong>CAPTCHA 차단(2회 연속 안정 뒤 재발)</strong>돼 즉시 WebSearch&middot;arXiv 조합으로 전환했습니다. <strong>[특별관심: 정부기관 통합이전]</strong>은 오늘 주제(연구개발 동향)와의 접점을 검색했으나, 학술 문헌에서 이 주제를 다룬 새 소식은 확인되지 않아 접점 없음으로 남깁니다(참고로 화요일 소스였던 조달경제신문이 09-05에 &ldquo;공공기관 109개 통폐합&middot;조달기업의 &lsquo;갑&rsquo;이 달라진다&rdquo;를 보도했으나 건설&middot;BIM 발주 구체 내용은 없어 학술 동향과는 무관).</p>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">01</span> 핵심 요약</h4>
+              <ul>
+                <li><strong>같은 연구팀이 IFC(건물)&rarr;CityJSON(도시)로 &lsquo;LLM 자연어 질의&rsquo; 스케일을 확장</strong> &mdash; Lamsal&middot;Zlatanova&middot;Shen 그룹이 5월 IfcLLM(건물 스케일), 7월 CityLLM(도시 스케일)을 두 달 간격으로 발표. 관계형+그래프 표현을 결합해 백엔드를 라우팅하는 동일 설계원리를 재사용.</li>
+                <li><strong>IfcLLM 첫 시도 정확도 93.3&sim;100%</strong>(IFC 모델 3종), <strong>CityLLM은 답 정확도 85.2&sim;100%&middot;질의 성공률 100%</strong>(로테르담 CityJSON 853개 건물&middot;54개 질의) &mdash; 두 스케일 모두 &lsquo;전문 스키마 지식 없이 자연어로 구조화 모델을 질의&rsquo;가 실용 단계에 근접.</li>
+                <li><strong>시공 단계 QA가 &lsquo;검사 지연&rsquo; 문제를 정면으로 겨냥</strong> &mdash; 시험 결과가 며칠&sim;몇 주 뒤에나 나오는 현행 방식 대신, 요소별 디지털트윈에 검사기록&middot;재료데이터&middot;센싱을 실시간 연계해 조기 판단을 지원(기존 검사&middot;시험 절차 대체가 아니라 보완).</li>
+                <li><strong>4D/5D 디지털트윈이 &lsquo;예측 제어&rsquo;로 진화</strong> &mdash; BIM+NLP 비용매핑+컴퓨터비전 진도측정+베이지안 CPM을 결합한 프레임워크가 실제 프로젝트(댈러스&ndash;포트워스)에서 추정노무 43%&middot;초과근무 6% 감소, P50&ndash;P80 신뢰구간 내 정시 완료를 실증.</li>
+                <li><strong>Google Scholar 직접 조회가 이번 회차 CAPTCHA로 차단</strong> &mdash; 2회 연속 안정과 달리 이번엔 <span class="mono">/sorry/</span> 리다이렉트 발생. arXiv+WebSearch 폴백으로 표본을 확보해 조사 자체는 차질 없었음.</li>
+              </ul>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">02</span> 상세 발견사항 (문헌별)</h4>
+
+              <div class="src">
+                <div class="s-name">① IfcLLM &mdash; 건물 스케일 IFC 자연어 질의 (arXiv 원문 확인)</div>
+                <p><strong>IfcLLM: Natural Language Querying of IFC Models through Complementary Relational and Graph Representations</strong> &mdash; Rabindra Lamsal&middot;Sisi Zlatanova&middot;Haowen Xu&middot;Yafei Sun&middot;Johnson Xuesong Shen, arXiv 2605.13236(2026-05-13 제출, 2026-06-22 개정 v2). 기존 단일 표현(관계형 또는 그래프) 대신 <strong>관계형&middot;그래프 표현을 상보적으로 결합</strong>해 속성 검색과 공간 추론 질의를 각각 적합한 백엔드로 라우팅하고 LLM 에이전트가 반복 재시도 로직으로 실패를 보정. IFC 모델 3종&middot;다수 질의 시나리오에서 <strong>첫 시도 정확도 93.3&sim;100%</strong>, 실패 질의는 폴백 LLM으로 전량 해결.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> NeXura의 IFC 질의&middot;검토 보조가 &lsquo;그래프 단일 구조&rsquo;에 갇히지 않고 속성 검색엔 관계형, 공간관계엔 그래프를 선택적으로 쓰는 라우팅 설계를 참고할 만함 &mdash; 지난 회차 IFCMemoryBench의 &lsquo;파편화&rsquo; 경고에 대한 구체적 대응책으로 읽힘.</p>
+                <div class="links">
+                  <a href="https://arxiv.org/abs/2605.13236">arXiv 2605.13236 &middot; IfcLLM</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">② CityLLM &mdash; 도시 스케일(CIM) 자연어 질의, 같은 연구팀의 후속작 (arXiv 원문 확인, 신규)</div>
+                <p><strong>CityLLM: A framework for natural-language querying of semantic 3D city models</strong> &mdash; Rabindra Lamsal&middot;Sisi Zlatanova&middot;Johnson Xuesong Shen, arXiv 2607.14542(2026-07-16 제출). IfcLLM과 같은 팀이 건물 스케일(IFC)에서 <strong>도시 스케일(CityJSON)</strong>로 동일한 &lsquo;공간+그래프 데이터베이스 결합&rsquo; 접근을 확장. 로테르담 CityJSON 데이터셋(LoD2 건물 853개)에서 54개 질의를 평가해 <strong>답 정확도 85.2&sim;100%, 시각화 정확도 92.9&sim;100%, 질의 성공률 100%</strong>(평균 재시도 3회 미만).<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> 같은 설계원리가 건물&rarr;도시로 재사용된다는 점은, 우리도 CDE 질의 인터페이스를 설계할 때 스케일(부재&middot;동&middot;단지)에 따라 백엔드만 바꾸는 계층적 아키텍처로 짤 수 있다는 근거. 도시 스케일 데이터(CIM)와의 연계 필요성이 커지면(예: 공공기관 통합이전에 따른 단지&middot;지구 단위 계획) 바로 참조 가능한 선례.</p>
+                <div class="links">
+                  <a href="https://arxiv.org/abs/2607.14542">arXiv 2607.14542 &middot; CityLLM</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">③ 시공 단계 디지털트윈 품질보증(QA) (arXiv 원문 확인)</div>
+                <p><strong>A Construction-Phase Digital Twin Framework for Quality Assurance and Decision Support in Civil Infrastructure Projects</strong> &mdash; Md Asiful Islam&middot;Shanto Jouerder&middot;Md Sabit As Sami&middot;Afia Jahin Prema, arXiv 2602.16748(2026-02-18). 현행 품질보증이 <strong>검사기록&middot;실험실 시험결과에 의존해 결과가 며칠&sim;몇 주 늦게 나온다</strong>는 문제를 지적하고 요소별 디지털트윈에 검사기록&middot;재료데이터&middot;센싱정보를 연계해 <strong>표준 시험 결과를 기다리지 않고 조기 데이터 기반 판단</strong>을 지원. 기존 검사&middot;시험 절차를 대체하지 않고 보완하는 것으로 명시.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> NeXura 품질검토가 &lsquo;사후 문서 검토&rsquo;에서 &lsquo;요소 단위 실시간 상태 추적&rsquo;으로 넘어갈 때의 참조 구조 &mdash; 다만 이 논문은 센서&middot;시험 인프라 전제가 커서, 국내 현장 적용 전 계측 인프라 현황부터 점검 필요.</p>
+                <div class="links">
+                  <a href="https://arxiv.org/abs/2602.16748">arXiv 2602.16748 &middot; Construction-Phase Digital Twin QA</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">④ 4D/5D 디지털트윈 기반 예측 시공관리 (arXiv 원문 확인)</div>
+                <p><strong>Simulation-Based Validation of an Integrated 4D/5D Digital-Twin Framework for Predictive Construction Control</strong> &mdash; Atena Khoshkonesh&middot;Mohsen Mohammadagha&middot;Navid Ebrahimi, arXiv 2511.03684(2025-11-05). BIM&middot;NLP 기반 비용 매핑, 컴퓨터비전 진도측정, 베이지안 확률 기반 CPM(주공정) 갱신, 딥러닝 자원배분을 통합해 <strong>5D 지식그래프로 비용&ndash;일정을 추적 가능하게 정렬</strong>. 댈러스&ndash;포트워스 실사례 검증에서 <strong>추정 노무 43%&middot;초과근무 6% 감소</strong>, 프로젝트 버퍼 30% 활용 하에 128일 내 완료(P50&ndash;P80 신뢰구간 내).<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> 정적 4D/5D 문서(공정표&middot;물량산출) 대신 &lsquo;동적 예측 시스템&rsquo;으로 5D를 재정의 &mdash; NeXura가 6D/7D(운영&middot;유지관리)로 확장할 때, 비용&ndash;일정 지식그래프를 먼저 갖추는 것이 다음 단계의 전제가 될 수 있음.</p>
+                <div class="links">
+                  <a href="https://arxiv.org/abs/2511.03684">arXiv 2511.03684 &middot; 4D/5D Digital-Twin Predictive Control</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">⑤ Google Scholar 차단 &amp; 방법 점검 (직접 조회 실패 &rarr; WebSearch&middot;arXiv 폴백)</div>
+                <p><span class="mono">scholar.google.co.kr</span>에 <span class="mono">scisbd=1</span>(최신순)로 직접 접속을 시도했으나 이번엔 <span class="mono">google.com/sorry/</span> CAPTCHA 리다이렉트로 차단됐습니다. 지난 2회(08-27&middot;09-03)는 안정적으로 작동했던 것과 대비되는 변화입니다. 즉시 WebSearch(<span class="mono">site:arxiv.org</span> 조합)로 전환해 표본을 확보했고 결과적으로 조사 공백은 없었습니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> Scholar 직접 조회를 &lsquo;표준 절차&rsquo;로 승격하기엔 아직 이르다 &mdash; 매 회차 첫 시도 후 즉시 폴백하는 현재 절차를 유지하고 WebSearch만으로도 arXiv 최신 논문 발굴이 가능함을 이번 회차가 재확인.</p>
+                <div class="links">
+                  <a href="https://arxiv.org/list/cs.AI/recent">arXiv &middot; 최신 목록</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">03</span> 시사점 / 액션 아이디어</h4>
+              <ul>
+                <li><strong>CDE 질의 인터페이스를 스케일 계층형으로 설계</strong> &mdash; IfcLLM&middot;CityLLM처럼 부재&middot;동&middot;단지 스케일에 따라 관계형/그래프 백엔드를 라우팅하는 구조를, NeXura 자연어 질의 기능 설계 시 참조.</li>
+                <li><strong>품질검토를 &lsquo;요소 단위 실시간 추적&rsquo;으로 단계적 전환</strong> &mdash; Construction-Phase DT QA의 구조(검사기록&middot;재료데이터&middot;센싱 연계)를 참조하되, 선행 조건인 계측 인프라 현황을 먼저 점검하는 파일럿 범위로 시작.</li>
+                <li><strong>6D/7D 확장 전 5D 지식그래프부터</strong> &mdash; 비용&ndash;일정을 추적 가능하게 연결하는 5D 지식그래프 구조를 먼저 갖추고 그 위에 운영&middot;유지관리(6D/7D) 데이터를 얹는 순서로 로드맵 재검토.</li>
+                <li><strong>Scholar 차단 시 즉시 arXiv+WebSearch 폴백을 표준 대응으로 문서화</strong> &mdash; 이번 회차처럼 접속 성공/실패가 회차마다 바뀔 수 있으므로, 플레이북에 &lsquo;1차 시도 후 즉시 폴백&rsquo; 절차를 명문화.</li>
+              </ul>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">04</span> 이번 조사 방법 개선 제안</h4>
+              <div class="note-amber">
+                <b>다양성 상한 적용 첫 회차:</b> 지난 회차 개선 제안(자동 규정검토 편중 &rarr; 분류체계&middot;6D/7D 등 빈 주제를 의도적으로 채울 것)을 반영해 이번엔 자연어 질의&middot;QA&middot;4D/5D 세 갈래로 분산했습니다. 결과적으로 규정검토&middot;검증 계열 논문은 이번 회차에 0편으로, 두 회차를 합치면 주제 균형이 맞춰지는 중입니다.
+              </div>
+              <ul>
+                <li><strong>Google Scholar 접근 안정성 재평가 필요</strong> &mdash; 2회 연속 안정 후 이번에 차단되어 &lsquo;표준 1차 소스&rsquo; 승격은 보류하고 회차마다 첫 시도&rarr;즉시 폴백 절차를 유지.</li>
+                <li><strong>같은 저자그룹의 후속작 추적이 유효한 신호</strong> &mdash; Lamsal&middot;Zlatanova&middot;Shen 그룹처럼 반년 내 스케일을 확장하는 연구팀을 발견하면, 다음 회차에 해당 그룹의 신규 프리프린트를 우선 확인하는 방식(Borrmann 그룹 사례와 동일 패턴)을 정례화 제안.</li>
+                <li><strong>규정검토&middot;검증 계열은 격주 주기로 재편입</strong> &mdash; 이번엔 의도적으로 제외했으나 해당 분야 발전 속도가 빨라(지난 회차 벤치마크 2건), 완전히 배제하기보다 격주로 1편씩 재확인하는 균형점을 다음 승인 시 제안.</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+      <div class="arch-item">
+        <details class="sub-arch">
+          <summary>2026-09-09 (수) · 실무자 의견 파악 — 국내 갤러리는 &lsquo;자격증&middot;취업&rsquo; 문의가 대세, 해외 포럼은 &lsquo;BIM 매니저 정체성&rsquo; 논쟁, 국내 대안 커뮤니티 BIM FACTORY 확인</summary>
+          <div class="body">
+            <div class="r-head">
+              <h3>실무자 의견 파악 — 국내 갤러리는 &lsquo;자격증&middot;취업&rsquo; 문의가 대세, 해외 포럼은 &lsquo;BIM 매니저 정체성&rsquo; 논쟁, 국내 대안 커뮤니티 BIM FACTORY 확인</h3>
+              <p class="meta">2026-09-09 (수) &middot; Asia/Seoul &middot; 소스: DC인사이드 BIM 마이너 갤러리 / Autodesk Community(AEC 블로그, 검색 스니펫) / GrabCAD Questions / kaarwan.com(Reddit 재인용 블로그) / BIM FACTORY &middot; 키워드: BIM, Revit, openBIM</p>
+              <p class="lead">국내 1차 소스인 DC인사이드 &lsquo;건설정보모델링(BIM)&rsquo; 마이너 갤러리를 직접 조회한 결과, 최근 게시물(&sim;09-08)은 실무 논의보다 <strong>자격증&middot;취업 문의가 대부분</strong>이라 &lsquo;실무자 의견&rsquo;이라는 목표에는 신호가 약했습니다. 이를 보완하고자 플레이북 지침대로 <strong>더 활성화된 국내 대안 커뮤니티를 발굴</strong>했고 오픈채팅&middot;분기별 연구회 기반의 <strong>BIM FACTORY</strong>를 새로 확인했습니다. 해외는 Autodesk Community 직접 조회가 403으로 막혀 검색 스니펫으로 대체했고 Reddit&middot;LinkedIn은 여전히 직접 접근이 차단돼 검색 스니펫&middot;재인용 블로그 기반임을 명시합니다. <strong>[특별관심: 정부기관 통합이전]</strong>은 오늘 주제(실무자 의견)와의 접점을 검색했으나 BIM 실무자 커뮤니티에서 이 주제를 다룬 새 소식은 확인되지 않아 한 줄로 남깁니다.</p>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">01</span> 핵심 요약</h4>
+              <ul>
+                <li><strong>DC인사이드 BIM 갤러리는 &lsquo;실무자 의견&rsquo;보다 &lsquo;입문자 질문&rsquo; 게시판에 가까움</strong> &mdash; 최근 게시물(03&sim;09월)이 2급 자격증 취득기간&middot;국비지원 교육&middot;고졸 취업가능성 등 커리어 문의 위주. 최신 글은 09-08.</li>
+                <li><strong>국내 대안 커뮤니티 &lsquo;BIM FACTORY&rsquo; 신규 확인</strong> &mdash; 오픈채팅 기반 BIMer 커뮤니티 + 분기별 실무연구회 + 주간 뉴스레터 &lsquo;빔팩뉴스&rsquo;로 구성. 대형 네이버 카페 대신 오픈채팅&middot;인스타그램 조합으로 운영되는 점이 확인됨.</li>
+                <li><strong>Autodesk Community(해외)는 &lsquo;BIM 매니저 정체성&rsquo; 논쟁이 눈에 띔</strong> &mdash; &ldquo;BIM manager vs Revit Expert&rdquo;, &ldquo;Why Great Revit Tools Fail: 진짜 과제는 기술이 아니라 도입(adoption)&rdquo; 등 블로그 제목이 검색에 잡혔으나, 직접 조회(WebFetch)가 403으로 막혀 <strong>검색 스니펫 기반</strong>으로만 확인.</li>
+                <li><strong>Reddit&middot;LinkedIn 직접 접근은 이번에도 상시 차단</strong> &mdash; 대신 2025&sim;2026 Revit&middot;BIM 워크플로 불만을 정리한 3자 블로그(kaarwan.com)를 통해 &lsquo;대형모델 성능저하&middot;다크모드 부재&middot;뷰 연결 불가&middot;협업 크래시&rsquo; 등 재인용 불만을 확인. 원문 Reddit 게시물 URL은 확보하지 못함.</li>
+                <li><strong>[특별관심: 정부기관 통합이전]</strong> &mdash; LH 기능 분리(개발&middot;주거복지)&middot;공공기관 109곳 통폐합 뉴스(09-03) 자체는 확인되나, 오늘 조사한 BIM 실무자 커뮤니티(DC갤러리&middot;Autodesk&middot;GrabCAD&middot;BIM FACTORY) 어디에서도 이 주제를 다룬 언급은 발견되지 않아 접점 없음으로 남김.</li>
+              </ul>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">02</span> 상세 발견사항 (소스별)</h4>
+
+              <div class="src">
+                <div class="s-name">① DC인사이드 &lsquo;건설정보모델링(BIM)&rsquo; 마이너 갤러리 (직접 조회 성공)</div>
+                <p>갤러리 목록을 직접 조회한 결과, 최근 게시물은 <strong>&ldquo;Bim 2급 노베 얼마나 시간 걸리냐&rdquo;(08-05)</strong>, <strong>&ldquo;고졸로도 국비 받아서 취업 가능할까요?&rdquo;(08-01)</strong>, <strong>&ldquo;MEP 설계 및 BIM설계 현업종사자입니다&rdquo;(03-26)</strong> 등 자격증&middot;교육&middot;취업 문의가 대부분입니다. 소규모 갤러리 특성상 논쟁보다 질문 위주라는 플레이북의 기존 관찰과 일치하며 실무 워크플로&middot;도구에 대한 심화 논의는 이번 회차에도 확인되지 않았습니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> 이 갤러리를 &lsquo;실무자 의견&rsquo;의 1차 신호원으로 쓰기엔 한계가 뚜렷 &mdash; 아래 ②BIM FACTORY 같은 대안 채널의 비중을 순차적으로 높일 필요.</p>
+                <div class="links">
+                  <a href="https://gall.dcinside.com/mgallery/board/lists/?id=bim">DC인사이드 &middot; BIM 마이너 갤러리</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">② BIM FACTORY &mdash; 국내 대안 커뮤니티 신규 발굴 (직접 조회 성공)</div>
+                <p>플레이북 지침(&ldquo;더 활성화된 대형 네이버 카페&middot;BIM 전문 카페 발굴 병행&rdquo;)에 따라 탐색한 결과, 네이버 카페 대신 <strong>오픈채팅 기반 &lsquo;BIMer 커뮤니티&rsquo;</strong>를 운영하는 BIM FACTORY를 확인했습니다. 분기별로 모여 &ldquo;BIM 실무 성과&middot;기술&middot;과제를 공유&rdquo;하는 <strong>BIM 실무 연구회</strong>, 매주 월요일 업계 뉴스를 정리하는 <strong>빔팩뉴스</strong>(인스타그램 기반)도 함께 운영됩니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> 오픈채팅&middot;인스타그램 기반 커뮤니티는 크롤링&middot;정기 조회가 어려운 폐쇄형 채널이라, 정량적으로 &lsquo;최근 논의 주제&rsquo;를 뽑기보다 분기별 연구회 발표자료&middot;빔팩뉴스 게시물 위주로 보조 확인하는 방식이 현실적.</p>
+                <div class="links">
+                  <a href="https://bimfactory.co.kr/">BIM FACTORY &middot; 공식 사이트</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">③ Autodesk Community &mdash; &lsquo;BIM 매니저 정체성&rsquo;&middot;도구 채택 논쟁 (직접 조회 403 &rarr; 검색 스니펫 기반)</div>
+                <p>Autodesk Community AEC 블로그(<span class="mono">forums.autodesk.com</span>) 직접 WebFetch는 403 Forbidden으로 실패했습니다. 검색 결과로 확인한 최근 블로그 제목은 <strong>&ldquo;Are we working on the files&hellip; or are we working on data?&rdquo;</strong>(AEC 환경의 미래를 다룸), <strong>&ldquo;Why Great Revit Tools Fail: The Real Challenge Is Adoption, Not Technology&rdquo;</strong>, <strong>&ldquo;BIM manager vs Revit Expert&rdquo;/&ldquo;What does a BIM manager do?&rdquo;</strong> 등으로, 도구 자체보다 <strong>조직 내 역할 정의&middot;도입(adoption) 문제</strong>가 반복 주제로 잡힙니다. 다만 본문 상세 내용은 검색 스니펫 수준에 그쳐 &lsquo;검색 스니펫 기반&rsquo;임을 명시합니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> &lsquo;기술보다 도입&middot;역할정의가 병목&rsquo;이라는 프레이밍은 국내 상황과도 유사 &mdash; 사내 BIM 도구 확산 시에도 기능 개발보다 역할&middot;프로세스 정의에 우선순위를 둘 근거.</p>
+                <div class="links">
+                  <a href="https://forums.autodesk.com/t5/community-blog-aec-english/bg-p/architecture-engineering-construction-en-community-blog">Autodesk Community &middot; AEC 블로그(직접 조회 403)</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">④ Reddit&middot;해외 Revit 워크플로 불만 (직접 접근 차단 &rarr; 재인용 블로그 기반)</div>
+                <p>Reddit 직접 fetch는 이번에도 차단되어, 2025&sim;2026 Revit&middot;BIM 워크플로 트렌드를 정리한 3자 블로그(kaarwan.com)를 통해 간접 확인했습니다. 반복 언급되는 불만은 <strong>대형 모델 성능저하&middot;로딩 지연&middot;협업(worksharing) 중 크래시</strong>, <strong>다크모드 부재</strong>, <strong>도면 뷰 간 링크 불가</strong> 등이며 해당 블로그는 &ldquo;워크플로에 적응하지 못한 팀이 Revit 자체를 탓하는 경우가 많다&rdquo;고 진단합니다. <strong>이 항목은 Reddit 원문 게시물이 아니라 이를 재인용한 블로그 기반이므로 신뢰도가 1단계 더 낮음을 명시합니다.</strong><br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> Dynamo 자동화&middot;QA 스크립트 등 &lsquo;표준화된 워크플로&rsquo;를 갖춘 팀과 그렇지 않은 팀의 격차가 불만의 실제 원인이라는 진단은 사내 온보딩&middot;표준 가이드 정비의 우선순위 근거로 참고 가능.</p>
+                <div class="links">
+                  <a href="https://www.kaarwan.com/blog/architecture/revit-bim-workflow-changes-2025-2026?id=2050">kaarwan.com &middot; Revit &amp; BIM Workflow Changes 2025-2026(재인용 블로그)</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">03</span> 시사점 / 액션 아이디어</h4>
+              <ul>
+                <li><strong>BIM FACTORY를 수요일 상시 보조 소스로 플레이북에 반영 검토</strong> &mdash; 분기별 연구회 발표자료&middot;빔팩뉴스 게시물을 다음 승인 시 config.json <span class="mono">Wed.sites</span>에 추가 제안.</li>
+                <li><strong>&lsquo;기술보다 도입&middot;역할정의&rsquo; 프레이밍을 사내 BIM 확산 전략에 참고</strong> &mdash; Autodesk Community에서 반복되는 &lsquo;BIM 매니저 정체성&rsquo; 논쟁을 사내 BIM 담당자 역할&middot;책임 정의 문서화의 참고 사례로 활용.</li>
+                <li><strong>DC갤러리 의존도를 낮추고 대안 채널 비중 확대</strong> &mdash; 입문자 질문 위주 신호는 유지하되, BIM FACTORY&middot;Autodesk Community를 1차 비중으로 상향.</li>
+                <li><strong>Reddit 재인용 체계의 한계를 인지하고 원문 접근 대안은 지속 검토</strong> &mdash; teddit/libreddit 미러나 공식 API 키 확보를 장기 과제로 유지(플레이북 기존 메모와 동일선상).</li>
+              </ul>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">04</span> 이번 조사 방법 개선 제안</h4>
+              <div class="note-amber">
+                <b>Autodesk Community 직접 조회가 이번 회차부터 403으로 전환:</b> 과거엔 검색으로 확보한 URL을 WebFetch로 보강할 수 있었으나 이번엔 커뮤니티 블로그 목록 페이지가 403을 반환해 스니펫 이상의 본문 확인이 불가능했습니다. GrabCAD Questions도 이번 주 신규 BIM 관련 질문을 찾지 못해(검색된 결과가 모두 과거 게시물&middot;평가용 콘텐츠), 해외 소스 커버리지가 지난 회차보다 얕아졌습니다.
+              </div>
+              <ul>
+                <li><strong>Autodesk Community 우회 경로 확보</strong> &mdash; 개별 블로그 글 URL(예: <span class="mono">/t5/.../ba-p/&lt;id&gt;</span> 형태)을 검색으로 특정한 뒤 그 개별 글 URL로 WebFetch를 시도(목록 페이지 대신)하는 방식을 다음 회차에 시험.</li>
+                <li><strong>GrabCAD Questions는 BIM 전용 필터&middot;정렬 URL 특정 필요</strong> &mdash; 현재는 일반 검색에 의존해 오래된 게시물이 상위 노출됨. 사이트 내 최신순&middot;태그별 URL을 다음 회차에 탐색.</li>
+                <li><strong>BIM FACTORY를 정례 소스로 채택 시 접근 방식 사전 정의 필요</strong> &mdash; 오픈채팅 자체는 조회 불가하므로 공식 사이트&middot;인스타그램(빔팩뉴스) 갱신 여부만 주기 확인하는 방식으로 범위를 한정할 것.</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+      <div class="arch-item">
+        <details class="sub-arch">
+          <summary>2026-09-08 (화) · BIM 입찰&middot;수주 동향 — 나라장터 직접 매칭 14일 연속 &lsquo;0건&rsquo;, 다음 발주 파도는 공공기관 2차 지방이전</summary>
+          <div class="body">
+            <div class="r-head">
+              <h3>BIM 입찰&middot;수주 동향 — 나라장터 직접 매칭 14일 연속 &lsquo;0건&rsquo;, 다음 발주 파도는 공공기관 2차 지방이전</h3>
+              <p class="meta">2026-09-08 (화) &middot; Asia/Seoul &middot; 소스: 나라장터 입찰공고정보서비스(Open API, 1차) / KAIA 국토교통R&amp;D 공고 / 조달경제신문&middot;일간투데이(특별관심) &middot; 키워드: BIM, 건설정보모델링, 디지털트윈, 스마트건설, 3차원설계, 공간정보, CIM</p>
+              <p class="lead">최근 14일(2026-08-25&sim;09-08) 범위로 <span class="mono">run-morning.ps1</span>이 자동 수집한 나라장터 Open API 결과(<span class="mono">.state\bids-2026-09-08.md</span>)를 1차 데이터로 사용했습니다. <strong>7개 키워드 매칭 공고가 0건</strong>으로, 직전 14일(08-18&sim;09-01) 5건 대비 급감했습니다. KAIA R&amp;D 공고도 9월 신규 게시는 없었습니다. 대신 <strong>[특별관심: 정부기관 통합이전]</strong> 축에서 공공기관 350여 곳의 2차 지방이전 확정 소식이 이번 주 새로 나와, 향후 발주처 재편의 선행 신호로 짧게 정리했습니다.</p>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">01</span> 핵심 요약</h4>
+              <ul>
+                <li><strong>나라장터 API 매칭 0건(14일)</strong> — BIM&middot;건설정보모델링&middot;디지털트윈&middot;스마트건설&middot;3차원설계&middot;공간정보&middot;CIM 7개 키워드 모두 신규 공고 없음. 직전 회차(5건) 대비 뚜렷한 공백기.</li>
+                <li><strong>직전 회차 5건도 재검토하면 건설 접점은 낮음</strong> — 전력계통 시각화, 의료기기 플랫폼, 산업단지 공간데이터 등 &lsquo;디지털트윈&rsquo;을 넓은 의미에서 매칭한 건이 대부분으로, 순수 건설&middot;BIM 발주로 보기 어려운 건이 다수였음.</li>
+                <li><strong>KAIA 국토교통 R&amp;D는 9월 신규 공고 없음</strong> — 최신은 8월 &lsquo;국토교통연구기획사업 제2차 시행(재)공고&rsquo;. 진행 중인 트랙 중 &lsquo;디지털트윈 기반 GTX 환승안전 및 혁신기술 개발&rsquo;이 접점.</li>
+                <li><strong>[특별관심: 정부기관 통합이전] 공공기관 350여 곳 2차 지방이전 확정(2026-09-03&sim;04 보도)</strong> — 청사 신축을 기다리지 않고 <strong>2027년부터 민간건물 임차로 선도 이전</strong>, 별도 청사가 필요한 기관(검찰청&middot;경찰청 등)만 신축 후 순차 이전. 실제 발주는 <strong>4분기 최종계획 확정 이후</strong>로 예상돼 지금은 &lsquo;선행 신호&rsquo; 단계.</li>
+                <li><strong>2주 연속 API 매칭 희소</strong> — 폴백 웹서치로도 이번 주 신규 나라장터 BIM 공고를 추가로 확인하지 못함(아래 개선 제안 참고).</li>
+              </ul>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">02</span> 상세 발견사항 (소스별)</h4>
+
+              <div class="src">
+                <div class="s-name">① 나라장터 입찰공고정보서비스 Open API (1차 소스, 직접 조회 성공 &mdash; 자동 수집)</div>
+                <p><span class="mono">run-morning.ps1</span> → <span class="mono">test-bid-api.ps1</span>이 08:53에 자동 조회한 결과, 조회기간 <strong>2026-08-25 00:00 ~ 2026-09-08 23:59</strong> 동안 7개 키워드(BIM&middot;건설정보모델링&middot;디지털트윈&middot;스마트건설&middot;3차원설계&middot;공간정보&middot;CIM) 매칭 공고가 <strong>0건</strong>이었습니다. API 응답 자체는 정상(오류 없음)이며 해당 기간에 부분일치 조건을 만족하는 공고가 실제로 없었던 것으로 확인됩니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> 2주 연속 저조(5건 → 0건)는 표본 부족으로 추세 판단이 어려움 &mdash; 다음 회차에도 0건이 이어지면 키워드&middot;분류 범위 자체를 재검토할 신호로 누적 관찰.</p>
+                <div class="links">
+                  <a href="https://www.g2b.go.kr/">나라장터 조달정보 개방포털</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">② 직전 14일(08-18&sim;09-01) 매칭 5건 재검토 (내부 데이터 재분석)</div>
+                <p>직전 회차 결과를 건설 접점 기준으로 다시 분류하면 &mdash; <strong>&lsquo;2026 스마트건설 챌린지 행사 대행 용역&rsquo;</strong>(한국건설기술연구원)만 건설&middot;스마트건설 접점이 명확(행사 운영 용역이라 BIM 기술발주는 아님). 나머지 4건(전력계통 시각화&middot;산업단지 공간데이터&middot;제조공정 디지털트윈센터 개소식&middot;의료기기 플랫폼)은 &lsquo;디지털트윈&rsquo;이라는 넓은 의미의 키워드로만 걸렸을 뿐 전력&middot;의료&middot;제조 분야로, 플레이북의 필터 기준상 <strong>&lsquo;낮음&rsquo;</strong>에 해당합니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> &lsquo;디지털트윈&rsquo; 단독 키워드의 순수 건설 적중률이 낮다는 점이 2주 연속 확인됨 &mdash; 건설 접점 필터(발주기관&middot;공고명에 건설&middot;도시&middot;시설&middot;단지 등 포함)를 API 조회 단계에서부터 적용하는 방안을 개선 제안에 반영.</p>
+                <div class="links">
+                  <a href="https://www.g2b.go.kr/">나라장터 (공고번호 R26BK01706537 등 상세 조회용)</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">③ KAIA 국토교통과학기술진흥원 R&amp;D 공고 목록 (직접 조회 성공)</div>
+                <p>공고 목록을 확인한 결과 <strong>9월 신규 공고는 없으며</strong>, 최신 항목은 8월의 &lsquo;국토교통연구기획사업 제2차 시행 공고&rsquo;(2026-48, 07-16&sim;08-18)와 그 재공고(2026-49, 08-20&sim;08-27)입니다. 진행 중인 세부 과제 중 <strong>&lsquo;디지털트윈 기반 GTX 환승안전 및 혁신기술 개발&rsquo;</strong>, &lsquo;초연결 지능도시 핵심 기반기술 개발&rsquo;이 우리 배경맥락(디지털트윈&middot;공간정보)과 접점이 있으나, BIM을 명시한 신규 공고는 확인되지 않았습니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> GTX 환승안전 트랙은 인프라 디지털트윈 사례로 다음 목요일(연구개발 동향) 조사 시 진행 상황을 교차 확인할 가치.</p>
+                <div class="links">
+                  <a href="https://www.kaia.re.kr/portal/bbs/list/B0000029.do?menuNo=200110">KAIA &middot; 국토교통R&amp;D 공고 목록</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">④ [특별관심: 정부기관 통합이전] 공공기관 350여 곳 2차 지방이전 확정 (일간투데이&middot;조달경제신문, 검색 기반 확인)</div>
+                <p>일간투데이(09-03)&middot;조달경제신문(09-04) 보도에 따르면, 정부가 수도권 소재 공공기관 350여 곳의 2차 지방이전 방향을 확정했습니다(1차 이전은 2005&sim;2019년 150개 기관&middot;약 5만 명 규모). <strong>청사 신축을 기다리지 않고 2027년부터 민간건물 임차로 선도 이전</strong>에 착수하며 법무부&middot;성평등가족부 등이 2027년 상반기 우선 이전 대상입니다. 검찰청&middot;경찰청 등 별도 청사가 필요한 기관은 <strong>신축 후 순차 이전</strong>합니다. 세종시에는 2029년 8월 대통령 세종집무실, 2033년 국회 세종의사당 완공이 예정돼 있어 별도의 대형 신축 수요가 있습니다. 기사들은 <strong>4분기 최종 계획 확정 후 실제 공고로 이어질 것</strong>이라고 전망하며 이번 주 시점에서 구체적 발주 규모&middot;BIM 적용 여부는 아직 명시되지 않았습니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> 초기 물량은 &lsquo;임차&rsquo; 중심이라 건설&middot;BIM 발주로 직결되지 않지만 세종 대통령집무실&middot;국회의사당과 별도청사 필요기관의 신축은 중장기 대형 공공발주 파이프라인 &mdash; 4분기 최종계획 발표 시점부터 화요일 모니터링 키워드에 &lsquo;이전기관명+청사&middot;신축&middot;리모델링&rsquo;을 추가할 준비.</p>
+                <div class="links">
+                  <a href="https://www.dtoday.co.kr/news/articleView.html?idxno=789733">일간투데이 &middot; 공공기관 350여곳 지방 이전 착수(09-03)</a>
+                  <a href="https://www.jodaleconomy.com/news/articleView.html?idxno=3112">조달경제신문 &middot; 청사부터 상수도까지, 조달 발주 시나리오(09-04)</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">03</span> 시사점 / 액션 아이디어</h4>
+              <ul>
+                <li><strong>공공기관 2차 지방이전 발주 캘린더를 4분기부터 별도 추적</strong> &mdash; 최종계획 확정(4분기 예상) 발표 즉시 신축 대상 기관&middot;규모를 확인해 화요일 리포트 키워드에 반영.</li>
+                <li><strong>KAIA &lsquo;디지털트윈 기반 GTX 환승안전&rsquo; 과제 진행상황 팔로우업</strong> &mdash; 목요일 연구개발 동향 조사와 연계해 성과물&middot;후속 공고 여부 확인.</li>
+                <li><strong>API 키워드에 건설 접점 필터를 조회 단계부터 적용하는 방안 검토</strong> &mdash; &lsquo;디지털트윈&rsquo; 단독 매칭의 낮은 적중률(2주 연속)을 감안, 발주기관명 화이트리스트&middot;블랙리스트 방식의 사전 필터링을 다음 승인 시 제안.</li>
+                <li><strong>0건 상황이 반복되면 나라장터 UI 직접검색으로 교차검증</strong> &mdash; API 커버리지(공고분류&middot;업무구분) 누락 가능성을 배제하기 위해 g2b.go.kr 수동 검색을 격주로 병행.</li>
+              </ul>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">04</span> 이번 조사 방법 개선 제안</h4>
+              <div class="note-amber">
+                <b>2주 연속 API 매칭 저조(5건 → 0건):</b> 현재 7개 키워드는 모두 부분일치(<span class="mono">bidNtceNm</span>)로 공고명에만 걸리는데 BIM&middot;건설정보모델링 공고는 공고명에 직접 표기되는 사례가 드물어 &lsquo;디지털트윈&rsquo;&middot;&lsquo;스마트건설&rsquo; 등 넓은 의미의 키워드 의존도가 높습니다. 그런데 그 넓은 의미의 키워드조차 이번엔 0건이라, 표본 자체가 구조적으로 희소한 상태입니다.
+              </div>
+              <ul>
+                <li><strong>공고분류 확장 검토</strong> &mdash; 현재 용역&middot;공사&middot;물품 3개 오퍼레이션만 조회 중. 사전규격(예고) 단계 API(<span class="mono">getPblancListInfoServcPPSSrch</span> 계열의 사전규격판)를 추가하면 정식 공고 전 단계 신호를 더 일찍 포착 가능 &mdash; 다음 승인 시 test-bid-api.ps1 확장 제안.</li>
+                <li><strong>발주기관명 기반 상시 관찰 리스트 도입</strong> &mdash; LH&middot;국토교통과학기술진흥원&middot;한국건설기술연구원 등 BIM 발주 상위기관을 <span class="mono">ntceInsttNm</span> 필터로 별도 조회해, 키워드 매칭 실패 시에도 놓치지 않도록 보완.</li>
+                <li><strong>정부기관 통합이전 관련 청사 발주는 4분기 이전엔 나라장터에 나타나지 않을 가능성이 높음</strong> &mdash; 지금은 뉴스 모니터링만으로 충분하며 API 키워드 추가는 최종계획 확정 이후로 미루는 것이 합리적.</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+      <div class="arch-item">
+        <details class="sub-arch">
+          <summary>2026-09-07 (월) · BIM 업계 동향 — 이번 주 국내 신호는 &lsquo;표준&middot;인력&middot;행사&rsquo; 중심, 대형 정책 발표는 소강</summary>
+          <div class="body">
+            <div class="r-head">
+              <h3>BIM 업계 동향 — 이번 주 국내 신호는 &lsquo;표준&middot;인력&middot;행사&rsquo; 중심, 대형 정책 발표는 소강</h3>
+              <p class="meta">2026-09-07 (월) &middot; Asia/Seoul &middot; 소스: 건설산업연구원(CERIK) 브리핑 / 대한건설경제&middot;매일건설신문&middot;국토교통뉴스 / 캐드앤그래픽스 / buildingSMART Korea &middot; 키워드: BIM, 건설 디지털전환, 스마트건설</p>
+              <p class="lead">최근 7일(2026-08-31&sim;09-07) 범위로 1차 소스(국토교통부 보도자료, InfoDEC 주간 BIM 뉴스)와 전문지(엔지니어링데일리&middot;대한경제&middot;캐드앤그래픽스&middot;정보통신신문&middot;CERIK)를 조회했습니다. <strong>국토교통부 보도자료 목록 직접 조회는 리다이렉트 오류로 실패했고 InfoDEC 주간 BIM 뉴스리스트는 가장 최근 글이 2026년 3월(5주차)에 멈춰 있어</strong> 검색 기반으로 대체했습니다. 이번 주 확인된 신호는 대형 정책&middot;벤더 발표가 아니라 <strong>&lsquo;표준화(건설로봇 안전기준)&middot;인재양성(공모전)&middot;행사(BIM Awards 접수)&middot;국산 툴 고도화(플랜트 배관 자동화)&rsquo;</strong> 네 갈래에 집중돼 있습니다.</p>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">01</span> 핵심 요약</h4>
+              <ul>
+                <li><strong>CERIK 건설동향브리핑 1073호(2026-09-04)</strong> — 건설 로봇&middot;자동화 장비의 국제표준(ISO) 안전기준 현황을 정리하고 국내 KS 고도화&middot;현장 통합형 안전기준 수립을 제언. BIM 기반 디지털트윈과 로봇 연계가 늘면서 안전표준 정비가 후속 과제로 부상.</li>
+                <li><strong>건설기술인협회 스마트건설기술 아이디어 공모전 시상식(2026-09-01)</strong> — 목포대&middot;영남대&middot;건국대 수료생 대상 56점 접수&middot;11점 시상. 스마트건설 청년 인재 파이프라인이 꾸준히 가동 중임을 보여주는 신호.</li>
+                <li><strong>buildingSMART Korea &lsquo;BIM AWARDS 2026&rsquo; 접수 마감 임박(~10.01)</strong> — 국내 BIM 활용 우수 사례(발주기관&middot;시공사&middot;설계사&middot;엔지니어링사)를 발굴하는 연례 시상식으로, 캐드앤그래픽스 메인에서 접수중 공지 확인.</li>
+                <li><strong>플랜트 BIM 배관 자동화 국산 솔루션 &lsquo;Ez-ISO V2&rsquo; 고도화</strong> — 휴엔시스템의 Revit 애드인이 이전 버전 대비 <strong>추출 속도 10배</strong> 개선을 내세우며 캐드앤그래픽스 리뷰 섹션에 소개. 반도체&middot;2차전지&middot;조선 등 플랜트 전 분야로 적용 확대.</li>
+                <li><strong>1차 소스 공백 확인</strong> — 국토교통부 보도자료, InfoDEC 주간 리스트, 엔지니어링데일리 메인에서 이번 주 신규 BIM 관련 게시물을 직접 확인하지 못함(아래 개선 제안 참고).</li>
+              </ul>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">02</span> 상세 발견사항 (소스별)</h4>
+
+              <div class="src">
+                <div class="s-name">① CERIK 건설동향브리핑 1073호 &mdash; 건설로봇 국제표준(ISO) 안전기준 (직접 조회 성공, 2026-09-04)</div>
+                <p>한국건설산업연구원(이광표&middot;이종한)이 발간한 브리핑으로, 건설 로봇&middot;자동화 기계&middot;장비의 개발부터 현장 실증까지 안전&middot;성능에 관한 국제표준(ISO)이 운영 중이며 설계&middot;전자파&middot;사각지대&middot;HW/SW 제어&middot;협동안전 등 세부 기준이 계속 고도화되고 있다고 진단. 산업 안착을 위해 <strong>국제표준 기반 KS(한국산업표준) 고도화</strong>와 <strong>현장 통합형 안전기준 수립</strong>이 필요하다고 제언했습니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> BIM 데이터가 로봇&middot;자동화 장비와 연계되는 시나리오(&lsquo;피지컬 AI&rsquo; 흐름)에서, 안전표준 준수 여부를 BIM 속성&middot;IFC 매핑 검증 항목에 미리 반영해두면 향후 규제 대응 비용을 줄일 수 있음.</p>
+                <div class="links">
+                  <a href="https://www.cerik.re.kr/report/briefing/3126">CERIK &middot; 건설동향브리핑 1073호 상세</a>
+                  <a href="https://www.cerik.re.kr/report/briefing">CERIK &middot; 건설동향브리핑 목록</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">② 건설기술인협회 스마트건설기술 아이디어 공모전 시상식 (검색 기반 확인, 2026-09-01)</div>
+                <p>건설기술인협회가 목포대&middot;영남대&middot;건국대 수료생을 대상으로 진행한 스마트건설기술 아이디어 공모전 시상식을 9월 1일 개최. 56점이 접수돼 심사를 거쳐 11점이 선정&middot;시상됐으며 청년 인재 발굴&middot;육성이 목적입니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> 이런 공모전 수상작&middot;참가자 풀은 신입&middot;인턴 채용 소싱 채널로 활용 가치가 있음 &mdash; 다음 회차부터 수상작 목록을 확인해 채용팀과 공유할 만한 인재&middot;아이디어가 있는지 점검할 것.</p>
+                <div class="links">
+                  <a href="https://www.kcenews.kr/9539">대한건설경제 &middot; 시상식 기사</a>
+                  <a href="https://www.mcnews.co.kr/86554">매일건설신문 &middot; 시상식 기사</a>
+                  <a href="https://www.guktonews.co.kr/8740">국토교통뉴스 &middot; 시상식 기사</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">③ buildingSMART Korea &lsquo;BIM AWARDS 2026&rsquo; 접수중 (캐드앤그래픽스 메인 확인, 접수 마감 ~10.01)</div>
+                <p>빌딩스마트협회(buildingSMART Korea) 주관 연례 BIM 활성화 시상식으로, 국내 건설 분야에서 BIM 도입&middot;활용에 기여한 발주기관&middot;건설사&middot;설계사&middot;엔지니어링사&middot;개인을 발굴&middot;시상합니다. 캐드앤그래픽스 메인 페이지에 &ldquo;BIM AWARDS 2026 접수중(~10.01)&rdquo; 공지가 노출돼 있어, 이번 주 시점 기준 접수가 진행 중임을 확인했습니다(정확한 공지 게시일은 확인하지 못함).<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> NeXura CDE&middot;품질검토 관련 사내 사례가 있다면 출품을 검토할 가치 &mdash; 접수 마감(10.01)까지 3주 정도 여유가 있으니 출품 여부를 이번 주 내 결정할 것.</p>
+                <div class="links">
+                  <a href="https://www.cadgraphics.co.kr/">캐드앤그래픽스 &middot; 메인(공지 확인)</a>
+                  <a href="https://www.buildingsmart.or.kr/Home/Event?type=4">buildingSMART Korea &middot; BIM Awards 페이지</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">④ 국산 플랜트 BIM 배관 자동화 &lsquo;Ez-ISO V2&rsquo; (캐드앤그래픽스 리뷰 확인, 게시일 미상)</div>
+                <p>휴엔시스템의 Revit 애드인 Ez-ISO가 V2로 고도화되며 &ldquo;플랜트 BIM 배관 ISO 도면 자동화의 새로운 기준&rdquo;으로 캐드앤그래픽스 리뷰 섹션에 소개됐습니다. Revit 배관 모델에서 Non-Scale 아이소메트릭 DWG 도면을 자동 추출하며 <strong>이전 버전 대비 추출 속도 약 10배</strong> 개선을 내세웁니다. 반도체&middot;2차전지&middot;바이오&middot;오일&amp;가스&middot;발전&middot;조선 등 플랜트 전 분야를 대상으로 하며 배관자재관리(Ez-PIMM)&middot;배관스풀도면(Ez-Spool)&middot;용접관리(Ez-Weld)와 연동됩니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> 국산 Revit 애드인 생태계가 플랜트 특화 영역(배관 자동화)에서 독자 엔진으로 고도화되고 있다는 사례 &mdash; NeXura의 플랜트&middot;산업설비 분야 확장 시 벤치마크 후보로 등록.</p>
+                <div class="links">
+                  <a href="https://www.cadgraphics.co.kr/">캐드앤그래픽스 &middot; 리뷰 섹션</a>
+                  <a href="https://eziso.huensystem.com/">Ez-ISO &middot; 공식 제품 페이지</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">03</span> 시사점 / 액션 아이디어</h4>
+              <ul>
+                <li><strong>건설로봇 ISO 안전기준을 BIM 검증 항목에 선제 반영</strong> &mdash; CERIK 브리핑의 표준화 흐름을 지켜보며 향후 KS 고도화 시 BIM 속성&middot;IFC 매핑 체크리스트에 안전기준 관련 항목을 추가할 준비.</li>
+                <li><strong>BIM AWARDS 2026 출품 여부 이번 주 내 결정</strong> &mdash; 접수 마감(10.01) 전 NeXura 관련 사례 출품 가능성을 실무진과 논의.</li>
+                <li><strong>스마트건설 공모전&middot;챌린지 수상작을 채용&middot;기술 스카우팅 채널로 트래킹</strong> &mdash; 건설기술인협회 공모전, 2026 스마트건설 챌린지(11월 킨텍스 시상) 등 인재&middot;아이디어 파이프라인을 반기 단위로 점검.</li>
+                <li><strong>국산 BIM 애드인 생태계(Ez-ISO류) 벤치마킹 리스트화</strong> &mdash; 플랜트 특화 자동화 사례를 분기 단위로 수집해 사내 툴 로드맵 참고자료로 축적.</li>
+              </ul>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">04</span> 이번 조사 방법 개선 제안</h4>
+              <div class="note-amber">
+                <b>1차 소스 두 곳이 이번 주 사실상 &lsquo;무응답&rsquo;:</b> 국토교통부 보도자료 목록(molit.go.kr) 직접 WebFetch는 리다이렉트 루프로 실패했고 InfoDEC 주간 BIM 뉴스리스트(info.dec-w.com)는 조회된 가장 최근 글이 2026년 3월 5주차(약 5개월 전)에 멈춰 있어 &lsquo;주간&rsquo; 발행 주기가 실제로는 깨졌을 가능성이 있습니다. 두 경우 모두 WebSearch로 대체했으나 검색 스니펫은 발행일이 불명확한 배경 정보 위주로 반환돼, 이번 주 항목의 절반(③&middot;④)은 정확한 게시일을 확정하지 못했습니다.
+              </div>
+              <ul>
+                <li><strong>국토교통부 보도자료 URL 패턴 우회 필요</strong> &mdash; 목록 페이지(m_71/lst.jsp) 대신 상세페이지 URL 패턴(m_71/dtl.jsp?id=&lt;숫자&gt;)을 최근 확인된 id값에서 역순으로 몇 개 직접 조회하는 방식을 다음 회차에 시도.</li>
+                <li><strong>InfoDEC 주간 리스트 주기 재확인</strong> &mdash; 실제 발행이 중단&middot;저조해졌는지 info.dec-w.com 메인&middot;공지를 별도로 확인하고 중단이 맞다면 플레이북의 1차 소스 목록에서 빈도를 낮추거나 대체 소스로 교체할 것을 다음 승인 시 제안.</li>
+                <li><strong>엔지니어링데일리 BIM 전용 카테고리 URL 특정 필요</strong> &mdash; 이번 회차엔 메인페이지만 확인 가능했고 BIM 카테고리 URL을 찾지 못함 &mdash; 사이트 내 검색&middot;카테고리 메뉴 구조를 다음 회차에 별도 탐색.</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+      <div class="arch-item">
+        <details class="sub-arch">
+          <summary>2026-09-04 (금) · 역량강화 인사이트 — Siemens&middot;Autodesk&middot;Bentley&middot;NVIDIA 키노트가 가리키는 공통 방향: &lsquo;텍스트 너머 물리적 3D 세계를 추론하는 AI&rsquo;</summary>
+          <div class="body">
+            <div class="r-head">
+              <h3>역량강화 인사이트 — Siemens&middot;Autodesk&middot;Bentley&middot;NVIDIA 키노트가 가리키는 공통 방향: &lsquo;텍스트 너머 물리적 3D 세계를 추론하는 AI&rsquo;</h3>
+              <p class="meta">2026-09-04 (금) &middot; Asia/Seoul &middot; 소스: CES 2026(Siemens&middot;NVIDIA) / Autodesk University 2025 / Bentley Illuminate 2026 / NVIDIA GTC 2026 &middot; 키워드: AI keynote, digital twin construction, smart construction</p>
+              <p class="lead">이번 주 CEO&middot;CTO급 발표를 관통하는 단일 신호는 <strong>&ldquo;AI가 텍스트&middot;2D를 넘어 3D 물리 세계(기하&middot;물리&middot;공간)를 직접 추론하는 방향으로 4개 벤더가 동시에 이동&rdquo;</strong>입니다. Siemens&times;NVIDIA는 &lsquo;산업 AI 운영체제&rsquo;와 포토리얼 디지털트윈을, Autodesk는 3D 형상을 직접 생성하는 &lsquo;neural CAD&rsquo;와 공간지능 스타트업 대규모 투자를, Bentley는 데이터 파편화라는 현실적 병목을, NVIDIA는 로봇&middot;자율시스템으로의 &lsquo;피지컬 AI&rsquo; 공식 피벗을 각각 발표했습니다. YouTube 직접 검색 대신 각 키노트의 공식 보도자료&middot;분석기사(AEC Magazine, Geo Week News, Verdantix, NVIDIA/Siemens 뉴스룸)를 조회해 발표 내용을 확인했습니다.</p>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">01</span> 핵심 요약</h4>
+              <ul>
+                <li><strong>Siemens&times;NVIDIA(CES 2026, Roland Busch&middot;Jensen Huang)</strong> — 양사가 <em>&lsquo;산업 AI 운영체제(Industrial AI Operating System)&rsquo;</em> 공동 개발을 발표. Busch는 신제품 <strong>Digital Twin Composer</strong>(공장&middot;공정&middot;제품의 포토리얼 3D 트윈을 실시간 데이터에 연결해 의사결정을 사전 시뮬레이션)를 공개, 상반기 중 Xcelerator Marketplace에 출시 예정.</li>
+                <li><strong>Autodesk University 2025(Andrew Anagnost)</strong> — 생성형 AI가 3D CAD 형상을 직접 만드는 <strong>&lsquo;neural CAD&rsquo;</strong> 발표. Fusion용(곡면&middot;각진 형상)과 Forma용(건물 공간관계&middot;엔지니어링 패턴) 두 모델로 <strong>루틴 설계작업의 80&sim;90% 자동화</strong> 잠재력을 제시하면서도 &ldquo;정답을 만드는 게 아니라 사람이 옵션을 평가&middot;결정하게 돕는 것&rdquo;이라는 원칙을 강조. Forma Building Design(LoD 200)&middot;Building Layout Explorer(마싱 변경 시 평면 자동 재구성)도 함께 출시.</li>
+                <li><strong>Bentley Illuminate 2026(Claudia Feiner)</strong> — 인프라 산업의 병목은 &ldquo;자본&middot;컴퓨팅이 아니라 <strong>데이터 연결성</strong>&rdquo;이라 진단(&lsquo;인프라 인텔리전스 갭&rsquo;). 포트 폴스카 사례(문서 770만 건&middot;40TB)처럼 데이터는 쌓여 있어도 시나리오 분석&middot;의사결정을 위한 <strong>오케스트레이션 계층이 부재</strong>하다는 점을 지적, iTwin&middot;ProjectWise 같은 CDE로도 &lsquo;연결&rsquo;만으로는 부족하다고 못박음.</li>
+                <li><strong>NVIDIA GTC 2026(Jensen Huang)</strong> — &ldquo;AI는 이제 기능이 아니라 전기처럼 필수 인프라&rdquo;라며 로봇&middot;자율시스템&middot;산업자동화가 실세계를 지각&middot;추론&middot;행동하는 <strong>&lsquo;피지컬 AI(Physical AI)&rsquo;로 공식 피벗</strong>을 선언. 3만 명 규모 청중 앞에서 AI 팩토리&middot;가속 컴퓨팅부터 에이전틱 시스템까지 전체 스택의 방향을 재확인.</li>
+                <li><strong>Autodesk의 $200M World Labs 투자(Anagnost, Fei-Fei Li)</strong> — 창사 이래 최대 스타트업 투자로 공간지능(spatial intelligence) 기업 World Labs에 전략적 자문 역할과 함께 참여. World Labs의 <strong>Marble</strong>은 이미지&middot;텍스트 한 장으로 공간적으로 일관된 3D 환경을 생성 — Anagnost는 &ldquo;물리적 AI가 다음 프론티어&rdquo;라고 정리.</li>
+              </ul>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">02</span> 상세 발견사항 (발표별)</h4>
+
+              <div class="src">
+                <div class="s-name">① CES 2026 키노트 &mdash; Siemens Roland Busch &amp; NVIDIA Jensen Huang (Siemens&middot;NVIDIA 공식 뉴스룸 조회 성공)</div>
+                <p>Siemens 회장 겸 CEO Roland Busch가 NVIDIA CEO Jensen Huang, Microsoft Jay Parikh, PepsiCo Athina Kanioura, Commonwealth Fusion Systems Bob Mumgaard와 함께 무대에 올라 &lsquo;산업 AI를 물리 세계에서 신뢰성 있게&middot;책임 있게 확장하는 다음 단계&rsquo;를 주제로 대담. 핵심 발표는 <strong>Digital Twin Composer</strong> &mdash; 공장&middot;공정&middot;제품의 포토리얼 3D 가상모델을 실시간 데이터와 연결해 &lsquo;현실에 반영되기 전에&rsquo; 의사결정을 시뮬레이션하는 도구로, NVIDIA의 가속 컴퓨팅&middot;AI 기술과 Siemens의 산업 소프트웨어&middot;자동화 플랫폼을 결합. 두 회사는 이를 <strong>&lsquo;Industrial AI Operating System&rsquo;</strong>이라는 공동 비전으로 묶었습니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> &lsquo;포토리얼 3D 트윈 + 실시간 데이터 + 사전 시뮬레이션&rsquo; 조합은 NeXura 트윈 파일럿이 참고할 벤치마크 구성 요소 — 특히 &lsquo;현실 반영 전 의사결정 시뮬레이션&rsquo;이라는 프레이밍은 준공 전 BIM 검증 단계에도 그대로 적용 가능.</p>
+                <div class="links">
+                  <a href="https://blogs.sw.siemens.com/tecnomatix/igniting-the-industrial-ai-future-roland-busch-at-ces-2026-introducing-digital-twin-composer/">Siemens Tecnomatix 블로그 &middot; Digital Twin Composer</a>
+                  <a href="https://press.siemens.com/global/en/pressrelease/siemens-unveils-industrial-tech-ai-era-ces-2026-keynote">Siemens 뉴스룸 &middot; CES 2026 키노트 보도자료</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">② Autodesk University 2025 키노트 &mdash; Andrew Anagnost, &lsquo;neural CAD&rsquo; (AEC Magazine 분석기사 조회 성공)</div>
+                <p>2025-10-02 Autodesk University 키노트에서 Anagnost는 &ldquo;우리가 만드는 여러 두뇌들이 사람들이 설계 시스템과 상호작용하는 방식을 바꿀 것&rdquo;이라며 <strong>neural CAD</strong>를 공개 &mdash; 기하학을 자동 생성하는 수준을 넘어 <strong>편집 가능한 3D CAD 형상을 직접 생성</strong>하는 생성형 AI 파운데이션 모델로, 루틴 설계작업의 <strong>80&sim;90% 자동화</strong> 잠재력을 제시. Fusion용(곡선&middot;각진 형태 모두 처리)과 Forma용(건물 공간관계&middot;엔지니어링 패턴 중심) 두 모델로 구분됩니다. 동시에 <strong>Forma Building Design</strong>(LoD 200 상세설계)과 <strong>Building Layout Explorer</strong>(마싱 모형 변경 시 평면&middot;벽&middot;기둥&middot;코어&middot;구조 드로잉 자동 재계산)를 출시해 개념설계&rarr;상세레이아웃 전환 속도를 높였습니다. Anagnost는 AI의 역할을 &ldquo;정답을 만드는 게 아니라 엔지니어&middot;건축가&middot;건설 전문가가 옵션을 평가하고 최종 결정을 내리게 돕는 것&rdquo;이라고 못박았습니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> &lsquo;자동화가 아닌 옵션 평가 보조&rsquo;라는 원칙은 사내 AI 설계&middot;검토 도구의 UX 철학으로 그대로 채택할 만 &mdash; 완전자동 결과물 대신 &lsquo;대안 제시 + 근거 노출&rsquo; 구조를 설계 기준으로 삼을 것.</p>
+                <div class="links">
+                  <a href="https://aecmag.com/features/autodesk-shows-its-ai-hand/">AEC Magazine &middot; Autodesk shows its AI hand</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">③ Bentley Illuminate 2026 키노트 &mdash; Claudia Feiner, &lsquo;인프라 인텔리전스 갭&rsquo; (AR Insider&middot;Verdantix 분석기사 조회 성공)</div>
+                <p>Feiner는 Lisa Bodell의 &lsquo;미래 건망증(future forgetting)&rsquo; 개념을 인용하며 리더들이 연결된 데이터&middot;고급분석의 가치를 알면서도 실행에 옮기지 못하는 현상을 지적. 핵심 진단은 &ldquo;병목은 자본이나 컴퓨팅 파워가 아니라 <strong>데이터 연결성</strong>&rdquo; &mdash; 수십 년간 쌓인 엔지니어링 지식이 PDF&middot;스프레드시트&middot;현장기록에 갇혀 AI가 읽을 수 없다는 것. 포트 폴스카 사례(문서 770만 건&middot;40TB 데이터 보유)를 들어, 데이터는 충분해도 시나리오 분석&middot;의사결정을 지원하는 <strong>오케스트레이션 계층이 없으면 무용</strong>하다고 강조. 제안한 해법은 ①디지털트윈&middot;지표면 정보로 설계&ndash;운영 간극 축소, ②데이터 품질&middot;전문성이 전제된 AI 활용, ③ProjectWise 같은 통합 CDE로 BIM&middot;지리공간&middot;자산정보를 단일 소스화 세 갈래.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> &lsquo;iTwin&middot;Cesium 같은 플랫폼도 기초 기술일 뿐 완전한 솔루션이 아니다&rsquo;라는 지적은 NeXura CDE에도 그대로 적용 &mdash; 데이터 연결 자체보다 <strong>시나리오 분석&middot;감사가능한 의사결정 산출물을 만드는 오케스트레이션 계층</strong>에 투자 우선순위를 둘 근거.</p>
+                <div class="links">
+                  <a href="https://arinsider.co/2026/05/21/bentley-illuminate-2026-reveals-the-infrastructure-intelligence-gap/">AR Insider &middot; Infrastructure Intelligence Gap</a>
+                  <a href="https://www.verdantix.com/client-portal/blog/bentley-systems-s-illuminate-2026-confronted-infrastructure-s-fragmented-data-problem-head-on">Verdantix &middot; Fragmented Data Problem</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">④ NVIDIA GTC 2026 키노트 &mdash; Jensen Huang, &lsquo;피지컬 AI&rsquo; 피벗 (NVIDIA 공식 발표 조회 성공)</div>
+                <p>2026-03-16 산호세 SAP Center에서 190개국 3만 명 참석 규모로 진행된 키노트에서 Huang은 가속 컴퓨팅&middot;AI 팩토리부터 오픈모델&middot;에이전틱 시스템&middot;<strong>피지컬 AI</strong>까지 NVIDIA 전체 스택의 방향을 제시. 로봇&middot;자율주행&middot;산업자동화 등 &lsquo;실세계를 지각&middot;추론&middot;행동하는 AI&rsquo;로의 공식 전환을 선언하며 &ldquo;AI는 이제 기능이 아니라 전기처럼 필수 인프라&rdquo;라고 규정했습니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> 월요일 리포트에서 확인한 CERIK의 &lsquo;피지컬 AI 건설현장 진입&rsquo; 진단, 목요일 리포트의 BIM2RDT(로봇 지향 디지털트윈) 연구와 같은 방향 &mdash; 준공 BIM의 좌표계&middot;분류체계&middot;속성 정합이 로봇&middot;자율장비 연계의 선결조건이라는 결론이 이번 주 세 리포트에서 독립적으로 반복 확인됨.</p>
+                <div class="links">
+                  <a href="https://blogs.nvidia.com/blog/gtc-2026-news/">NVIDIA Blog &middot; GTC 2026 뉴스 모음</a>
+                  <a href="https://www.datacenterfrontier.com/machine-learning/news/55364406/jensen-huang-maps-the-ai-factory-era-at-nvidia-gtc-2026">Data Center Frontier &middot; GTC 2026 키노트 분석</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">⑤ Autodesk &times; World Labs $200M 투자 &mdash; &lsquo;공간지능&rsquo;이 다음 프론티어 (AEC Magazine&middot;Autodesk 공식 발표 조회 성공)</div>
+                <p>Autodesk 창사 이래 최대 스타트업 투자로, Stanford AI 석학 Fei-Fei Li가 공동창업한 <strong>World Labs</strong>(NVIDIA&middot;AMD도 참여한 $1B 라운드)에 $200M을 투자하고 전략적 자문 역할을 확보. World Labs의 <strong>Marble</strong>은 이미지 한 장&middot;영상 클립&middot;텍스트 프롬프트만으로 공간적으로 일관된 고해상도 인터랙티브 3D 환경을 생성합니다. Anagnost는 이를 &ldquo;기하&middot;물리&middot;재료&middot;3차원 공간을 추론하는 &lsquo;물리적 세계 AI&rsquo;&rdquo;로 규정하며 &ldquo;이 투자는 가장 강력한 AI가 사람을 대체하는 게 아니라 상상&middot;설계&middot;시공 역량을 확장해야 한다는 공동 신념을 반영한다&rdquo;고 밝혔습니다.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> 텍스트&middot;이미지 한 장에서 3D 환경을 생성하는 &lsquo;공간지능&rsquo; 모델이 다음 세대 BIM 초기 매싱&middot;컨셉 단계에 접목될 가능성 &mdash; Forma의 neural CAD와 결합되면 &lsquo;스케치 한 장 &rarr; 3D 매싱 &rarr; BIM 상세화&rsquo; 파이프라인이 실용화 단계에 들어설 수 있음을 시사, 중장기 기술 스카우팅 리스트에 World Labs&middot;Marble을 추가할 가치.</p>
+                <div class="links">
+                  <a href="https://aecmag.com/ai/autodesks-200m-bet-on-spatial-ai/">AEC Magazine &middot; Autodesk&rsquo;s $200m bet on spatial AI</a>
+                  <a href="https://adsknews.autodesk.com/en/news/autodesk-invests-in-world-labs/">Autodesk 공식 뉴스 &middot; World Labs 투자</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">03</span> 시사점 / 액션 아이디어</h4>
+              <ul>
+                <li><strong>&lsquo;3D 물리세계 추론 AI&rsquo;로의 벤더 공통 수렴을 전제로 로드맵 재점검</strong> &mdash; Siemens&middot;Autodesk&middot;NVIDIA가 동시에 텍스트&rarr;3D/공간 추론으로 이동하는 만큼, 사내 BIM 데이터(기하&middot;속성&middot;분류)의 품질이 향후 AI 활용의 핵심 자산이 된다는 전제를 확인. 데이터 정비 우선순위를 상향.</li>
+                <li><strong>NeXura CDE에 &lsquo;오케스트레이션 계층&rsquo; 개념 도입 검토</strong> &mdash; Bentley Feiner의 진단대로 데이터 연결(CDE)만으로는 부족 &mdash; 시나리오 분석&middot;감사가능한 의사결정 산출물을 만드는 계층을 로드맵에 별도 항목으로 명시.</li>
+                <li><strong>AI 설계보조 UX 원칙으로 &lsquo;정답 대신 옵션+근거&rsquo; 채택</strong> &mdash; Anagnost의 neural CAD 철학(완전자동 대신 사람의 평가&middot;결정 지원)을 사내 자동설계&middot;룰체크 도구의 설계 원칙으로 문서화.</li>
+                <li><strong>Digital Twin Composer류 사례를 트윈 파일럿 벤치마크로 참조</strong> &mdash; &lsquo;포토리얼 3D + 실시간 데이터 + 사전 시뮬레이션&rsquo; 3요소 구성을 준공 전 BIM 검증&middot;시뮬레이션 파일럿 설계에 반영.</li>
+                <li><strong>World Labs&middot;Marble류 공간지능 모델을 중장기 기술 스카우팅 리스트에 추가</strong> &mdash; 스케치&rarr;3D 매싱 자동생성이 성숙하면 초기 설계 단계 워크플로에 영향 &mdash; 반기 단위로 재점검.</li>
+              </ul>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">04</span> 이번 조사 방법 개선 제안</h4>
+              <div class="note-amber">
+                <b>YouTube 직접 검색 대신 보도자료&middot;분석기사 경로로 대체:</b> 플레이북 지침은 YouTube 검색을 1차 소스로 명시하지만 이번 회차는 WebSearch로 확인한 키노트 영상 링크(예: <span class="mono">youtube.com/watch?v=K-kR8Efs7f0</span>)의 자막&middot;발언을 직접 파싱하지 않고 공식 뉴스룸&middot;전문지 분석기사로 내용을 확보했습니다. 발표 사실관계는 교차검증됐으나 &lsquo;발표자의 정확한 육성 인용&rsquo; 밀도는 원문 대본 대비 낮을 수 있습니다.
+              </div>
+              <ul>
+                <li><strong>YouTube 자막 직접 조회 경로 확보 필요</strong> &mdash; 다음 회차부터 확보한 키노트 영상 URL에 대해 자막&middot;트랜스크립트 조회를 시도하고 실패 시에만 보도자료로 폴백하는 순서로 전환.</li>
+                <li><strong>국내 인물 발표 커버리지 공백</strong> &mdash; 이번 5건이 전부 해외 빅테크&middot;소프트웨어 벤더(Siemens&middot;Autodesk&middot;Bentley&middot;NVIDIA) 중심 &mdash; 다음 회차엔 국내 건설사&middot;엔지니어링사 CEO/CTO(예: 삼성물산&middot;현대건설&middot;네이버랩스 등)의 AI&middot;디지털트윈 발표를 최소 1건 포함하도록 검색어에 &lsquo;한국어 키워드+회사명&rsquo; 조합 추가.</li>
+                <li><strong>소프트웨어 벤더 편중 &rarr; 시공사&middot;현장 관점 보강</strong> &mdash; 5건 모두 설계&middot;소프트웨어 벤더 키노트 &mdash; 로봇 시공&middot;모듈러&middot;현장 자동화를 다루는 시공사&middot;장비업체 CEO 발표(예: Built Robotics, Dusty Robotics 등)를 다음 회차 검색 대상에 추가해 균형을 맞출 것.</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+      <div class="arch-item">
+        <details class="sub-arch">
+          <summary>2026-09-03 (목) · BIM 연구개발 동향 — &lsquo;LLM 에이전트가 IFC를 읽고 검증한다&rsquo;가 벤치마크를 갖춘 하위 분야로 수렴</summary>
+          <div class="body">
+            <div class="r-head">
+              <h3>BIM 연구개발 동향 — &lsquo;LLM 에이전트가 IFC를 읽고 검증한다&rsquo;가 벤치마크를 갖춘 하위 분야로 수렴</h3>
+              <p class="meta">2026-09-03 (목) &middot; Asia/Seoul &middot; 방법: 관련도 우선 + 최신성 보정(하이브리드) &middot; 소스: arXiv / Automation in Construction / Smart and Sustainable Built Environment / Google Scholar(scisbd) &middot; 키워드: openBIM&middot;IFC, 에이전틱 AI, BIM 품질&middot;검증, 디지털트윈</p>
+              <p class="lead">갱신된 목요일 방식으로 재조사했습니다 &mdash; 엄격한 날짜창 대신 <strong>우리 배경맥락 주제와의 관련도를 1차 기준</strong>으로 문헌을 고르고 최근 12개월 이내를 우선하되 <strong>신규(최근 3개월) 2건</strong>을 반드시 포함했습니다. Google Scholar(<span class="mono">scisbd=1</span>) 직접 조회는 이번에도 차단 없이 작동했고 arXiv 원문에서 초록&middot;저자&middot;개정일을 모두 확보했습니다. 지난 회차에서 다룬 <em>BIM-Edit</em>&middot;<em>IFC-Agent</em>&middot;SLAM 논문은 중복 방지를 위해 제외했습니다. 신호는 세 갈래입니다 &mdash; <strong>&ldquo;LLM/에이전트가 IFC를 직접 읽고 추론&middot;검증하는 연구가 공용 벤치마크(ifc-bench v2 계열)를 갖춘 분야로 수렴&rdquo;</strong>, <strong>&ldquo;그 최대 응용 표적은 자동 규정검토(compliance/model checking)&rdquo;</strong>, <strong>&ldquo;BIM&rarr;디지털트윈 자동화가 에이전틱&middot;로봇 지향으로 이동&rdquo;</strong>.</p>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">01</span> 핵심 요약</h4>
+              <ul>
+                <li><strong>LLM&times;IFC가 &lsquo;벤치마크를 갖춘 하위 분야&rsquo;로 굳어지는 중</strong> — TU뮌헨 A. Borrmann 그룹이 반년 사이 <em>ifc-bench v2</em>(1,027과제&middot;37 IFC 모델&middot;21 프로젝트) 위에 <em>Adaptive Exploration</em>(2026-05, 런타임에 IFC 구조를 탐색)과 <em>IFCMemoryBench</em>(2026-07, 143 멀티세션 과제&middot;4,016 사전대화 세션)를 연달아 발표. 단일 논문이 아니라 &lsquo;평가 인프라&rsquo;가 생겼다는 점이 이번 회차의 핵심 관찰입니다.</li>
+                <li><strong>그러나 성능은 아직 낮다</strong> — IFCMemoryBench에서 최고 시스템도 실사용 조건 정답률 <strong>32.4%</strong>, 오라클 필터를 줘도 60% 미만. 범용 메모리(벡터&middot;그래프&middot;파일)가 &ldquo;주제적으로는 맞는데 프로젝트 지식을 조각난 사실로 파편화&rdquo;시킨다는 진단은, IFC 대상 RAG를 만들 때 그대로 경고로 읽힙니다.</li>
+                <li><strong>자동 규정검토가 압도적 응용 표적</strong> — 표준 기반(KTH의 IDS&times;IFC4x3 검증), 그래프 추론 기반(HKUST <em>SGR-BIM</em>, 화재규정 679문항 84.3%), LLM 기반(휴스턴대 GPT&middot;Claude&middot;Gemini&middot;Llama&times;Revit) 세 갈래가 동시에 &lsquo;자동 model checking&rsquo;으로 수렴. 이번 표본 6편 중 4편이 검증&middot;규정검토였습니다.</li>
+                <li><strong>BIM&rarr;디지털트윈이 &lsquo;에이전틱&middot;로봇 지향&rsquo;으로</strong> — San Diego State의 <em>BIM2RDT</em>는 IFC 시맨틱으로 LLM이 정합 사전확률을 추론하는 <em>Semantic-Gravity ICP</em>(가림 상황 정합 RMSE &minus;64.3&sim;88.3%)와 IFC 매핑 진동노출 안전경보(ISO 5349-1)를 결합. 정적 BIM을 &lsquo;로봇이 바로 쓸 수 있는&rsquo; 트윈으로 바꾸는 흐름입니다.</li>
+                <li><strong>openBIM 검증은 &lsquo;지금 바로 도입 가능한&rsquo; 성숙도</strong> — IDS(Information Delivery Specification)는 IFC 스키마에 결속된 기계판독 요구사항 명세로, 오픈소스 체커(Blender의 Bonsai 등)에서 소프트웨어 무관하게 동일 결과를 냅니다. Fonsati et al.(KTH)은 노르웨이 표준 NS 3682:2022 요구를 IDS로 형식화해 IFC 모델의 정보 존재&middot;구조 누락과 비적합 객체를 자동 식별했습니다.</li>
+              </ul>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">02</span> 상세 발견사항 (문헌별)</h4>
+
+              <div class="src">
+                <div class="s-name">① LLM 에이전트 &times; IFC 벤치마크 &mdash; Adaptive Exploration &amp; IFCMemoryBench (arXiv 원문 직접 조회 성공)</div>
+                <p><strong>BIM Information Extraction Through LLM-based Adaptive Exploration</strong> &mdash; Sylvain Hellin&middot;Suhyung Jang&middot;Stefan Fuchs&middot;Stavros Nousias&middot;André Borrmann(TU München), arXiv 2605.01698, 2026-05, <em>Automation in Construction</em> 투고. 모델 구조를 가정하는 기존 정적 쿼리 생성과 달리, LLM 에이전트가 코드를 반복 실행하며 <strong>런타임에 BIM 구조를 발견</strong>하는 &lsquo;adaptive exploration&rsquo; 패러다임을 제안. ifc-bench v2(1,027과제&middot;37 IFC 모델&middot;21 프로젝트)에서 두 LLM 성능대 &times; 네 증강전략 요인분석을 수행, 모든 조합에서 정적 생성 대비 유의하게 우수. 결론: &ldquo;IFC 이질성은 패러다임 수준에서 다뤄야 한다.&rdquo;<br><br>
+                <strong>IFCMemoryBench: Evaluating Long-Term Memory of LLM-Based Agents in BIM Information Retrieval</strong> &mdash; Changyu Du&middot;Alexander Vosseler&middot;Filippo Mazza&middot;André Borrmann(TU München), arXiv 2607.26072, 2026-07-13, KDD 2026 Workshop(Evaluation and Trustworthiness of Agentic AI). ifc-bench v2의 불완전정보 문항에서 파생한 <strong>143개 멀티세션 과제&middot;19 프로젝트&middot;4,016개 사전 대화 세션</strong>. 메모리를 ingestion/retrieval/utilization 3요소로 분해해 전문가 검증 LLM 심판으로 평가. 벡터&middot;그래프&middot;파일 기반 메모리 비교 결과 <strong>최고 32.4%</strong>, 오라클 필터&middot;강화 프로브에도 60% 미만이며 범용 메모리는 프로젝트 지식을 &ldquo;불완전한 사실로 파편화&rdquo;.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> NeXura가 &lsquo;IFC 위 자연어 질의&middot;검토 보조&rsquo;를 만든다면 범용 벡터 메모리로는 프로젝트 문맥이 파편화된다 &mdash; 프로젝트 스코프를 유지하는 그래프/구조적 메모리 설계가 전제.</p>
+                <div class="links">
+                  <a href="https://arxiv.org/abs/2605.01698">arXiv 2605.01698 &middot; Adaptive Exploration</a>
+                  <a href="https://arxiv.org/abs/2607.26072">arXiv 2607.26072 &middot; IFCMemoryBench</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">② 그래프 시맨틱 추론으로 기하 규정검토 자동화 &mdash; SGR-BIM (arXiv 직접 조회 성공, 신규)</div>
+                <p><strong>Automating Geometry-Intensive Compliance Checking in BIM: Graph-Based Semantic Reasoning Framework</strong> &mdash; Zixuan Xiao&middot;Pei Troh Koh&middot;Jun Ma&middot;Jack C.P. Cheng(HKUST), arXiv 2606.12065, 2026-06-10, <em>Automation in Construction</em> Vol.189(2026). 규정 논리와 구조화된 IFC 데이터 사이의 &lsquo;시맨틱 간극&rsquo;, 그리고 다중 부재에 걸친 공간관계&middot;추론 사슬이 규칙기반 접근의 한계라고 지적. 제안하는 <strong>SGR-BIM</strong>은 규정 시맨틱&middot;사용자 의도&middot;BIM 기하를 통합하는 동적 크로스모달 지식그래프로, 하드코딩 없이 해석가능한 추론을 수행. 전문가 검증 <strong>화재안전 규정 679문항에서 84.3% 정답률</strong>(강화도구 단일에이전트 기준선 대비 +8.6%p).<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> 사내 룰체크가 &lsquo;조건식 하드코딩&rsquo;을 벗어나려면 규정문&middot;검토의도&middot;형상을 한 그래프에 얹는 SGR-BIM 구조가 참고 템플릿 &mdash; 단, 84%는 아직 &lsquo;검토관 보조&rsquo; 수준.</p>
+                <div class="links">
+                  <a href="https://arxiv.org/abs/2606.12065">arXiv 2606.12065 &middot; SGR-BIM</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">③ 표준 기반 자동 검증 &mdash; openBIM/IDS로 IFC 정보요구 검증 (Emerald SASBE, 초록 확인)</div>
+                <p><strong>Leveraging OpenBIM standards and Information Delivery Specification (IDS) for digital validation in circular construction: reusing hollow core slabs</strong> &mdash; Arianna Fonsati&middot;Arlind Dervishaj&middot;Kjartan Gudmundsson(KTH Royal Institute of Technology), <em>Smart and Sustainable Built Environment</em>, 온라인 2026-04-02(접수 2025-10-31&middot;게재확정 2026-03-03). IDS(IFC 스키마에 결속된 기계판독 명세)로 노르웨이 표준 NS 3682:2022의 재사용 요구사항을 XML 규칙으로 형식화 &rarr; IFC4x3(ADD2) 프로퍼티셋 정의 &rarr; IDS Maker로 명세 작성 &rarr; Blender의 오픈소스 <strong>Bonsai</strong> 애드온으로 검증 &rarr; buildingSMART Data Dictionary(bsDD)로 시맨틱 일관성 확보. 프리캐스트 중공슬래브(3000&middot;6000mm) 사례에서 치수&middot;재료&middot;내구&middot;품질보증 16개 속성을 검증, <strong>정보 존재&middot;구조의 누락과 비적합 객체를 자동 식별</strong>.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> IDS는 지금 도입 가능한 성숙도 &mdash; NeXura 제출물 정보요구를 IDS로 명세화하면 CDE 반입 게이트에서 &lsquo;소프트웨어 무관&middot;동일결과&rsquo; 자동검사가 가능. 품질검토 파이프라인의 1차 필터로 즉시 후보.</p>
+                <div class="links">
+                  <a href="https://www.emerald.com/sasbe/article/doi/10.1108/SASBE-10-2025-0683/1354540/Leveraging-OpenBIM-standards-and-information">Emerald SASBE &middot; DOI 10.1108/SASBE-10-2025-0683</a>
+                  <a href="https://www.buildingsmart.org/standards/bsi-standards/information-delivery-specification-ids/">buildingSMART &middot; IDS 표준</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">④ LLM&times;Revit 규정검토 &mdash; 이 흐름의 초기 실증 (arXiv, 12개월+이나 방법 기준점)</div>
+                <p><strong>Large Language Model-Driven Code Compliance Checking in Building Information Modeling</strong> &mdash; Soumya Madireddy&middot;Lu Gao&middot;Zia Din&middot;Kinam Kim&middot;Ahmed Senouci&middot;Zhe Han&middot;Yunpeng Zhang(University of Houston), arXiv 2506.20551, 2025-06-25. GPT&middot;Claude&middot;Gemini&middot;Llama를 Revit과 결합해 자연어 규정을 해석하고 <strong>Python 스크립트를 생성</strong>, BIM 환경 내에서 준자동 검토. 주거&middot;업무시설 두 사례에서 <strong>비적합 실치수&middot;자재 사용&middot;객체 배치를 식별</strong>, 수작업 대비 시간&middot;노력 절감과 복잡한 규정 해석 단순화를 보고(정량 정확도 수치는 초록에 미제시).<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> &lsquo;규정문 &rarr; 코드 생성 &rarr; 모델 대조&rsquo;는 재현 난이도가 낮은 패턴 &mdash; SGR-BIM식 그래프 추론을 얹기 전, 사내 검토항목 몇 개로 이 파이프라인의 오탐&middot;미탐률을 먼저 계측할 가치.</p>
+                <div class="links">
+                  <a href="https://arxiv.org/abs/2506.20551">arXiv 2506.20551 &middot; LLM Code Compliance Checking</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">⑤ BIM&rarr;로봇 지향 디지털트윈 &mdash; BIM2RDT / Semantic-Gravity ICP (arXiv 직접 조회 성공)</div>
+                <p><strong>Building Information Models to Robot-Ready Site Digital Twins (BIM2RDT): An Agentic AI Safety-First Framework</strong> &mdash; Reza Akhavian&middot;Mani Amani&middot;Johannes Mootz&middot;Robert Ashe&middot;Behrad Beheshti(San Diego State University), arXiv 2509.20705, 2025-09-25(피어리뷰판이 <em>Automation in Construction</em> 2026에 &ldquo;Semantic-Gravity ICP &hellip; Robot-Ready Construction Digital Twins&rdquo;로 확인됨). BIM의 기하&middot;시맨틱 + IoT 센서 활동데이터 + 로봇 주행 시 수집한 시각-공간데이터 세 스트림을 통합. 핵심 기여 <strong>Semantic-Gravity ICP</strong>는 BIM 시맨틱에서 방향 사전확률을 LLM 추론으로 유도하는 점군 정합으로, 특징이 가려진 장면에서 정합 RMSE <strong>64.3&sim;88.3% 감소</strong>. 손-팔 진동(HAV) 모니터링을 IFC 표준으로 트윈에 매핑해 ISO 5349-1 기준 안전경보를 발생.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> IFC를 &lsquo;로봇&middot;현장센서와 트윈을 잇는 시맨틱 백본&rsquo;으로 쓰는 사례 &mdash; 준공 BIM의 좌표계&middot;객체 분류&middot;속성 정합이 트윈/로봇 연계의 선결조건임을 재확인(월요일 리포트의 &lsquo;피지컬 AI&rsquo; 신호와 연결).</p>
+                <div class="links">
+                  <a href="https://arxiv.org/abs/2509.20705">arXiv 2509.20705 &middot; BIM2RDT</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">⑥ Google Scholar 최신순 스냅샷 &amp; 방법 점검 (직접 조회 성공)</div>
+                <p><span class="mono">scholar.google.co.kr</span>에 <span class="mono">scisbd=1</span>(날짜순)로 직접 접속 성공, 차단&middot;CAPTCHA 없음. &lsquo;BIM IFC digital twin LLM automation&rsquo; 최신순에서 Akhavian 그룹의 로봇 지향 트윈 후속 연구가 상단, &lsquo;BIM IFC validation OR digital twin OR generative&rsquo; 최신순에서는 <strong>IFC-aware GNN 추론&middot;멀티모달 생성 파이프라인 리뷰</strong>(ASCE Research Congress 2026), 이탈리아 의료시설 IFC 규정검토(<em>Buildings</em>, MDPI), IFC 기반 해체성 분석(<em>Automation in Construction</em>) 등 2026년 하반기 논문이 다수 확인됨. arXiv 검색에서는 <strong>MCP4IFC</strong>(2025-11, Model Context Protocol로 LLM이 IFC 직접 조작), &ldquo;Multi-Agent Framework for Schema-Guided Reasoning &hellip; IFC Models&rdquo;(<em>Automation in Construction</em> 186, 2026) 등 &lsquo;LLM&times;IFC 조작&rsquo; 계열이 계속 축적 중.<br>
+                <strong>&rsaquo; 우리 관점 시사점:</strong> 목요일 1차 소스로 <span class="mono">Google Scholar scisbd</span> + <span class="mono">arXiv</span> 조합이 2회 연속 안정 작동 &mdash; 국내 DB 접근 제약을 감안하면 이 조합을 표준 절차로 굳혀도 됨.</p>
+                <div class="links">
+                  <a href="https://scholar.google.co.kr/scholar?q=BIM+IFC+digital+twin+LLM+automation&scisbd=1">Google Scholar &middot; 최신순(scisbd)</a>
+                  <a href="https://arxiv.org/list/cs.AI/recent">arXiv &middot; 최신 목록</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">03</span> 시사점 / 액션 아이디어</h4>
+              <ul>
+                <li><strong>IDS 도입 파일럿을 최우선 후보로</strong> &mdash; NeXura CDE 반입 게이트에 &lsquo;IDS 기반 정보요구 자동검사&rsquo;를 1차 필터로. 오픈소스 체커로 소프트웨어 무관&middot;동일결과가 보장돼 초기 투자 대비 효과가 큼. Fonsati et al. 워크플로(요구추출&rarr;프로퍼티셋&rarr;IDS Maker&rarr;Bonsai 검증&rarr;bsDD)를 그대로 참조.</li>
+                <li><strong>&lsquo;IFC 위 LLM 검토 보조&rsquo;는 메모리 설계부터</strong> &mdash; IFCMemoryBench의 32.4%&middot;&ldquo;프로젝트 지식 파편화&rdquo; 진단은, 사내에서 유사 기능을 만들 때 범용 벡터 RAG 대신 프로젝트 스코프 그래프 메모리를 전제로 설계해야 함을 시사.</li>
+                <li><strong>규정검토 자동화는 &lsquo;측정 먼저&rsquo;</strong> &mdash; LLM&times;Revit(휴스턴대) 패턴으로 사내 검토항목 5&sim;10개를 골라 오탐&middot;미탐률을 먼저 계측하고 그 위에 SGR-BIM식 지식그래프 추론을 단계적으로 얹는 로드맵.</li>
+                <li><strong>준공 BIM 정합을 트윈&middot;로봇 선결조건으로 명문화</strong> &mdash; BIM2RDT가 IFC 시맨틱을 정합&middot;안전모니터링의 백본으로 쓰는 만큼, 사내 준공모델 인수기준에 좌표계&middot;IFC 분류&middot;속성셋 정합 체크를 추가.</li>
+                <li><strong>ifc-bench v2를 사내 평가 하네스로 검토</strong> &mdash; 오픈소스 QA 벤치마크이므로, 자체 IFC 도구&middot;LLM 조합의 회귀 테스트 세트로 재활용 가능.</li>
+              </ul>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">04</span> 이번 조사 방법 개선 제안 (새 방식 자기평가)</h4>
+              <div class="note-amber">
+                <b>새 방식(관련도 우선 + 최신성 보정 하이브리드) 자기평가:</b> 구 방식(엄격 최신순 나열)과 비교하면 &mdash; 표본 6편 <b>전부</b>가 배경맥락 주제(openBIM/IFC&middot;에이전틱 AI&middot;품질검증&middot;디지털트윈)에 직결됐고 흩어진 SLAM/측위 논문이 빠진 대신 <b>&lsquo;LLM 에이전트 &times; IFC 벤치마크&rsquo;라는 하나의 연구 스레드</b>(TU뮌헨 Borrmann 그룹)를 포착했습니다. 신규성도 확보 &mdash; arXiv 2606.12065(6월)&middot;2607.26072(7월) 2건이 최근 3개월 이내.
+              </div>
+              <ul>
+                <li><strong>표본&middot;인사이트 측면에서 나았다</strong> &mdash; 구 방식 리포트는 5개 소스 중 2개가 SLAM/측위로 우리 CDE&middot;품질검토와 간접적이었으나, 이번엔 6편 중 5편이 즉시 액션(IDS 파일럿, 메모리 설계, 규정검토 계측)으로 연결됨. 관련도 우선이 인사이트 밀도를 확실히 높였습니다.</li>
+                <li><strong>다만 하위주제 과집중 위험</strong> &mdash; 관련도만 보면 &lsquo;자동 규정검토&rsquo;로 쏠려 6편 중 4편이 검토&middot;검증. 다음 회차엔 하위주제당 최대 2편으로 상한을 두고 <strong>분류체계&middot;온톨로지, 6D/7D 데이터 파이프라인</strong> 등 아직 비어 있는 배경주제를 의도적으로 1편씩 채우는 절차를 권장.</li>
+                <li><strong>Google Scholar <span class="mono">scisbd</span> + arXiv 조합 2회 연속 안정</strong> &mdash; 목요일 1차 소스 표준 절차로 승격 제안. 국내 DB(DBpia&middot;KCI)는 여전히 공백이라 계정 확보 시 국내 1차 소스로 추가 필요.</li>
+                <li><strong>ScienceDirect&middot;Emerald&middot;T&amp;F 개별 페이지는 이번에도 403</strong>(빈 City of Vienna openBIM 규정검토 논문 원문 접근 실패) &mdash; 초록은 검색 스니펫으로 보강. arXiv 프리프린트가 있으면 항상 그쪽을 우선 조회하는 순서를 유지.</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+      <div class="arch-item">
+        <details class="sub-arch">
+          <summary>2026-09-02 (수) · BIM 업계 실무자 의견 — 국내는 &lsquo;취업&middot;자격증&rsquo;, 해외는 &lsquo;AI 어시스턴트 성능 갭&rsquo;</summary>
+          <div class="body">
+            <div class="r-head">
+              <h3>BIM 업계 실무자 의견 파악 — 국내는 &lsquo;취업&middot;자격증&rsquo;, 해외는 &lsquo;AI 어시스턴트 성능 갭&rsquo;</h3>
+              <p class="meta">2026-09-02 (수) &middot; Asia/Seoul &middot; 소스: DC인사이드 BIM 마이너 갤러리 / Autodesk Community / 실무 벤더 블로그 &middot; 키워드: BIM, Revit, openBIM</p>
+              <p class="lead">Reddit(r/BIM&middot;r/Revit&middot;r/civilengineering)와 LinkedIn은 이번 회차도 직접 조회(WebFetch)가 전부 차단됐고 WebSearch로도 실제 게시글 본문을 찾지 못했습니다(검색엔진의 Reddit 색인 한계로 추정). 대신 국내 <strong>DC인사이드 &lsquo;BIM&rsquo; 마이너 갤러리</strong>를 직접 조회해 실무자 논의를 확인했고 해외 실무자 반응은 <strong>Autodesk Community &amp; AI 툴 벤더 블로그</strong>로 보강했습니다. 이번 회차 신호는 <strong>&ldquo;국내는 여전히 취업&middot;자격증 중심 담론&rdquo;</strong>과 <strong>&ldquo;해외는 Revit AI Assistant에 대한 냉정한 평가&rdquo;</strong> 두 축입니다.</p>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">01</span> 핵심 요약</h4>
+              <ul>
+                <li><strong>DC인사이드 BIM 갤러리 최고 인기글은 여전히 &lsquo;취업&rsquo;</strong> — &lsquo;BIM 취업루트&rsquo;(조회 6,081&middot;추천 26)가 BIM 용역업체&middot;건축사사무소&middot;토목/구조/기계 설계사&middot;단종업체&middot;건설사 5가지 진입 경로를 급여&middot;진입장벽 기준으로 정리. 기술 트렌드보다 커리어 정보 소비가 압도적입니다.</li>
+                <li><strong>신입 BIM 인력 채용난 체감</strong> — &lsquo;토목BIM으로 설계사를 들어가보고 싶은데..&rsquo; 글에서 &ldquo;중견 토목설계회사들이 신입 BIM 인력을 거의 채용하지 않는다&rdquo;는 고민이 제기됨(댓글 11개, 구체 내용은 페이지 구조상 확인 불가).</li>
+                <li><strong>자격증 난이도&middot;실효성 논쟁 반복</strong> — &lsquo;BIM 운용전문가 1급만 쓸모있나요??&rsquo;, &ldquo;운용전문가 난이도 갈수록 어려워짐&rdquo;, &ldquo;시험 진짜 악질임&rdquo; 등 시험 난이도 상승 불만이 되풀이됩니다. 반면 &lsquo;BIM 이제 돈안된다&rsquo;는 제목의 글은 본문&middot;댓글이 사실상 비어 있어 실제 논쟁으로 이어지진 않았습니다.</li>
+                <li><strong>해외: Revit AI Assistant에 냉정한 반응</strong> — Autodesk Community 아이디어 게시판 &lsquo;Remove Autodesk AI Assistant&rsquo; 스레드에서 실무자가 &ldquo;MCP 기반 서드파티 플러그인&middot;LLM에 비해 크게 뒤처진다&rdquo;, &ldquo;프로젝트 단위가 미터법이어도 피트로 가정하고 단위 변환 지시를 무시한다&rdquo;는 구체적 결함을 제기했습니다.</li>
+                <li><strong>AI 툴 벤더 쪽 자체 평가도 보수적</strong> — Revit AI 플러그인 개발사 ArchiLabs의 자체 리뷰는 마케팅상 &lsquo;10배 생산성&rsquo; 주장과 달리 &ldquo;문서화&middot;태깅&middot;시트 작업 등 특정 반복업무에서 2&ndash;3배가 현실적&rdquo;이라고 톤을 낮췄습니다 — 실무 도입 기대치 관리가 필요하다는 신호입니다.</li>
+              </ul>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">02</span> 상세 발견사항 (소스별)</h4>
+
+              <div class="src">
+                <div class="s-name">DC인사이드 &lsquo;건설정보모델링(BIM)&rsquo; 마이너 갤러리 (직접 조회 성공)</div>
+                <p>2024-10 개설된 소규모 갤러리로, 게시글은 크게 <strong>①도구&middot;소프트웨어 질문</strong>(레빗 확장자, Infraworks 주석, 아키캐드 대체 가능 여부), <strong>②자격증&middot;교육</strong>(BIM 2급 취득 기간, 건설기술교육원 양성과정, 운용전문가 1급 실용성), <strong>③취업&middot;커리어</strong>(취업루트, 캐나다 이민 BIM technologist, 토목BIM 신입 채용난) 세 갈래로 나뉩니다. 가장 조회수가 높은 글은 &lsquo;BIM 취업루트&rsquo;(6,081회&middot;추천 26)로, BIM 용역업체(소규모&middot;저연봉이나 경력 축적 용이) → 건축사사무소(대형은 고진입장벽) → 토목/구조/기계 설계사(급여 최상위, Civil3D&middot;Revit 특화 요구) → 단종업체(철골&middot;배관&middot;PC, &ldquo;한번 배우면 평생 먹고산다&rdquo;는 평) → 건설사(최고 대우, 진입 최난) 순으로 5개 경로를 비교했습니다. 15년차 MEP/BIM 팀장이 &lsquo;질문 받는다&rsquo;는 글을 올렸으나 아직 댓글 0개로 실제 Q&amp;A는 이뤄지지 않았습니다.</p>
+                <div class="links">
+                  <a href="https://gall.dcinside.com/mgallery/board/lists/?id=bim">갤러리 목록</a>
+                  <a href="https://gall.dcinside.com/mgallery/board/view/?id=bim&no=19">BIM 취업루트</a>
+                  <a href="https://gall.dcinside.com/mgallery/board/view/?id=bim&no=22">토목BIM 설계사 신입 채용 고민</a>
+                  <a href="https://gall.dcinside.com/mgallery/board/view/?id=bim&no=44">건설기술교육원 BIM 전문인력 양성과정</a>
+                  <a href="https://gall.dcinside.com/mgallery/board/view/?id=bim&no=69">15년차 MEP/BIM 팀장 Q&amp;A 게시글</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">Autodesk Community — Revit AI Assistant 반응 (WebSearch 스니펫 기반 — 원문 직접 조회 403 차단)</div>
+                <p>&lsquo;Revit Ideas&rsquo; 게시판의 &lsquo;Remove Autodesk AI Assistant&rsquo; 제안 스레드에서 실무자는 어시스턴트가 &ldquo;laughably bad and lags far, far behind other 3rd-party plugins or LLMs using MCP&rdquo;라고 평가했고 &ldquo;프로젝트 단위를 미터법으로 설정해도 피트로 가정하며 지정한 단위 변환 지시를 무시한다&rdquo;, &ldquo;요청한 파라미터를 정확히 바꾸지 못한다&rdquo;는 구체 결함을 지적했습니다. Autodesk는 현재 버전이 &lsquo;Tech Preview&rsquo;이며 제한된 워크플로만 지원한다고 공식 블로그에서 밝힌 상태로, 실무 기대와 제품 성숙도 사이 간극이 이번 회차의 핵심 논쟁점입니다.</p>
+                <div class="links">
+                  <a href="https://forums.autodesk.com/t5/revit-ideas/remove-autodesk-ai-assistant/idi-p/14083991">Autodesk Community · Remove Autodesk AI Assistant</a>
+                  <a href="https://www.autodesk.com/blogs/aec/2026/04/22/autodesk-assistant-in-revit-tech-preview/">Autodesk 공식 블로그 · Assistant Tech Preview</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">실무 벤더 블로그 — ArchiLabs &lsquo;Revit 2027 AI Review&rsquo;</div>
+                <p>Revit AI 플러그인 개발사 ArchiLabs가 자체 블로그에서 Revit 2027의 Autodesk Assistant&middot;Forma 연동을 검토하며 &ldquo;a 2x or 3x productivity gain in documentation tasks is huge&rdquo;라고 표현, 흔히 마케팅에서 언급되는 &lsquo;10배 생산성&rsquo; 주장에 선을 그었습니다. 태깅&middot;시트 패킹&middot;뷰 생성 등 좁은 반복업무에서는 실질 개선이 있으나, BIM 실무 전체를 뒤바꾸는 수준은 아니라는 &ldquo;real but modest&rdquo; 평가입니다.</p>
+                <div class="links">
+                  <a href="https://archilabs.ai/posts/revit-2027-ai-review-whats-real-what-still-isnt">ArchiLabs · Revit 2027 AI Review</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">Reddit / LinkedIn — 접근 실패 기록</div>
+                <p>r/BIM&middot;r/Revit&middot;r/civilengineering을 <span class="mono">www.reddit.com</span>&middot;<span class="mono">old.reddit.com</span>&middot;JSON 엔드포인트(<span class="mono">.json</span>)로 모두 시도했으나 WebFetch가 &ldquo;unable to fetch&rdquo;로 차단했습니다. WebSearch로 <span class="mono">site:reddit.com BIM</span> 등 조합을 여러 차례 검색했지만 실제 게시글 대신 Wikipedia&middot;구인정보&middot;무관한 페이지만 반환됐습니다. LinkedIn도 게시물 URL 자체는 검색으로 확인되나(예: Revit 2026.4 관련 게시물) 본문 fetch는 시도하지 않았습니다(직접 조회 이력상 반복 차단).</p>
+              </div>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">03</span> 시사점 / 액션 아이디어</h4>
+              <ul>
+                <li>국내 채용 시장이 &lsquo;신입 기피&rsquo; 신호를 보이는 만큼, 자사가 신입 BIM 인력을 육성할 여력이 있다면 채용 공고에 &lsquo;신입 가능&rsquo;을 명시해 상대적 채용 경쟁력을 확보할 수 있습니다.</li>
+                <li>Revit AI Assistant의 단위&middot;정확도 결함(미터법 프로젝트에서 피트 가정)은 국내(미터법) 현장에 특히 해당 → 사내 도입 전 별도 파일럿에서 단위계&middot;한글 파라미터명 처리를 반드시 검증.</li>
+                <li>AI 생산성 기대치는 &lsquo;2&ndash;3배(반복업무 한정)&rsquo;로 보수적으로 설정하고 전사 워크플로 전체 자동화가 아니라 태깅&middot;시트생성 등 좁은 영역부터 ROI를 검증.</li>
+                <li>DC인사이드 자격증 불만 스레드는 &lsquo;운용전문가 1&middot;2급&rsquo; 실효성에 대한 현장 체감을 보여주는 지표 → 사내 채용 요건에서 자격증 가중치를 재검토할 근거로 참고.</li>
+                <li>신입 채용 여지가 있다면 &lsquo;건설기술교육원 BIM 전문인력 양성과정&rsquo; 수료생 등 교육기관 연계 채용 채널을 시범 운영해볼 만합니다.</li>
+              </ul>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">04</span> 이번 조사 방법 개선 제안</h4>
+              <div class="note-amber">
+                <b>Reddit&middot;LinkedIn 직접 조회 전면 차단(반복 문제):</b> <span class="mono">www.reddit.com</span>&middot;<span class="mono">old.reddit.com</span>&middot;reddit JSON 엔드포인트 모두 WebFetch 차단, WebSearch도 <span class="mono">site:reddit.com</span> 쿼리에서 실제 게시글을 반환하지 못했습니다(색인 한계로 추정). Autodesk Community 개별 스레드도 403으로 직접 조회 실패해 WebSearch 스니펫으로만 인용했습니다.
+              </div>
+              <ul>
+                <li><strong>Reddit 대체 경로 검토</strong> — teddit/libreddit류 미러나 Reddit 공식 데이터 API(OAuth) 키 발급을 검토. 매주 동일하게 막히는 구조적 문제이므로 검색 스니펫 우회는 임시방편입니다.</li>
+                <li><strong>LinkedIn 표준 인용 방식 정립</strong> — 본문 fetch가 막히므로, 검색으로 확보한 게시물 URL과 스니펫만 인용하고 &ldquo;검색 스니펫 기반&rdquo;임을 리포트에 항상 명시하는 방식을 표준화.</li>
+                <li><strong>DC인사이드 갤러리의 한계</strong> — 2024-10 개설된 소규모 갤러리라 댓글이 거의 없어(대부분 0~수개) &lsquo;논쟁&rsquo;보다 &lsquo;질문글&rsquo; 위주입니다. 더 활성화된 국내 커뮤니티(대형 네이버 카페, BIM 전문 카페 등) 발굴이 필요합니다.</li>
+                <li><strong>영어권 보조 소스 상시 등록</strong> — Autodesk Community(forums.autodesk.com), GrabCAD, thebimhub 같은 실무자 포럼을 플레이북에 상시 보조 소스로 등록하면 Reddit 차단 시 안정적 대체 채널이 될 것으로 판단됩니다.</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+      <div class="arch-item">
+        <details class="sub-arch">
+          <summary>2026-09-01 (화) · BIM 입찰&middot;수주 동향 — 나라장터 Open API 자동수집 브리핑</summary>
+          <div class="body">
+            <div class="r-head">
+              <h3>BIM 입찰&middot;수주 동향 파악 — 나라장터 Open API 자동수집 브리핑</h3>
+              <p class="meta">2026-09-01 (화) &middot; Asia/Seoul &middot; 조사범위 최근 14일(2026-08-18~09-01) &middot; 키워드: BIM / 건설정보모델링 / 디지털트윈 / 스마트건설</p>
+              <p class="lead">지난 회차 개선 제안대로 이번엔 <strong>나라장터 입찰공고정보서비스 Open API 자동수집 결과</strong>(<span class="mono">.state\bids-2026-09-01.md</span>)를 1차 데이터로 사용했습니다. 최근 14일 키워드 매칭 공고는 <strong>총 5건</strong>이며 이 중 건설 BIM&middot;공간정보와 직접 맞닿은 건은 1&ndash;2건입니다. 나머지는 전력&middot;제조&middot;의료 분야 디지털트윈으로, 이번 신호는 <strong>&ldquo;API 자동수집 정착&rdquo;</strong>과 <strong>&ldquo;&lsquo;디지털트윈&rsquo; 키워드의 건설 외 노이즈&rdquo;</strong> 두 축입니다.</p>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">01</span> 핵심 요약</h4>
+              <ul>
+                <li><strong>나라장터 Open API 자동수집 정착</strong> — 화요일 루틴이 <span class="mono">test-bid-api.ps1</span>로 최근 14일(202608180000~202609012359) 공고를 조회해 <span class="mono">.state\bids-2026-09-01.md</span>에 저장. 지난주 검색 기반의 한계(개별 신규 공고 특정 실패)를 구조적으로 해소했습니다. 매칭 총 <strong>5건</strong>(공고번호 기준 중복 제거).</li>
+                <li><strong>&lsquo;BIM&rsquo;&middot;&lsquo;건설정보모델링&rsquo; 명시 공고는 이번 14일에도 0건</strong> — 매칭은 &lsquo;스마트건설&rsquo; 1건, &lsquo;디지털트윈&rsquo; 4건. 공공 BIM 용역이 공고명에 &lsquo;BIM&rsquo;을 쓰지 않고 &lsquo;설계용역&rsquo;&middot;&lsquo;관리 자동화 SW&rsquo;&middot;&lsquo;공간정보 구축&rsquo; 등으로 나오는 경향이 재확인됩니다.</li>
+                <li><strong>관련성 높은 공고 2건</strong> — ①한국건설기술연구원 &lsquo;2026 스마트건설 챌린지 행사 대행 용역&rsquo;(게시 08-31, 마감 09-01 12:00), ②인천가톨릭대 산학협력단 &lsquo;산업단지 및 인접지역 공간 데이터 수집 및 디지털트윈 체계 구축&rsquo;(게시 08-27, 마감 미표기). ②는 도시&middot;부지 단위 3D 공간정보 구축으로 BIM/GIS&middot;CIM 영역과 인접합니다.</li>
+                <li><strong>관련성 낮은 공고 3건</strong> — 디지털트윈 기반 전력계통 시각화(서울시립대), 철의장제조공정 디지털트윈센터 개소식(한국생산기술연구원), 디지털트윈 의료기기 개발 통합플랫폼(원주의료기기산업진흥원). 전력&middot;조선의장&middot;의료 분야로 건설 BIM과 무관 — &lsquo;디지털트윈&rsquo; 키워드의 노이즈율이 이번 회차 약 75%(5건 중 4건 비건설).</li>
+                <li><strong>스마트건설 챌린지가 실제 발주로 등장</strong> — 지난 회차 검색으로만 확인했던 &lsquo;2026 스마트건설 챌린지&rsquo;가 이번엔 &lsquo;행사 대행 용역&rsquo; 형태로 나라장터에 게시(마감 09-01 12:00로 이미 종료). BIM 부문을 포함한 국토부&middot;건설연 주관 공모의 부수 발주도 매년 8월 말~9월 초에 나온다는 점을 확인.</li>
+              </ul>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">02</span> 상세 발견사항 (소스별)</h4>
+
+              <div class="src">
+                <div class="s-name">나라장터 입찰공고정보서비스 Open API (자동수집 — <span class="mono">.state\bids-2026-09-01.md</span>)</div>
+                <p>최근 14일 키워드(<strong>BIM &middot; 건설정보모델링 &middot; 디지털트윈 &middot; 스마트건설</strong>) 부분일치 매칭 <strong>총 5건</strong>, 모두 &lsquo;용역&rsquo; 구분. &lsquo;BIM&rsquo;/&lsquo;건설정보모델링&rsquo; 직접 매칭 0건, &lsquo;스마트건설&rsquo; 1건, &lsquo;디지털트윈&rsquo; 4건. 아래 표는 제목 기준 건설 BIM/디지털 관련성 코멘트를 붙여 관련성 순으로 정리한 것입니다(인증키 등 비밀값은 리포트에 포함하지 않음).</p>
+                <div style="overflow-x:auto; margin:12px 0">
+                  <table style="border-collapse:collapse; width:100%; min-width:660px; font-size:12px">
+                    <thead>
+                      <tr style="text-align:left; border-bottom:2px solid var(--line); color:var(--muted)">
+                        <th style="padding:7px 10px; font-weight:600">공고명 / 공고번호</th>
+                        <th style="padding:7px 10px; font-weight:600; white-space:nowrap">발주기관</th>
+                        <th style="padding:7px 10px; font-weight:600; white-space:nowrap">게시일</th>
+                        <th style="padding:7px 10px; font-weight:600; white-space:nowrap">마감</th>
+                        <th style="padding:7px 10px; font-weight:600">관련성 코멘트</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr style="border-bottom:1px solid var(--line)">
+                        <td style="padding:7px 10px">산업단지 및 인접지역 공간 데이터 수집 및 디지털 트윈 체계 구축<br><span class="mono" style="color:var(--faint)">R26BK01701833-000</span></td>
+                        <td style="padding:7px 10px">인천가톨릭대학교 산학협력단</td>
+                        <td style="padding:7px 10px; white-space:nowrap">2026-08-27</td>
+                        <td style="padding:7px 10px; white-space:nowrap">미표기</td>
+                        <td style="padding:7px 10px"><strong>높음</strong> — 도시&middot;부지 단위 3D 공간정보 구축. 스캔-투-BIM&middot;BIM/GIS 통합&middot;CIM 영역과 인접. 산학협력단 발주로 R&amp;D&middot;실증 성격.</td>
+                      </tr>
+                      <tr style="border-bottom:1px solid var(--line)">
+                        <td style="padding:7px 10px">2026 스마트건설 챌린지 행사 대행 용역<br><span class="mono" style="color:var(--faint)">R26BK01706537-000</span></td>
+                        <td style="padding:7px 10px">한국건설기술연구원</td>
+                        <td style="padding:7px 10px; white-space:nowrap">2026-08-31</td>
+                        <td style="padding:7px 10px; white-space:nowrap">2026-09-01 12:00</td>
+                        <td style="padding:7px 10px"><strong>중간</strong> — 안전&middot;단지&middot;도로&middot;철도&middot;BIM 5개 분야 공모행사의 <em>운영 대행</em>. 기술용역이 아니고 마감이 게시 다음날 정오로 촉박.</td>
+                      </tr>
+                      <tr style="border-bottom:1px solid var(--line)">
+                        <td style="padding:7px 10px">디지털트윈 기반 전력계통 시각화 및 OpenDSS 연동 플랫폼 개발 용역<br><span class="mono" style="color:var(--faint)">R26BK01702187-000</span></td>
+                        <td style="padding:7px 10px">서울시립대학교 산학협력단</td>
+                        <td style="padding:7px 10px; white-space:nowrap">2026-08-27</td>
+                        <td style="padding:7px 10px; white-space:nowrap">2026-08-28 15:00</td>
+                        <td style="padding:7px 10px"><strong>낮음</strong> — 배전계통(OpenDSS) 시뮬레이션 연동. 전력공학 영역으로 건설 BIM과 무관.</td>
+                      </tr>
+                      <tr style="border-bottom:1px solid var(--line)">
+                        <td style="padding:7px 10px">철의장제조공정디지털트윈센터 개소식<br><span class="mono" style="color:var(--faint)">R26BK01698032-000</span></td>
+                        <td style="padding:7px 10px">한국생산기술연구원</td>
+                        <td style="padding:7px 10px; white-space:nowrap">2026-08-25</td>
+                        <td style="padding:7px 10px; white-space:nowrap">2026-08-26 18:00</td>
+                        <td style="padding:7px 10px"><strong>낮음</strong> — 조선&middot;플랜트 의장 제조공정용 센터 개소 &lsquo;행사&rsquo; 발주. 건물 BIM 아님.</td>
+                      </tr>
+                      <tr>
+                        <td style="padding:7px 10px">[긴급]디지털트윈 의료기기 개발 통합플랫폼 고도화 사업 용역<br><span class="mono" style="color:var(--faint)">R26BK01685772-000</span></td>
+                        <td style="padding:7px 10px">(재)원주의료기기산업진흥원</td>
+                        <td style="padding:7px 10px; white-space:nowrap">2026-08-18</td>
+                        <td style="padding:7px 10px; white-space:nowrap">미표기</td>
+                        <td style="padding:7px 10px"><strong>낮음</strong> — 의료기기 개발&middot;인허가 플랫폼. 건설과 완전 무관(플레이북 예시대로 관련성 없음).</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="links">
+                  <a href="https://www.data.go.kr/data/15129394/openapi.do">공공데이터포털 · 나라장터 입찰공고정보서비스</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">관련성 높은 공고 — 상세</div>
+                <p><strong>① 산업단지 및 인접지역 공간 데이터 수집 및 디지털트윈 체계 구축</strong>(인천가톨릭대 산학협력단, 게시 2026-08-27, 마감 미표기, R26BK01701833-000) — 산업단지와 주변 지역의 공간데이터를 수집해 디지털트윈 체계를 구축하는 용역. 부지&middot;도시 단위 3D 공간정보 구축은 스캔-투-BIM, BIM/GIS 통합, 도시정보모델(CIM)과 직접 인접해 이번 5건 중 건설&middot;엔지니어링 관점에서 관련성이 가장 높습니다. 마감이 표기되지 않아 원문 확인이 필요합니다.<br><br>
+                <strong>② 2026 스마트건설 챌린지 행사 대행 용역</strong>(한국건설기술연구원, 게시 2026-08-31, 마감 2026-09-01 12:00, R26BK01706537-000) — 국토부&middot;건설연이 주관하는 &lsquo;스마트건설 챌린지&rsquo;(안전&middot;단지&middot;도로&middot;철도&middot;BIM 5개 분야 공모)의 행사 운영 대행. 챌린지 자체는 BIM 커뮤니티와 직접 연결되나 이 공고는 기술용역이 아니라 행사 대행이며 게시 다음날 정오 마감이라 사실상 지명&middot;수의 성격으로 추정됩니다.</p>
+              </div>
+
+              <div class="src">
+                <div class="s-name">보조 맥락 — KAIA R&amp;D &amp; 공공 BIM 발주 패턴 (지난 회차 이월)</div>
+                <p>KAIA(국토교통과학기술진흥원) 국토교통R&amp;D는 최근 &lsquo;국토교통연구기획&rsquo; 등 기획 단계 공고 중심이며 BIM 단독 과제는 드물고 디지털트윈&middot;자율주행 인접 과제에 포함되는 형태입니다(예: 2026-40 &lsquo;디지털 트윈 기반 GTX 환승안전 및 혁신기술 개발&rsquo;). 또한 지난 회차 확인한 LH &lsquo;BIM 기반 공정&middot;기성관리 자동화 소프트웨어 개발 용역&rsquo;(추정가격 약 6억 9,185만원, 공고 2026-06-10, 마감 2026-07-21)처럼 공공 BIM 발주는 공고명에 &lsquo;BIM&rsquo;이 들어가더라도 &lsquo;자동화 SW&rsquo;&middot;&lsquo;설계용역&rsquo; 형태로 나와 나라장터 키워드 검색만으로는 놓칠 수 있습니다.</p>
+                <div class="links">
+                  <a href="https://www.kaia.re.kr/portal/main.do">KAIA 포털</a>
+                  <a href="https://www.data.go.kr/data/15129437/openapi.do">공공데이터포털 · 나라장터 사전규격정보서비스</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">03</span> 시사점 / 액션 아이디어</h4>
+              <ul>
+                <li>&lsquo;디지털트윈&rsquo; 키워드는 건설 외 분야(전력&middot;제조&middot;의료) 노이즈가 이번 회차 3/4 → 자동수집 단계에서 &lsquo;건설정보모델링&rsquo;&middot;&lsquo;스마트건설&rsquo;&middot;&lsquo;BIM&rsquo;을 우선하고 &lsquo;디지털트윈&rsquo; 결과는 발주기관&middot;공고명에 &lsquo;건설/도시/공간/시설/단지/도로/철도/국토&rsquo; 등 2차 필터를 적용해 선별.</li>
+                <li>공공 BIM 용역이 공고명에 &lsquo;BIM&rsquo;을 쓰지 않는 경향 → 수집 키워드에 <strong>&lsquo;3차원 설계&rsquo;&middot;&lsquo;공간정보 구축&rsquo;&middot;&lsquo;스캔&rsquo;&middot;&lsquo;준공도서 전자화&rsquo;&middot;&lsquo;CIM&rsquo;</strong> 추가를 검토.</li>
+                <li>인천가톨릭대 &lsquo;산업단지 공간데이터&middot;디지털트윈&rsquo; 건은 마감 미표기 → 원문 확인 대상. 스캔-투-BIM&middot;공간정보 구축 역량이 있으면 유사 산학&middot;지자체 공고를 별도 추적 리스트로 관리.</li>
+                <li>&lsquo;스마트건설 챌린지&rsquo;는 행사 대행까지 나라장터에 올라옴 → 챌린지 접수&middot;시상 일정과 별개로 EXPO 부스&middot;홍보물 등 부수 발주가 매년 8월 말~9월 초 집중. 관심 시 이 시기 모니터링 강화.</li>
+                <li>KAIA는 여전히 BIM 단독 과제가 드묾 → 디지털트윈&middot;자율주행 인접 R&amp;D 과제 본문에 BIM 요소가 포함되는지 개별 공고 원문 확인 필요.</li>
+              </ul>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">04</span> 이번 조사 방법 개선 제안</h4>
+              <div class="note-amber">
+                <b>지난 회차 개선 제안 반영 완료:</b> 검색 기반 → <b>나라장터 입찰공고정보서비스 Open API 자동수집</b>(<span class="mono">test-bid-api.ps1</span> → <span class="mono">.state\bids-YYYY-MM-DD.md</span>)이 정상 작동. g2b 웹 직접 접속은 여전히 SSO 차단이지만 API 경로로 우회에 성공했습니다. 이번 회차는 이 표를 1차 데이터로 사용.
+              </div>
+              <ul>
+                <li><strong>수집 키워드 재조정</strong> — &lsquo;디지털트윈&rsquo; 단독 매칭 노이즈율이 약 75%(5건 중 4건 비건설). 키워드 목록에 &lsquo;공간정보&rsquo;&middot;&lsquo;3차원설계&rsquo;&middot;&lsquo;CIM&rsquo;을 보강하고 &lsquo;디지털트윈&rsquo; 결과는 발주기관/공고명 2차 필터링 규칙을 <span class="mono">run-morning.ps1</span>에 추가하는 방안 검토.</li>
+                <li><strong>조회 오퍼레이션 확장</strong> — 현재 용역 위주로 보임. 공사(<span class="mono">...CnstwkPPSSrch</span>)&middot;물품(<span class="mono">...ThngPPSSrch</span>)도 병행 조회해 BIM 관련 공사&middot;SW 물품 공고를 포함.</li>
+                <li><strong>사전규격정보서비스</strong>(data.go.kr 15129437)도 자동수집에 추가 — 입찰공고보다 앞서 나오므로 선제 대응 시간을 확보할 수 있습니다.</li>
+                <li><strong>공고 원문 링크 자동 생성</strong> — 마감일 없는 공고(이번 2건)는 재입찰&middot;정보성일 수 있으므로, 공고번호로 나라장터 상세 링크를 만들어 리포트에서 바로 확인 가능하게.</li>
+              </ul>
+            </div>
+          </div>
+        </details>
+      </div>
+      <div class="arch-item">
+        <details class="sub-arch">
+          <summary>2026-08-31 (월) · BIM 업계 동향 — 2026년 8월 25&ndash;31일 브리핑</summary>
+          <div class="body">
+            <div class="r-head">
+              <h3>BIM 업계 동향 파악 — 2026년 8월 25&ndash;31일 브리핑</h3>
+              <p class="meta">2026-08-31 (월) &middot; Asia/Seoul &middot; 키워드: BIM / 건설 디지털전환 / 스마트건설</p>
+              <p class="lead">조사범위는 최근 7일(2026-08-25~31)로 제한했습니다. 1차 소스(국토부 보도자료 목록, InfoDEC 주간 리스트)는 차단&middot;미갱신이라 전문지 개별 기사와 CERIK 브리핑, 검색으로 보강했습니다. 이번 주 신호는 <strong>&ldquo;엔지니어링사의 AI 실무 내재화&rdquo;</strong>와 <strong>&ldquo;피지컬 AI &middot; 해외건설 경쟁력 진단&rdquo;</strong> 두 축입니다.</p>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">01</span> 핵심 요약</h4>
+              <ul>
+                <li><strong>서영엔지니어링, 첫 사내 AI 발표회(8/27)</strong> — 입찰공고 수집 90%&middot;토지등기부 정리 80% 자동화 성과 공개, 멀티에이전트 기반 제안서 작성 시스템이 대상 수상. 엔지니어링 업계의 AI 실무 내재화가 &lsquo;성과 공유&rsquo; 단계로 진입.</li>
+                <li><strong>건설산업연구원(CERIK) 8월 브리핑 연속 발간</strong> — 해외 매출 동향(ENR 250대 건설&middot;225대 설계) + 공사비 현실화 정책 2년차 성과&middot;과제 + <em>&lsquo;피지컬 AI(Physical AI)&rsquo;의 건설현장 진입</em>을 주요국 사례로 진단.</li>
+                <li><strong>정책 이행 지속</strong> — 500억원 이상 공공공사 BIM 의무화 단계(「BIM 기본지침」 전면개정 고시 제2026-104호, 2026-03-01 시행). 국토부 &lsquo;디지털 건설기준&rsquo; 테스트버전을 8~10월 말 설계&middot;시공사 BIM 담당자에게 배포 중 → 구축 완료 시 API 무상배포 예정.</li>
+                <li><strong>공공기관 BIM 저변 확대</strong> — 부산도시공사&ndash;LH 업무협약(8/6)으로 지방 공기업까지 BIM 발주 체계 도입. LH는 공동주택 &lsquo;AI 기반 BIM 토공설계 자동화 SW&rsquo; 개발 완료(6월), 토공 운반량 평균 약 7% 절감 기대.</li>
+                <li><strong>이번 주 조사 한계</strong> — 국토부 보도자료 목록 직접 조회 실패(리다이렉트 루프), InfoDEC 주간 &lsquo;BIM 뉴스 리스트&rsquo;는 2026-03 이후 미갱신 → 검색 기반으로 보강(§04 참조).</li>
+              </ul>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">02</span> 상세 발견사항 (소스별)</h4>
+
+              <div class="src">
+                <div class="s-name">엔지니어링데일리 (직접 조회 성공) &middot; 2026-08-28</div>
+                <p>서영엔지니어링이 8월 27일 경기 용인 본사에서 <strong>제1회 사내 AI 활용 발표회</strong> 개최. 입찰공고 수집 업무 90%, 토지등기부 정리 80%를 자동화했다고 발표. 정보 검색&middot;데이터 수집&middot;설계 자동화 등 4개 분야 15개 과제를 공유했고 멀티에이전트 기반 제안서 작성 시스템이 대상 수상. 김종흔 대표 &ldquo;AI는 실질적 업무 도구로 우리의 일하는 방식을 바꾸고 있다&rdquo;. → 설계&middot;엔지니어링사의 반복업무(입찰&middot;인허가&middot;물량) 자동화가 구체 성과로 가시화.</p>
+                <div class="links">
+                  <a href="https://www.engdaily.com/news/articleView.html?idxno=23224">&ldquo;입찰 수집 업무 90% 자동화&rdquo; 서영, AI 발표회 현장</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">한국건설산업연구원(CERIK) 건설동향브리핑 (직접 조회 성공)</div>
+                <p><strong>1072호(2026-08-28)</strong> &lsquo;2025년 ENR 250대 건설기업의 해외 매출 동향 분석과 시사점&rsquo;(손태홍&middot;나경연). <strong>1071호(2026-08-21)</strong> &lsquo;공공공사 공사비 현실화 정책의 성과와 제값 받기까지 남은 과제&rsquo; + &lsquo;피지컬 AI의 건설현장 진입을 위한 주요국의 변화와 시사점&rsquo; — 2026 표준시장단가 개편에서 안전비용 반영(+2.98%)&middot;물가 보정 체계 개선, 유럽연합 등이 현장 적용을 위한 제도 정비 중이며 건설현장이 AI의 &lsquo;시뮬레이션 → 현실&rsquo; 전환 무대로 부상. <strong>1070호(2026-08-14)</strong> &lsquo;2025년 ENR 225대 설계기업 해외 매출 동향 분석&rsquo;.</p>
+                <div class="links">
+                  <a href="https://www.cerik.re.kr/report/briefing/3121">1072호 · ENR 250대 건설기업</a>
+                  <a href="https://www.cerik.re.kr/report/briefing/3120">1071호 · 공사비 현실화 / 피지컬 AI</a>
+                  <a href="https://www.cerik.re.kr/report/briefing/3119">1070호 · ENR 225대 설계기업</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">국토교통부 정책 이행 (검색 기반 — 목록 직접 조회 실패)</div>
+                <p>「건설정보모델링(BIM) 기본지침」 전면개정 고시 제2026-104호(2026-03-01 시행) 적용 중, 공공 발주공사 BIM 의무 적용을 <strong>2026년 500억원 이상 → 2028년 300억원 이상 → 2030년 전면</strong>으로 단계 확대. &lsquo;건설기준 디지털화 사업(2022~2026)&rsquo;의 <strong>&lsquo;디지털 건설기준&rsquo; 테스트버전을 2026년 8~10월 말 설계&middot;시공사 BIM 담당자에게 배포</strong>, 의견 반영 후 구축 완료 시 API 형식 무상배포 예정. 교량&middot;건축&middot;도로&middot;철도&middot;터널 기준맵을 BIM에서 활용하도록 &lsquo;라이브러리&rsquo;&middot;&lsquo;온톨로지&rsquo;화 완료.</p>
+                <div class="links">
+                  <a href="https://www.molit.go.kr/USR/NEWS/m_71/dtl.jsp?id=95084979">BIM 기본지침&middot;2030 로드맵 보도자료</a>
+                  <a href="https://www.newsis.com/view/NISX20251210_0003435715">뉴시스 · 디지털 건설기준 무상 배포</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">공공기관&middot;지자체 BIM 확산 (검색 기반)</div>
+                <p>부산도시공사가 2026-08-06 LH와 <strong>공공부문 BIM 기술경쟁력 강화 업무협약</strong> 체결 — 설계&rarr;시공&rarr;유지관리 정보를 통합 관리하는 체계를 순차 도입(4월 &lsquo;스마트건설 얼라이언스 BIM 발주 협의회&rsquo; 가입에 이은 후속). LH는 공동주택 대상 <strong>&lsquo;AI 기반 BIM 토공설계 자동화 SW&rsquo; 개발 완료(2026-06)</strong>, 기존 방식 대비 토공 운반량 평균 약 7% 절감 기대.</p>
+                <div class="links">
+                  <a href="https://www.busan.com/view/busan/view.php?code=2026080618144083185">부산일보 · 부산도시공사 BIM 순차 도입</a>
+                  <a href="https://www.ajunews.com/view/20260625093414164">아주경제 · LH AI 기반 BIM 토공설계 자동화</a>
+                </div>
+              </div>
+
+              <div class="src">
+                <div class="s-name">전문지&middot;행사 — 캐드앤그래픽스 / 한국BIM학회 (개별 기사 조회 성공)</div>
+                <p>2026 하반기 건설공사 표준시장단가(2026-05-08 적용, 1,457p) 부록에 국토부&middot;한국건설기술연구원 공동 <strong>&lsquo;BIM 단가 상세설명서&rsquo;</strong> 수록 — BIM 기반 공종별 단가 산출 근거를 국가 단가체계에 반영. &lsquo;코리아 그래픽스 2026&rsquo;(9/11, 건축시각화&middot;BIM 포함) 예정. 한국BIM학회 2026 정기학술대회가 <em>BIM &times; AI(&lsquo;지능형 건설&rsquo;)</em>를 중심 의제로 준비 중이며 지난해 11월 국제 심포지엄에서 &ldquo;전면 BIM 확대를 위한 정량화&middot;활성화 노력 필요&rdquo;가 제언됨.</p>
+                <div class="links">
+                  <a href="https://www.cadgraphics.co.kr/newsview.php?pages=news&sub=new01&catecode=2&num=78387">표준시장단가에 BIM 단가 지침서 수록</a>
+                  <a href="https://www.cadgraphics.co.kr/newsview.php?pages=news&sub=news01&catecode=2&num=77656">한국BIM학회 &lsquo;지능형 건설의 부상&rsquo; 심포지엄</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">03</span> 시사점 / 액션 아이디어</h4>
+              <ul>
+                <li>엔지니어링사의 AI 내재화가 &lsquo;발표회&middot;성과 공유&rsquo; 단계로 진입 → 자사도 <strong>입찰&middot;인허가&middot;물량 산출 등 반복업무의 자동화 후보 목록</strong>을 정리하고 멀티에이전트 PoC를 1~2개 선정.</li>
+                <li>CERIK의 &lsquo;피지컬 AI&rsquo; 진단은 로봇&middot;자동화 장비의 현장 투입이 안전&middot;인증 제도 정비와 함께 온다는 신호 → <strong>BIM 모델을 로봇 작업지시&middot;시뮬레이션 입력</strong>으로 쓸 수 있도록 좌표계&middot;객체 속성&middot;분류체계를 미리 정비.</li>
+                <li>500억원 이상 공공공사 참여 시 <strong>&lsquo;BIM 단가 상세설명서&rsquo; 기준을 견적&middot;물량 프로세스에 선반영</strong> — 국가 단가와 어긋나면 정산 리스크.</li>
+                <li>&lsquo;디지털 건설기준&rsquo; API 무상배포에 대비 → 사내 BIM 검토 도구가 <strong>외부 기준맵 API를 소비할 수 있는 구조</strong>인지 점검하고 배포 채널(테스트버전) 참여 여부 확인.</li>
+                <li>지방 공기업까지 BIM 발주가 확산 → <strong>지역 거점 공사용 BIM 수행계획서(BEP) 표준 템플릿</strong>을 선제 준비.</li>
+              </ul>
+            </div>
+
+            <div class="r-sec">
+              <h4><span class="k">04</span> 이번 조사 방법 개선 제안</h4>
+              <div class="note-amber">
+                <b>직접 조회 실패 → 검색 기반 대체:</b> 국토부 보도자료 목록(molit.go.kr <span class="mono">lst.jsp</span>) WebFetch가 <b>리다이렉트 루프</b>로 실패. InfoDEC 주간 &lsquo;BIM 뉴스 리스트&rsquo;는 <b>2026-03 이후 미갱신</b>. 엔지니어링데일리&middot;캐드앤그래픽스 카테고리 <b>목록 페이지</b>는 BIM 기사 추출이 빈약. 반면 <b>개별 기사 URL</b>과 <b>CERIK 브리핑 목록(/report/briefing)</b>은 정상 조회됨.
+              </div>
+              <ul>
+                <li>국토부는 목록 페이지 대신 <strong>개별 보도자료(<span class="mono">dtl.jsp?id=…</span>) 또는 대한민국 정책브리핑(korea.kr) 검색</strong>을 1차 소스로 전환.</li>
+                <li><strong>CERIK 건설동향브리핑 목록(<span class="mono">cerik.re.kr/report/briefing</span>)을 월요일 상시 1차 소스로 승격</strong> — 직접 조회가 안정적이고 최신 발간분 날짜가 명확.</li>
+                <li>엔지니어링데일리는 <strong>검색결과 URL(<span class="mono">articleList.html?sc_word=BIM</span>)</strong>이 유효 → config에 매체별 &lsquo;BIM 검색 URL&rsquo;을 등록해 카테고리 피드처럼 사용.</li>
+                <li>InfoDEC 미갱신 대비 대체 큐레이터: <strong>스마트건설 얼라이언스(smartcona) 뉴스, 대한전문건설신문(koscaj)&middot;기계설비신문 &lsquo;기술&rsquo; 섹션</strong>을 보조 소스로 추가 검토.</li>
+                <li>최신성 강화: 검색 쿼리에 <strong>절대 날짜 범위(예: <span class="mono">2026-08-25..2026-08-31</span>)</strong>와 &lsquo;YYYY년 M월&rsquo; + 매체명 조합을 병행 — 현재 2025년 로드맵 기사가 상위 노출되는 문제 억제.</li>
+              </ul>
+            </div>
+
+            <details class="sub-arch" style="margin-top:14px">
+              <summary>2026-08-31 (월) · BIM 업계 동향 — 최초 자동 초안 (재조사로 대체됨)</summary>
+              <div class="body">
+                <p style="font-size:12.5px;color:var(--muted);margin:0 0 12px">아래는 같은 날 최초 게시된 자동 초안입니다. 위 리포트가 최근 7일 재조사 결과로 이를 대체했으며 초안의 일부 수치&middot;출처(시장 규모, 에이전틱 BIM 관련 해외 링크 등)는 직접 검증되지 않았습니다.</p>
+                <div class="r-head">
+                  <h3>BIM 업계 동향 파악 — 2026년 8월 4주차 브리핑</h3>
+                  <p class="meta">2026-08-31 (월) &middot; Asia/Seoul &middot; 키워드: BIM / 건설 디지털전환 / 스마트건설</p>
+                  <p class="lead">1차 소스 직접 조회는 일부만 성공했고 나머지는 WebSearch 결과로 보강했습니다(아래 개선 제안 참조). 이번 주는 "정책·제도 이행"과 "생성형 AI &times; BIM"이 두 축입니다.</p>
+                </div>
+
+                <div class="r-sec">
+                  <h4><span class="k">01</span> 핵심 요약</h4>
+                  <ul>
+                    <li><strong>BIM 의무화 확대 진행 중</strong> — 2026년 500억원 이상 공공공사로 의무 적용 확대. 2028년 300억원, 2030년 전면 도입 로드맵. 「건설정보모델링(BIM) 기본지침」 전면개정본이 2026-03-01 시행됨.</li>
+                    <li><strong>BIM 공사비가 공식 단가체계에 편입</strong> — 국토부&middot;건설연 공동 'BIM 단가 상세설명서'가 2026 하반기 건설공사 표준시장단가(2026-05-08 적용) 부록으로 수록. 디지털 모델 기반 공사비 산출 근거가 국가 단가에 처음 반영.</li>
+                    <li><strong>'2026 스마트건설 챌린지'(7회) 진행</strong> — BIM 부문 주제가 <em>'BIM to AI: 생성형 AI 시대 BIM의 새로운 가능성'</em>. 총상금 3억원, 수상작은 11/25~27 킨텍스 '스마트건설 EXPO' 전시.</li>
+                    <li><strong>글로벌 화두는 '에이전틱 BIM(agentic BIM)'</strong> — AI 에이전트가 간섭검토를 넘어 건물 데이터를 읽고&middot;해석&middot;수정. 2026년 6월 4개 업체가 관련 플랫폼&middot;투자 발표. 다만 DIS/ISO 19650-1:2026 개정 초안엔 '에이전트' 언급 없음.</li>
+                    <li><strong>시장 규모</strong> — 글로벌 BIM 소프트웨어 시장 2026년 약 102.7억 달러 → 2034년 270억 달러 전망. 전 세계 프로젝트의 약 65%가 BIM 워크플로 사용. 6D(탄소&middot;LCA)&middot;7D(FM) 확장과 클라우드 협업이 사실상 표준화.</li>
+                  </ul>
+                </div>
+
+                <div class="r-sec">
+                  <h4><span class="k">02</span> 상세 발견사항 (소스별)</h4>
+
+                  <div class="src">
+                    <div class="s-name">국토교통부 &middot; 대한민국 정책브리핑</div>
+                    <p>공공 발주공사 BIM 의무 적용 대상을 2026년 500억원 이상 → 2028년 300억원 이상으로 단계 확대, 2030년까지 전 공공공사 전면 도입 목표. 「건설산업 BIM 기본지침」과 「2030 건축 BIM 활성화 로드맵」이 적용 원칙&middot;절차&middot;협업체계&middot;공통표준을 규정. 건설산업을 '종이도면&middot;인력 중심 → 디지털&middot;자동화'로 전환한다는 기조.</p>
+                    <div class="links">
+                      <a href="https://www.molit.go.kr/USR/NEWS/m_71/dtl.jsp?id=95084979">BIM 기본지침&middot;로드맵 보도자료</a>
+                      <a href="https://www.korea.kr/news/policyNewsView.do?newsId=148903792">정책브리핑: 디지털&middot;자동화 전환</a>
+                    </div>
+                  </div>
+
+                  <div class="src">
+                    <div class="s-name">캐드앤그래픽스 (직접 조회 성공)</div>
+                    <p>2026 하반기 건설공사 표준시장단가(1,457페이지) 공고에 'BIM 단가 상세설명서'가 부록으로 포함. 국토부&middot;한국건설기술연구원 공동 제작으로, BIM 기반 공종별 단가 산출 근거와 상세 기준을 체계화 — 현장에서 디지털 모델로 공사비를 정밀 예측&middot;관리하는 실무 가이드라인. 국가&middot;지자체&middot;공기업&middot;준정부기관 공사에 2026-05-08부터 즉시 적용. 별도로 한국BIM학회 국제 심포지엄 '지능형 건설의 부상'에서 "전면 BIM 확대를 위한 정량화&middot;활성화 노력 필요" 제언.</p>
+                    <div class="links">
+                      <a href="https://www.cadgraphics.co.kr/newsview.php?pages=news&sub=new01&catecode=2&num=78387">BIM 단가 지침서 수록 (2026-05-11)</a>
+                      <a href="https://www.cadgraphics.co.kr/newsview.php?pages=news&sub=news01&catecode=2&num=77656">한국BIM학회 국제 심포지엄</a>
+                    </div>
+                  </div>
+
+                  <div class="src">
+                    <div class="s-name">대한전문건설신문 &middot; 뉴스핌 &middot; 헤럴드경제</div>
+                    <p>국토부 '2026 스마트건설 챌린지'(7회) 개최. 안전관리&middot;주거&middot;도로&middot;철도&middot;BIM 5개 분야 공모로, BIM 부문은 '생성형 AI + BIM' 결합 혁신기술을 겨룸. 분야별 대상(3천만원, 장관상) 및 공공기관장상 다수. 수상작은 2026-11-25~27 일산 킨텍스 '2026 스마트건설 EXPO' 전시.</p>
+                    <div class="links">
+                      <a href="https://www.koscaj.com/news/articleView.html?idxno=324627">국토부, AI&middot;BIM 건설기술 공모</a>
+                      <a href="https://www.newspim.com/news/view/20260612001041">AI&middot;로봇으로 건설현장 바꾼다</a>
+                    </div>
+                  </div>
+
+                  <div class="src">
+                    <div class="s-name">한국BIM학회 / buildingSMART Korea</div>
+                    <p>2026년도 정기학술대회 주제가 <em>'Build Your Own BIM Intelligence'</em> — BIM 최신 흐름&middot;사례 공유와 함께 자체 AI 활용 가능성을 논의하는 자리로 예고. '지능형 건설(AI&middot;빅데이터&middot;디지털트윈 융합)'을 중심 의제로 설정.</p>
+                    <div class="links">
+                      <a href="https://www.buildingsmart.or.kr/Home/NewsDetail?board=1&id=3408">2026 정기학술대회 안내</a>
+                      <a href="https://kibim.or.kr/Conference/Conferencelist.asp?AC=0&CODE=CC20260301&B_CATE=BBC1">학회 학술대회 목록</a>
+                    </div>
+                  </div>
+
+                  <div class="src">
+                    <div class="s-name">해외 — PBC Today / AEC Magazine / Geo Week News</div>
+                    <p>2026년 BIM 트렌드는 AI&middot;디지털트윈&middot;클라우드 협업&middot;데이터 기반 기획이 견인. '에이전틱 BIM'이 새 국면 — 2026-06-17~30 사이 4개 업체가 AI BIM 자동화 플랫폼&middot;투자 발표. AGC 2026 전망에서 기업의 61%가 AI 사용 중이거나 투자 확대 예정. 반면 협업표준 개정 초안(DIS/ISO 19650-1:2026, 2026-03 공람)엔 자율&middot;에이전트 워크플로 언급이 없어 표준-현장 간 격차 지적. Vectorworks 2026 정식 출시.</p>
+                    <div class="links">
+                      <a href="https://www.pbctoday.co.uk/news/digital-construction-news/bim-in-2026-artificial-intelligence-best-in-class-collaboration/162865/">BIM in 2026: AI &amp; collaboration</a>
+                      <a href="https://aecmag.com/features/the-agentic-future-of-bim/">The agentic future of BIM</a>
+                      <a href="https://www.geoweeknews.com/articles/ai-bim-automation-sees-concentrated-june-activity-with-four-major-launches/">AI BIM automation — June launches</a>
+                    </div>
+                  </div>
+
+                  <div class="src">
+                    <div class="s-name">업계 동향 — 건설의 제조화 / OSC</div>
+                    <p>유닛랩이 CES 2026에서 'AI&middot;BIM 기반 건설 OS'를 공개하며 '건설의 제조화' 선언 — 설계 자동화 + OSC(탈현장 건설)로 현장 효율 극대화 전략. 정부는 모듈러 공공임대주택 물량을 2025년 2,000호 → 2026년 이후 3,000호로 확대 계획. 대형 건설&middot;엔지니어링사는 SMR&middot;AI 데이터센터&middot;O&amp;M 등 비주택 고부가 분야로 사업 다변화.</p>
+                    <div class="links">
+                      <a href="https://info.dec-w.com/369">InfoDEC 주간 BIM 뉴스 리스트</a>
+                      <a href="https://www.kharn.kr/mobile/article.html?no=19910">국토부 스마트건설 활성화방안</a>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="r-sec">
+                  <h4><span class="k">03</span> 시사점 / 액션 아이디어</h4>
+                  <ul>
+                    <li>500억원 이상 공공 프로젝트 참여 시 <strong>'BIM 단가 상세설명서' 기준을 견적&middot;물량 산출 프로세스에 선반영</strong> — 국가 단가와 어긋나면 정산 리스크.</li>
+                    <li><strong>'2026 스마트건설 챌린지' BIM 부문(생성형 AI &times; BIM) 참가 검토</strong> — 11월 킨텍스 EXPO 노출 + 장관상 레퍼런스 확보 기회.</li>
+                    <li><strong>에이전틱 BIM 대비 = 데이터 정비가 선결</strong>: 자사 모델의 IFC&middot;속성 스키마&middot;명명규칙 표준화가 AI 에이전트 적용의 전제. 표준(ISO 19650) 개정이 아직 에이전트를 다루지 않으므로 사내 가이드가 먼저 필요.</li>
+                    <li>6D(탄소&middot;LCA)&middot;7D(FM) 확장에 대비해 <strong>준공 모델 → 자산&middot;유지관리 데이터 연계 파이프라인</strong>을 파일럿으로 설계.</li>
+                    <li>OSC&middot;모듈러 공공물량 3,000호 확대는 <strong>설계 자동화&middot;표준부재 라이브러리</strong> 수요 신호 — 해당 역량 보유 시 선제 제안 가치.</li>
+                  </ul>
+                </div>
+
+                <div class="r-sec">
+                  <h4><span class="k">04</span> 이번 조사 방법 개선 제안</h4>
+                  <div class="note-amber">
+                    <b>직접 조회 실패 → 검색 기반 대체:</b> engdaily.com &middot; cadgraphics.co.kr 메인 페이지 WebFetch는 BIM 전용 기사 추출에 실패했고 cadgraphics 개별 기사 URL만 정상 조회됐습니다. 나머지는 WebSearch로 보강했습니다.
+                  </div>
+                  <ul>
+                    <li>각 매체의 <strong>'BIM/스마트건설' 카테고리 목록 URL을 config.json에 직접 등록</strong> — 예: 캐드앤그래픽스 <span class="mono">newsview catecode=2</span> 목록, 대한전문건설신문 '기술' 섹션. 메인 페이지 대신 카테고리 피드를 1차 소스로.</li>
+                    <li><strong>InfoDEC(info.dec-w.com)</strong>가 주간 'BIM 관련 뉴스 리스트'를 큐레이션 중 → 보조 소스로 상시 포함하면 커버리지가 넓어짐.</li>
+                    <li>검색 쿼리에 <strong>'YYYY년 M월' + 매체명</strong>을 조합해 최신성 필터를 강화(현재 오래된 로드맵 기사가 상위 노출됨).</li>
+                    <li><strong>국토부 보도자료(molit.go.kr)와 정책브리핑(korea.kr)을 월요일 1차 소스로도 상시 포함</strong> — 제도 이행 뉴스가 이 채널에서 가장 먼저 나옴.</li>
+                    <li>가능하면 화요일 루틴과 연계해 <strong>나라장터 'BIM 설계' 최근 공고 건수</strong>를 월요일 리포트 지표로 1줄 요약(동향의 정량 신호).</li>
+                  </ul>
+                </div>
+              </div>
+            </details>
+          </div>
+        </details>
+      </div>
+    </details>
+  </section>
+
+  <footer>
+    MORNING ROUTINE CONSOLE · v1 · Asia/Seoul<br>
+    자동 조사 → 게시 → 알림 파이프라인 · 소스: 요일별 모닝루틴 플레이북 · 최종 갱신 2026-09-21 08:00 KST
+  </footer>
+</div>
+<button class="pdfbtn" id="pdfBtn" title="오늘 리포트를 PDF로 저장 (인쇄 → PDF로 저장)">🖨 PDF 저장</button>
+<div class="pdf-note" id="pdfNote" hidden>이 웹 페이지(claude.ai)는 보안정책으로 스크립트 인쇄가 막혀 PDF 저장이 안 됩니다. PC에서 열리는 <b>로컬 리포트</b>의 같은 버튼을 쓰거나, 자동 저장분 <b>reports\pdf\모닝루틴_날짜.pdf</b>를 이용하세요. (또는 <b>Ctrl+P</b>)</div>
+<script>
+(function(){
+  var b=document.getElementById('pdfBtn'); if(!b) return;
+  b.addEventListener('click',function(){
+    var framed=false; try{ framed = (window.top!==window.self); }catch(e){ framed=true; }
+    if(framed){ var n=document.getElementById('pdfNote'); if(n) n.hidden=false; }
+    else { try{ window.print(); }catch(e){ var n2=document.getElementById('pdfNote'); if(n2) n2.hidden=false; } }
+  });
+})();
+</script>
+<script>
+/* 요일별 지난 리포트 네비게이션: 아카이브(지난 리포트)를 읽어 요일 버튼과 연결 */
+(function(){
+  var reports = [];
+  document.querySelectorAll('.arch-item > details.sub-arch').forEach(function(d){
+    var sum = d.querySelector(':scope > summary'); if(!sum) return;
+    var txt = sum.textContent.trim();
+    var dm = txt.match(/\((월|화|수|목|금|토|일)\)/);
+    var datem = txt.match(/(\d{4}-\d{2}-\d{2})/);
+    var title = txt; var i = txt.indexOf('· '); if(i>=0) title = txt.slice(i+2).trim();
+    reports.push({ dow: dm?dm[1]:'', date: datem?datem[1]:'', title: title, el: d });
+  });
+  var byDow = {};
+  reports.forEach(function(r){ (byDow[r.dow]=byDow[r.dow]||[]).push(r); });
+
+  var panel = document.getElementById('dayReports');
+  var drTitle = document.getElementById('drTitle');
+  var drList = document.getElementById('drList');
+  var drClose = document.getElementById('drClose');
+  if(!panel || !drList) return;
+  var days = Array.prototype.slice.call(document.querySelectorAll('.week .day[data-dow]'));
+
+  days.forEach(function(btn){
+    var list = byDow[btn.getAttribute('data-dow')] || [];
+    var cnt = btn.querySelector('.cnt');
+    if(cnt && list.length){ cnt.textContent = '지난 리포트 ' + list.length; cnt.hidden = false; }
+  });
+
+  function openReport(r){
+    var p = r.el;
+    while(p){ if(p.tagName === 'DETAILS'){ p.open = true; } p = p.parentElement; }
+    var sum = r.el.querySelector(':scope > summary') || r.el;
+    sum.scrollIntoView({ behavior:'smooth', block:'center' });
+    r.el.classList.remove('arch-flash'); void r.el.offsetWidth; r.el.classList.add('arch-flash');
+    try{ sum.focus({ preventScroll:true }); }catch(e){}
+  }
+
+  function selectDay(btn){
+    days.forEach(function(b){ var on = (b===btn); b.classList.toggle('sel', on); b.setAttribute('aria-pressed', on?'true':'false'); });
+    var dow = btn.getAttribute('data-dow');
+    var t = btn.querySelector('.t') ? btn.querySelector('.t').textContent : '';
+    var list = byDow[dow] || [];
+    drTitle.textContent = dow + '요일 · ' + t + ' — 지난 리포트 ' + list.length + '건';
+    drList.innerHTML = '';
+    if(!list.length){
+      var li = document.createElement('li'); li.className = 'dr-empty';
+      li.textContent = '아직 이 요일의 지난 리포트가 없습니다.'; drList.appendChild(li);
+    } else {
+      list.forEach(function(r){
+        var li = document.createElement('li');
+        var b = document.createElement('button'); b.type = 'button';
+        var dt = document.createElement('span'); dt.className = 'dt'; dt.textContent = r.date;
+        var tt = document.createElement('span'); tt.textContent = r.title;
+        b.appendChild(dt); b.appendChild(tt);
+        b.addEventListener('click', function(){ openReport(r); });
+        li.appendChild(b); drList.appendChild(li);
+      });
+    }
+    panel.hidden = false;
+  }
+
+  days.forEach(function(btn){ btn.addEventListener('click', function(){ selectDay(btn); }); });
+  if(drClose) drClose.addEventListener('click', function(){
+    panel.hidden = true;
+    days.forEach(function(b){ b.classList.remove('sel'); b.setAttribute('aria-pressed','false'); });
+  });
+
+  // 기본: 지난 리포트가 있으면 가장 최근 리포트의 요일을 자동 선택해 목록을 보여줌
+  if(reports.length){
+    var newest = reports.slice().sort(function(a,b){ return (b.date||'').localeCompare(a.date||''); })[0];
+    var target = days.filter(function(b){ return b.getAttribute('data-dow') === newest.dow; })[0];
+    if(target) selectDay(target);
+  }
+})();
+</script>
+</body></html>
