@@ -207,16 +207,117 @@
     <div class="clock">
       <span class="big mono">08:00 KST</span>
       월–금 자동 실행<br>
-      <span class="mono">최종 갱신 2026-09-30</span>
+      <span class="mono">최종 갱신 2026-10-01</span>
     </div>
   </header>
 
   <section class="today">
     <div class="today-bar">
       <span class="tag">오늘의 리포트</span>
-      <span class="when mono">2026-09-30 (수) &middot; 실무자 의견</span>
+      <span class="when mono">2026-10-01 (목) &middot; 연구개발 동향</span>
     </div>
     <div class="today-body report">
+<div class="r-head">
+  <h3>연구개발 동향 — 에이전틱 BIM 저작이 도구 호출에서 검증 가능한 중간표현으로 넘어가고, 스캔 잉입 자동화는 네이티브 Revit 객체까지 닿았다</h3>
+  <p class="meta">2026-10-01 (목) &middot; Asia/Seoul &middot; 방법: 관련도 우선 + 최신성 보정(하이브리드) &middot; 소스: arXiv / Google Scholar(scisbd=1) &middot; 키워드: 에이전틱 AI&middot;BIM 저작, 스캔투BIM 잉입, 건축법규 준수검토, 디지털트윈&middot;시설관리</p>
+  <p class="lead">지난 네 회차(09-03&middot;09-10&middot;09-17&middot;09-24)에서 다룬 문헌은 모두 제외했습니다. 09-24 개선 제안에 &lsquo;다음 회차는 디지털트윈&middot;CIM이나 에이전틱 AI 인프라 쪽으로 무게중심을 옮기자&rsquo;고 적어둔 대로 이번엔 openBIM/IFC 상호운용 대신 에이전틱 BIM 저작&middot;스캔 잉입 자동화&middot;법규 준수검토&middot;시설관리 디지털트윈 네 갈래로 표본을 짰습니다. 지난 한 달 이내 제출된 신규 논문 두 편(KIR&middot;BIMScript)을 포함해 최신성도 함께 맞췄습니다.</p>
+</div>
+<div class="r-sec">
+  <h4><span class="k">01</span> 핵심 요약</h4>
+  <ul>
+    <li><strong>에이전트가 BIM을 저작하다 만나는 실패를 그대로 기록하는 중간표현 &lsquo;KIR&rsquo;이 나왔다(9월 13일 제출, 3주 이내 신규).</strong> Revit 위 83개 오퍼레이션 계약으로 시험한 결과 42개 스트레스 프로그램 중 29개를 진단정보와 함께 거부했고 377개 의무사항 중 38개를 미검증으로 표시했으며, 처리되지 않은 예외는 0건이었다.</li>
+    <li><strong>SceneScript를 확장한 &lsquo;BIMScript&rsquo;가 스캔 잉입 결과를 네이티브 Revit 오브젝트까지 끌고 갔다(8월 19일 제출).</strong> 재질·상태 속성을 더하고 10만 개 합성 장면·190만 개 의사라벨로 학습했으며 CUDA-그래프 디코딩으로 생성 속도를 3.4배 끌어올렸다. 결과물은 IFC4로도 내보낼 수 있다.</li>
+    <li><strong>문 검출과 LLM 추론을 엮어 시설 유형별 수량을 법규와 대조하는 과업이 처음 제안됐다.</strong> 지금까지 수작업이던 &lsquo;시설 열거&rsquo;를 Chain-of-Thought LLM으로 자동화했고 실사·합성 평면도 데이터 모두에서 검증했다.</li>
+    <li><strong>조지아텍 캠퍼스 건물 한 동을 통째로 디지털트윈화한 실증 사례가 나왔다.</strong> 3D 레이저스캔·BIM·IoT를 엮어 장비 509개를 표준분류로 정리하고 대화형 대시보드 10개를 만들었지만, 저자는 센서 데이터 대부분이 기존 인프라 부족으로 시뮬레이션이었다고 스스로 밝혔다.</li>
+    <li><strong>Google Scholar 직접 조회가 3회 연속 안정됐다.</strong> 09-17·09-24에 이어 이번에도 정상 접속됐으나 상위 결과는 여전히 규정검토·IDS 계열에 쏠려 있어 표본은 arXiv로 채웠다.</li>
+  </ul>
+</div>
+<div class="r-sec">
+  <h4><span class="k">02</span> 상세 발견사항 (문헌별)</h4>
+
+  <div class="src">
+    <div class="s-name">① KIR &mdash; 에이전트 저작 BIM을 위한 타입 중간표현 (arXiv 원문 확인, 신규 &middot; 3주 이내 &middot; 에이전틱 AI 인프라 계열)</div>
+    <p><strong>A Building as a Repository: KIR, a Typed Intermediate Representation for Agent-Authored Building Information Models</strong> &mdash; Dmitry Kuklev, arXiv 2609.14578(2026-09-13 제출). LLM 에이전트가 BIM을 직접 저작할 때 생기는 실패를 숨기지 않고 구조화해서 드러내는 중간표현이다. 모호한 선택은 대안이 달린 타입 거부로, 기본값은 그 출처를 남긴 채로, 이행되지 않은 의무는 사전에 식별되도록, 확인되지 않은 트랜잭션은 별도 검증 상태로 처리하는 식으로 일곱 가지 실패유형을 명시적으로 표현한다. Revit 위에서 83개 오퍼레이션 계약으로 시험한 결과 42개 스트레스 프로그램 중 29개를 진단정보와 함께 거부했고 377개 의무사항 중 38개는 검증 불가로 표시했으며 100개 상태조합 중 31개만 불변식을 통과했다. 60층 건물 하나를 컴파일된 산출물 대신 <span class="mono">11,263자</span> 분량의 KIR로 표현할 수 있었고 실행 중 처리되지 않은 예외는 0건이었다.<br><strong>&rsaquo; 우리 관점 시사점:</strong> 품질검토 결과를 통과&middot;실패 이분법으로만 내놓지 않고 에이전트의 의도&middot;거부 이유&middot;미검증 상태까지 구조화해 남기면, 검토 이력 자체가 재현 가능한 근거자료가 된다. NeXura 품질검토 파이프라인에 이런 &lsquo;거부 사유의 타입화&rsquo; 개념을 부분적으로 들여올 여지가 있음.</p>
+    <div class="links"><a href="https://arxiv.org/abs/2609.14578" target="_blank" rel="noopener">arXiv 2609.14578 &middot; KIR</a></div>
+  </div>
+
+  <div class="src">
+    <div class="s-name">② BIMScript &mdash; 재질&middot;상태 속성을 더한 구조화 장면 프로그램, 네이티브 Revit 잉입 (arXiv 원문 확인, 신규 &middot; 6주 이내 &middot; 스캔투BIM 자동화 계열)</div>
+    <p><strong>BIMScript: Material-Aware Structured Scene Programs for BIM Ingestion</strong> &mdash; Prakash Kondibhau Naikade&middot;Thomas B. Moeslund&middot;Andreas M&oslash;gelmose, arXiv 2608.21447(2026-08-19 제출). SceneScript류 구조화 언어모델이 건물 잉입에서 부딪히는 세 가지 한계, 곧 재질&middot;상태 정보 부재&middot;생성 속도&middot;기하 정밀도를 한 번에 겨냥했다. 10만 개 합성 장면과 190만 개 의사라벨로 구성한 시각-언어모델 코퍼스로 재질&middot;상태 속성을 새로 학습시키고 CUDA-그래프 디코딩과 결정적 엔티티 스키마 기반 draft-and-verify 방식으로 생성 속도를 3.4배 끌어올렸다. 학습이 필요 없는 스냅핑과 이산-연속 혼합 디코더로 기하 정밀도도 보완했다. 생성된 명령 하나하나가 <strong>네이티브 Revit 오브젝트로 바로 매핑</strong>되어 IFC4 내보내기까지 가능하고 이 위에서 LLM 기반 지속가능성 추론을 태울 수 있다고 밝혔다.<br><strong>&rsaquo; 우리 관점 시사점:</strong> 스캔투BIM 결과물을 기하만 맞는 더미 객체가 아니라 재질&middot;상태 속성이 붙은 네이티브 오브젝트로 바로 내놓는 접근은, 리모델링 프로젝트에서 우리 CDE가 외부 스캔 데이터를 받아들이는 입구 품질 기준을 어디까지 요구할지 정할 때 참고할 만함.</p>
+    <div class="links"><a href="https://arxiv.org/abs/2608.21447" target="_blank" rel="noopener">arXiv 2608.21447 &middot; BIMScript</a></div>
+  </div>
+
+  <div class="src">
+    <div class="s-name">③ 문 검출 + LLM 추론 기반 시설 열거, 건축법규 준수검토의 새 하위과업 (arXiv 원문 확인)</div>
+    <p><strong>Automated Facility Enumeration for Building Compliance Checking using Door Detection and Large Language Models</strong> &mdash; Licheng Zhang&middot;Bach Le&middot;Naveed Akhtar&middot;Tuan Ngo, arXiv 2509.17283(2025-09-21 제출, 09-26 개정). 건축법규 준수검토(BCC)에서 시설 유형별 수량과 배치를 법정 기준과 대조하는 &lsquo;시설 열거&rsquo;는 중요하지만 문헌에서 거의 다뤄지지 않았고 실무에서는 수작업으로 처리돼 왔다는 문제의식에서, 문 검출로 공간을 구획한 뒤 LLM에 Chain-of-Thought 추론을 태워 시설 유형&middot;수량을 세는 방법을 처음 제안했다. 실사&middot;합성 평면도 데이터 모두에서 다양한 시설 유형에 걸쳐 일반화가 잘 됐다고 보고했다.<br><strong>&rsaquo; 우리 관점 시사점:</strong> 단순 시각인식(문 검출)과 LLM 추론을 조합해 아직 자동화되지 않았던 검토 항목을 새로 여는 패턴은, 우리 품질검토 항목을 정할 때 &lsquo;아직 아무도 자동화하지 않은 규정 항목이 있는가&rsquo;를 먼저 훑어보는 접근의 참고 사례가 됨.</p>
+    <div class="links"><a href="https://arxiv.org/abs/2509.17283" target="_blank" rel="noopener">arXiv 2509.17283 &middot; Facility Enumeration for BCC</a></div>
+  </div>
+
+  <div class="src">
+    <div class="s-name">④ 캠퍼스 건물 디지털트윈 실증 &mdash; 조지아텍 Price Gilbert 빌딩 (arXiv 원문 확인 &middot; 디지털트윈&middot;시설관리 계열)</div>
+    <p><strong>A Framework for Scalable Digital Twin Deployment in Smart Campus Building Facility Management</strong> &mdash; Thyda Siv, arXiv 2512.12149(2025-12-13 제출). 3D 레이저스캔(점군)&middot;BIM&middot;IoT 시각화를 엮어 캠퍼스 건물의 운영&middot;유지관리를 지원하는 프레임워크를 조지아텍 Price Gilbert 빌딩에 실제로 적용했다. 건축&middot;기계설비 정보를 더한 BIM을 만들고 장비 509개를 표준분류로 정리해 장비 정보와 유지보수 절차를 잇는 대화형 대시보드 10개를 만들었다. 다만 저자는 <em>대부분의 센서 데이터가 기존 인프라 부족으로 실측이 아닌 시뮬레이션</em>이었다고 스스로 밝혔다.<br><strong>&rsaquo; 우리 관점 시사점:</strong> 문서화 중앙화&middot;시스템 투명성 개선이라는 성과와 함께 &lsquo;센서 데이터 대부분이 시뮬레이션&rsquo;이라는 한계를 저자가 그대로 적어둔 점이 오히려 쓸모 있다. 우리 디지털트윈 로드맵도 초기 단계에는 실데이터 확보가 병목이 될 수 있다고 전제하고, 시뮬레이션 데이터로 워크플로를 먼저 검증한 뒤 실데이터로 교체하는 단계적 접근을 계획에 넣을 필요가 있음.</p>
+    <div class="links"><a href="https://arxiv.org/abs/2512.12149" target="_blank" rel="noopener">arXiv 2512.12149 &middot; Smart Campus Digital Twin</a></div>
+  </div>
+
+  <div class="src">
+    <div class="s-name">⑤ Google Scholar 접근 상태 점검 (3회 연속 안정)</div>
+    <p><span class="mono">scholar.google.co.kr</span>에 <span class="mono">scisbd=1</span>(최신순)로 &lsquo;BIM openBIM IFC&rsquo; 검색을 직접 시도한 결과, 09-17&middot;09-24에 이어 이번에도 정상적으로 결과 목록이 로드됐다. 상위권은 디지털 빌딩 로그북, 디지털허가용 IDS 프레임워크, 모듈러 건설 정보량 적정성 등으로 지난 회차들과 크게 겹쳐 이번 표본에서는 제외하고 arXiv 검색으로 채웠다. 검색 도중 &lsquo;AgenticTwin&rsquo;(디지털트윈+에이전틱 LLM 이상탐지, arXiv 2608.11679, 8월 12일 제출)도 발견했으나 실증 데이터셋이 날씨 센서였고 건설&middot;BIM과의 접점이 확인되지 않아 관련도 낮음으로 제외했다.<br><strong>&rsaquo; 우리 관점 시사점:</strong> Scholar 접근이 3회 연속 안정된 것은 긍정적이나, 제목만으로 관련도를 판단하면 AgenticTwin처럼 오판할 수 있어 초록까지 열어 도메인을 확인하는 절차가 여전히 필요함을 재확인.</p>
+    <div class="links"><a href="https://scholar.google.co.kr/scholar?q=BIM+openBIM+IFC&scisbd=1&hl=ko" target="_blank" rel="noopener">Google Scholar &middot; BIM/openBIM/IFC 최신순 검색(3회 연속 정상 접속)</a></div>
+  </div>
+</div>
+<div class="r-sec">
+  <h4><span class="k">03</span> 시사점 / 액션 아이디어</h4>
+  <ul>
+    <li><b>품질검토 결과의 거부 사유를 타입화해 구조적으로 남기는 방식을 파일럿 검토한다.</b> KIR처럼 통과&middot;실패 이분법 대신 의도&middot;거부&middot;미검증 상태를 구분해 기록하면 검토 이력이 그 자체로 재현 가능한 근거자료가 된다.</li>
+    <li><b>스캔 잉입 파이프라인의 출력 기준을 &lsquo;네이티브 오브젝트 + 재질&middot;상태 속성&rsquo;으로 올려 잡는다.</b> 09-24에 다룬 BIMStruct3D가 기하 복원에 집중했던 데 비해 BIMScript는 재질&middot;상태까지 포함한 네이티브 오브젝트를 내놓는다. 리모델링용 스캔 데이터의 입구 품질 기준을 세울 때 참고한다.</li>
+    <li><b>아직 자동화되지 않은 법규 검토 항목을 먼저 훑는 절차를 채택한다.</b> 시설 열거처럼 단순해 보이지만 수작업으로 남아 있던 항목이 새 자동화 과업이 될 수 있다. 우리 검토 항목 로드맵에 이런 틈새 발굴 절차를 넣는다.</li>
+    <li><b>디지털트윈 로드맵에 &lsquo;시뮬레이션 데이터로 먼저 검증한 뒤 실데이터로 교체&rsquo; 단계를 명시한다.</b> 조지아텍 사례가 스스로 인정한 한계를 우리 계획에 선반영해, 실데이터 확보 지연이 전체 파일럿을 막지 않게 한다.</li>
+  </ul>
+</div>
+<div class="r-sec">
+  <h4><span class="k">04</span> 이번 조사 방법 개선 제안</h4>
+  <div class="note-amber"><b>막힌 점:</b> AgenticTwin처럼 제목&middot;키워드만 보면 딱 맞아 보이는 논문이 실제로는 건설&middot;BIM과 무관한 일반 사이버물리시스템 논문인 경우가 이번에도 있었다(초록까지 열어야 판별 가능했다). KIR&middot;BIMScript 두 편 모두 저자 1~3인의 소규모 연구로 동료검토 이전 단계(프리프린트)라는 점도 그대로 남긴다.</div>
+  <ul>
+    <li><b>제목 매칭만으로 관련도를 판정하지 않고 초록까지 열어 도메인을 확인하는 절차를 굳힌다.</b> 이번 AgenticTwin 사례처럼 검색 스니펫만으로는 오판할 여지가 있다.</li>
+    <li><b>이번 회차는 openBIM/IFC 상호운용 문헌을 의도적으로 건너뛰었다.</b> 09-24에 그 세부주제가 2편으로 다양성 상한에 닿아 있었기 때문이다. 상호운용 계열 신규 논문이 나오면 다음 회차에 다시 채운다.</li>
+    <li><b>Google Scholar가 3회 연속 안정 접속됐다.</b> 다음 회차도 안정되면 &lsquo;매 회차 첫 시도로 차단 여부 확인&rsquo; 원칙은 유지하되 차단 시 대응 절차는 더 가볍게 조정하는 안을 검토할 수 있다.</li>
+  </ul>
+</div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><span class="idx">01</span><h2>요일별 분석 주제</h2><span class="rule"></span><span class="sec-hint">요일을 눌러 지난 리포트 보기</span></div>
+    <div class="week">
+      <button type="button" class="day" data-dow="월"><span class="d">MON · 월</span><span class="t">BIM 업계 동향</span><span class="m">전문지·뉴스 브리핑</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="화"><span class="d">TUE · 화</span><span class="t">입찰·수주 동향</span><span class="m">나라장터·KAIA 공고</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="수"><span class="d">WED · 수</span><span class="t">실무자 의견</span><span class="m">커뮤니티 인사이트</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day on" data-dow="목"><span class="d">THU · 목</span><span class="t">연구개발 동향</span><span class="m">Scholar·AURIC 논문</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="금"><span class="d">FRI · 금</span><span class="t">역량강화 인사이트</span><span class="m">전문가 연설 분석</span><span class="cnt" hidden></span></button>
+    </div>
+    <div class="day-reports" id="dayReports" hidden>
+      <div class="dr-head"><span id="drTitle"></span><button type="button" class="dr-close" id="drClose" title="닫기">✕</button></div>
+      <ul class="dr-list" id="drList"></ul>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><span class="idx">02</span><h2>동작 방식</h2><span class="rule"></span></div>
+    <div class="flow">
+      <div class="step"><span class="n">STEP 1</span><div class="st">클라우드 조사</div><p class="sp">매일 08:00, 오늘 요일 주제로 웹 조사를 수행하고 HTML 리포트를 작성합니다.</p></div>
+      <div class="step"><span class="n">STEP 2</span><div class="st">이 페이지 갱신</div><p class="sp">이 고정 페이지를 제자리에서 업데이트해 최신 리포트를 맨 위에 배치합니다.</p></div>
+      <div class="step"><span class="n">STEP 3</span><div class="st">알림 · 자동 열기</div><p class="sp">푸시 알림을 보내고 PC를 켜면 이 페이지가 Chrome에 자동으로 열립니다.</p></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><span class="idx">03</span><h2>지난 리포트</h2><span class="rule"></span></div>
+    <details class="arch">
+      <summary>아카이브 · 지난 리포트 (최신순)</summary>
+      <div class="arch-item">
+        <details class="sub-arch">
+          <summary>2026-09-30 (수) &middot; 실무자 의견 &mdash; Revit 2026이 실행 엔진을 통째로 바꾸자, 애드인 생태계가 먼저 다시 쓰이고 있다</summary>
+          <div class="body">
 <div class="r-head">
   <h3>실무자 의견 파악 — Revit 2026이 실행 엔진을 통째로 바꾸자, 애드인 생태계가 먼저 다시 쓰이고 있다</h3>
   <p class="meta">2026-09-30 (수) &middot; Asia/Seoul &middot; 소스: GitHub(pyRevit 이슈 트래커, 직접조회) &middot; Autodesk Community(검색 기반) &middot; DC인사이드 BIM 마이너 갤러리(직접조회) &middot; BIM FACTORY(팔로업, 직접조회) &middot; 대한전문건설신문(직접조회) &middot; 키워드: BIM, Revit, pyRevit, openBIM</p>
@@ -283,37 +384,9 @@
     <li><b>BIM FACTORY 인스타그램(&lsquo;빔팩뉴스&rsquo;) 계정을 사람이 직접 팔로우해 주간 갱신 여부만 확인하는 절차를 마련한다.</b> 오픈채팅 기반 채널은 자동 조사로 접근할 수 없다는 점을 9/9 발굴 이후 이번 회차에서 다시 확인했다.</li>
   </ul>
 </div>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="sec-h"><span class="idx">01</span><h2>요일별 분석 주제</h2><span class="rule"></span><span class="sec-hint">요일을 눌러 지난 리포트 보기</span></div>
-    <div class="week">
-      <button type="button" class="day" data-dow="월"><span class="d">MON · 월</span><span class="t">BIM 업계 동향</span><span class="m">전문지·뉴스 브리핑</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day" data-dow="화"><span class="d">TUE · 화</span><span class="t">입찰·수주 동향</span><span class="m">나라장터·KAIA 공고</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day on" data-dow="수"><span class="d">WED · 수</span><span class="t">실무자 의견</span><span class="m">커뮤니티 인사이트</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day" data-dow="목"><span class="d">THU · 목</span><span class="t">연구개발 동향</span><span class="m">Scholar·AURIC 논문</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day" data-dow="금"><span class="d">FRI · 금</span><span class="t">역량강화 인사이트</span><span class="m">전문가 연설 분석</span><span class="cnt" hidden></span></button>
-    </div>
-    <div class="day-reports" id="dayReports" hidden>
-      <div class="dr-head"><span id="drTitle"></span><button type="button" class="dr-close" id="drClose" title="닫기">✕</button></div>
-      <ul class="dr-list" id="drList"></ul>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="sec-h"><span class="idx">02</span><h2>동작 방식</h2><span class="rule"></span></div>
-    <div class="flow">
-      <div class="step"><span class="n">STEP 1</span><div class="st">클라우드 조사</div><p class="sp">매일 08:00, 오늘 요일 주제로 웹 조사를 수행하고 HTML 리포트를 작성합니다.</p></div>
-      <div class="step"><span class="n">STEP 2</span><div class="st">이 페이지 갱신</div><p class="sp">이 고정 페이지를 제자리에서 업데이트해 최신 리포트를 맨 위에 배치합니다.</p></div>
-      <div class="step"><span class="n">STEP 3</span><div class="st">알림 · 자동 열기</div><p class="sp">푸시 알림을 보내고 PC를 켜면 이 페이지가 Chrome에 자동으로 열립니다.</p></div>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="sec-h"><span class="idx">03</span><h2>지난 리포트</h2><span class="rule"></span></div>
-    <details class="arch">
-      <summary>아카이브 · 지난 리포트 (최신순)</summary>
+          </div>
+        </details>
+      </div>
       <div class="arch-item">
         <details class="sub-arch">
           <summary>2026-09-29 (화) &middot; 입찰&middot;수주 동향 &mdash; 도로공사가 세종~청주 본공사 입찰서를 받기 시작한 주에 &lsquo;전환 BIM&rsquo; 7.95억 사전규격이 함께 떴다</summary>
@@ -2477,7 +2550,7 @@
 
   <footer>
     MORNING ROUTINE CONSOLE · v1 · Asia/Seoul<br>
-    자동 조사 → 게시 → 알림 파이프라인 · 소스: 요일별 모닝루틴 플레이북 · 최종 갱신 2026-09-30 08:00 KST
+    자동 조사 → 게시 → 알림 파이프라인 · 소스: 요일별 모닝루틴 플레이북 · 최종 갱신 2026-10-01 08:00 KST
   </footer>
 </div>
 <button class="pdfbtn" id="pdfBtn" title="오늘 리포트를 PDF로 저장 (인쇄 → PDF로 저장)">🖨 PDF 저장</button>
