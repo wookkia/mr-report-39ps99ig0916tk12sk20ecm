@@ -207,16 +207,113 @@
     <div class="clock">
       <span class="big mono">08:00 KST</span>
       월–금 자동 실행<br>
-      <span class="mono">최종 갱신 2026-10-07</span>
+      <span class="mono">최종 갱신 2026-10-08</span>
     </div>
   </header>
 
   <section class="today">
     <div class="today-bar">
       <span class="tag">오늘의 리포트</span>
-      <span class="when mono">2026-10-07 (수) &middot; 실무자 의견</span>
+      <span class="when mono">2026-10-08 (목) &middot; 연구개발 동향</span>
     </div>
     <div class="today-body report">
+<div class="r-head">
+  <h3>IFC 정보탐색 에이전트는 메모리 벤치마크에서 아직 30%대에 머물지만 컴플라이언스 검증은 지식그래프로 84%까지 올라섰다</h3>
+  <p class="meta">2026-10-08 (목) &middot; Asia/Seoul &middot; 방법: 관련도 우선 + 최신성 보정(하이브리드) &middot; 소스: arXiv &middot; 키워드: BIM 정보탐색&middot;에이전트 메모리, 컴플라이언스 검증(지식그래프), 건물 온톨로지 &middot; 지난 다섯 회차(09-03&middot;09-10&middot;09-17&middot;09-24&middot;10-01)에서 다룬 문헌은 제외</p>
+  <p class="lead">지난 회차까지 에이전틱 BIM 저작&middot;스캔 잉입&middot;법규 준수검토를 다뤘다면 이번엔 BIM 정보탐색에 투입된 에이전트의 한계를 보여주는 새 벤치마크, 반대로 뚜렷한 성과를 낸 컴플라이언스 검증 지식그래프, 건물 온톨로지 비교연구 세 갈래로 표본을 짰다. 7월 제출분 한 편을 최신성 기준(3개월 이내)으로 포함했다.</p>
+</div>
+<div class="r-sec">
+  <h4><span class="k">01</span> 핵심 요약</h4>
+  <ul>
+    <li><strong>IFCMemoryBench는 BIM 멀티세션 정보탐색 과제에서 가장 성능이 좋은 시스템도 정답률 32.4%에 그쳤다고 밝혔다(7월 13일 제출, 3개월 이내 신규).</strong> 정답이 포함된 세션만 걸러준 오라클 조건에서도 60%를 넘지 못했다.</li>
+    <li><strong>&lsquo;적응적 탐색&rsquo; 방식이 정적 질의 생성을 모든 설정에서 앞섰다는 논문이 나왔다.</strong> 21개 프로젝트&middot;37개 IFC 모델&middot;1,027개 과제로 구성한 신규 벤치마크 ifc-bench v2로 시험한 결과다.</li>
+    <li><strong>지식그래프 기반 추론 프레임워크 SGR-BIM이 화재안전규정 질의 679건에서 정답률 84.3%를 기록했다.</strong> 기존 단일 에이전트 방식보다 8.6%포인트 높고 <em>Automation in Construction</em>에 게재됐다.</li>
+    <li><strong>건물 온톨로지 4종(Brick&middot;RealEstateCore&middot;Haystack&middot;구글 Digital Buildings)을 비교평가한 논문은 &lsquo;범용 건물 온톨로지는 없다&rsquo;고 결론 내렸다.</strong> 품질평가 프레임워크(OQuaRE)와 실제 건물 데이터 양쪽으로 평가했다.</li>
+    <li><strong>같은 날 도쿄에서 buildingSMART openBIM Awards 2026 시상식이 열릴 예정이다(파이널리스트 22팀&middot;9월 1일 발표는 확인된 사실).</strong> 다만 이번 조사 시점에는 수상작 명단이 검색에 노출되지 않아 확인하지 못했다.</li>
+  </ul>
+</div>
+<div class="r-sec">
+  <h4><span class="k">02</span> 상세 발견사항 (문헌별)</h4>
+
+  <div class="src">
+    <div class="s-name">① IFCMemoryBench &mdash; BIM 멀티세션 정보탐색에서 드러난 에이전트 메모리의 한계 (arXiv 원문 확인, 신규 &middot; 3개월 이내 &middot; BIM 정보탐색/에이전트 메모리 계열)</div>
+    <p><strong>IFCMemoryBench: Evaluating Long-Term Memory of LLM-Based Agents in BIM Information Retrieval</strong> &mdash; Changyu Du&middot;Alexander Vosseler&middot;Filippo Mazza&middot;Andr&eacute; Borrmann, arXiv 2607.26072(2026-07-13 제출). 기존 LLM 에이전트 평가는 일반적인 대화 맥락의 기억력만 측정해 BIM처럼 구조화된 전문 도메인에서 과거 세션 정보를 실제로 활용하는지는 따로 확인하지 않았다는 문제의식에서 출발했다. 19개 프로젝트&middot;4,016개 과거 세션에서 뽑은 143개 다세션 과제로 벡터&middot;그래프&middot;파일 기반 메모리 시스템을 수집&middot;검색&middot;활용 세 단계로 나눠 평가했다. 실제 배포 조건에서는 가장 좋은 시스템도 정답률 32.4%에 그쳤고 정답이 포함된 세션만 걸러준 오라클 조건에서도 60%를 넘지 못했다. 저자들은 현재 시스템이 주제만 관련된 정보를 찾아올 뿐 지식을 불완전하거나 조각난 사실로만 저장한다고 지적했다.<br><strong>&rsaquo; 우리 관점 시사점:</strong> 범용 메모리 아키텍처를 그대로 가져다 쓰면 NeXura 같은 전문 도메인에서도 비슷한 간극이 생길 수 있다는 경고로 읽힌다. 품질검토 이력처럼 구조화된 정보를 다루는 기능에는 처음부터 도메인 특화 메모리 설계를 염두에 둘 필요가 있음.</p>
+    <div class="links"><a href="https://arxiv.org/abs/2607.26072" target="_blank" rel="noopener">arXiv 2607.26072 &middot; IFCMemoryBench</a></div>
+  </div>
+
+  <div class="src">
+    <div class="s-name">② BIM Information Extraction Through LLM-based Adaptive Exploration &mdash; 정적 질의 대신 런타임 구조탐색 (arXiv 원문 확인 &middot; BIM 정보탐색/에이전트 메모리 계열)</div>
+    <p>Sylvain Hellin&middot;Suhyung Jang&middot;Stefan Fuchs&middot;Stavros Nousias&middot;Andr&eacute; Borrmann, arXiv 2605.01698(2026-05-03 제출). BIM은 프로젝트마다 데이터 구성 방식이 달라 데이터 조직이 고정돼 있다고 가정하는 정적 질의 시스템은 신뢰하기 어렵다는 문제의식에서, LLM 에이전트가 미리 구조를 가정하지 않고 코드를 반복 실행하며 그때그때 BIM 구조를 직접 탐색하는 &lsquo;적응적 탐색&rsquo; 방식을 제안했다. 신규 벤치마크 ifc-bench v2(21개 프로젝트&middot;37개 IFC 모델&middot;1,027개 과제)로 LLM 성능 수준 2단계와 보강 전략 4가지를 조합해 시험한 결과 적응적 탐색이 모든 조합에서 정적 질의 생성을 앞섰다. 저자들은 BIM 이질성 문제를 풀려면 기존 정적 접근을 다듬기보다 패러다임 자체를 바꿔야 한다고 결론 내렸다.<br><strong>&rsaquo; 우리 관점 시사점:</strong> 같은 저자(Borrmann)가 두 달 뒤 내놓은 IFCMemoryBench의 낮은 점수와 겹쳐 보면 &lsquo;탐색은 되는데 기억은 안 된다&rsquo;는 그림이 뚜렷해진다. NeXura 품질검토 에이전트도 한 번의 탐색 능력과 여러 세션에 걸친 지식 축적을 따로 떼어 설계&middot;평가해야 할 근거가 된다.</p>
+    <div class="links"><a href="https://arxiv.org/abs/2605.01698" target="_blank" rel="noopener">arXiv 2605.01698 &middot; BIM Adaptive Exploration</a></div>
+  </div>
+
+  <div class="src">
+    <div class="s-name">③ SGR-BIM &mdash; 지식그래프 기반 화재안전규정 준수검토 (arXiv 원문 확인 &middot; <em>Automation in Construction</em> 게재 &middot; 컴플라이언스/품질검증 계열)</div>
+    <p>Zixuan Xiao&middot;Pei Troh Koh&middot;Jun Ma&middot;Jack C.P. Cheng, arXiv 2606.12065(2026-06-10 제출). 규정 준수검토를 자동화하기 어려운 이유를 상위 수준 규정 논리와 구조화된 IFC 데이터 사이의 &lsquo;의미 격차&rsquo;로 짚고 사용자 의도&middot;규정 의미&middot;BIM 기하정보를 한 번에 잇는 교차모달 지식그래프를 동적으로 구성해 경직된 하드코딩 없이 해석 가능한 추론을 하는 SGR-BIM을 제안했다. 전문가가 직접 검증한 화재안전규정 질의 679건으로 평가한 결과 정답률 84.3%를 기록했고 이는 기존 단일 에이전트 방식보다 8.6%포인트 높았다.<br><strong>&rsaquo; 우리 관점 시사점:</strong> 10-01 회차에서 다룬 문 검출 기반 시설 열거가 &lsquo;보지 못했던 항목을 새로 센다&rsquo;는 쪽이었다면 SGR-BIM은 &lsquo;이미 아는 항목을 더 정확히 맞춘다&rsquo;는 쪽이다. 두 접근을 함께 참고하면 NeXura 품질검토의 규정검토 항목을 넓히는 방향과 기존 항목의 정확도를 올리는 방향을 나눠 로드맵에 넣을 수 있음.</p>
+    <div class="links"><a href="https://arxiv.org/abs/2606.12065" target="_blank" rel="noopener">arXiv 2606.12065 &middot; SGR-BIM</a></div>
+  </div>
+
+  <div class="src">
+    <div class="s-name">④ 건물 온톨로지 4종 비교평가 &mdash; &lsquo;범용 온톨로지는 없다&rsquo; (arXiv 원문 확인 &middot; 분류체계/온톨로지 계열)</div>
+    <p><strong>A Systematic Comparison and Evaluation of Building Ontologies for Deploying Data-Driven Analytics in Smart Buildings</strong> &mdash; Zhangcheng Qiang 외 7인, arXiv 2603.14374(2026-03-15 제출). 스마트빌딩 데이터 상호운용에 쓰이는 Brick Schema&middot;RealEstateCore&middot;Project Haystack&middot;구글 Digital Buildings 네 온톨로지가 서로 의미 구조가 달라 상호운용이라는 본래 목적을 오히려 가로막는다는 문제의식에서, 품질평가 프레임워크(OQuaRE)로 설계 자체를 평가하고 실제 건물 데이터로 표현력을 시험하는 이중 평가를 수행했다. Haystack&middot;Brick이 구조적으로 더 간결했고 Brick&middot;RealEstateCore가 건물 도메인 개념&middot;관계를 더 완전하게 담아냈다. 저자들은 연계 건물 데이터 통합에 쓸 범용 건물 온톨로지는 존재하지 않는다고 결론 내리고 온톨로지 설계 패턴을 통한 매칭&middot;정합 작업을 대안으로 제시했다.<br><strong>&rsaquo; 우리 관점 시사점:</strong> 범용 온톨로지가 없다는 결론은 거꾸로 보면 NeXura CDE가 특정 온톨로지에 종속되지 않고 여러 체계 사이의 매핑 계층을 갖추는 쪽이 더 안전하다는 뜻이기도 하다. 분류체계 설계를 &lsquo;하나를 택한다&rsquo;보다 &lsquo;여러 체계를 잇는다&rsquo;는 전제로 검토할 필요가 있음.</p>
+    <div class="links"><a href="https://arxiv.org/abs/2603.14374" target="_blank" rel="noopener">arXiv 2603.14374 &middot; Building Ontology Comparison</a></div>
+  </div>
+
+  <div class="note-amber"><b>참고(연구 외 산업 뉴스):</b> buildingSMART openBIM Awards 2026은 7개 부문 파이널리스트 22팀이 9월 1일 발표됐고 10월 7일 도쿄 국제 서밋에서 심사위원 발표, 10월 8일 시상식이 예정돼 있다는 사실까지는 buildingSMART 공식 발표로 확인된다. 다만 이번 조사 시점(10월 8일 오전, 한국시간) 기준으로는 실제 수상작 명단이 검색에 아직 노출되지 않아 <em>어떤 프로젝트가 수상했는지는 확인하지 못했다</em>. 파이널리스트에는 CDE 기반 openBIM 디지털트윈으로 자재를 추적하는 사례(기센응용과학대&middot;다름슈타트공대)가 포함돼 있었다.</div>
+</div>
+<div class="r-sec">
+  <h4><span class="k">03</span> 시사점 / 액션 아이디어</h4>
+  <ul>
+    <li><b>품질검토 에이전트의 &lsquo;탐색&rsquo;과 &lsquo;기억&rsquo;을 별도 축으로 설계&middot;평가한다.</b> IFCMemoryBench의 32.4%와 적응적 탐색 논문의 우세한 결과를 겹쳐 보면 두 능력의 격차가 뚜렷하다.</li>
+    <li><b>규정검토 로드맵을 &lsquo;새 항목 자동화&rsquo;와 &lsquo;기존 항목 정확도 개선&rsquo; 두 갈래로 나눠 관리한다.</b> SGR-BIM의 84.3%와 10-01 회차의 시설 열거 사례를 각각의 사례로 묶을 수 있다.</li>
+    <li><b>분류체계 설계 시 단일 온톨로지 종속 대신 매핑 계층을 전제로 검토한다.</b> &lsquo;범용 온톨로지는 없다&rsquo;는 비교연구의 결론이 근거가 된다.</li>
+    <li><b>buildingSMART openBIM Awards 2026 수상작 명단을 다음 회차에 재확인한다.</b> 연구&middot;기술 부문 수상작이 있다면 우리 전략에 참고할 사례가 될 수 있다.</li>
+  </ul>
+</div>
+<div class="r-sec">
+  <h4><span class="k">04</span> 이번 조사 방법 개선 제안</h4>
+  <div class="note-amber"><b>막힌 점:</b> Google Scholar(scisbd=1) 상위 결과는 이번에도 디지털 빌딩 로그북&middot;IDS 디지털허가 계열에 쏠려 있어 09-17&middot;10-01과 겹쳤고 신규 표본은 거의 전부 arXiv에서 채웠다. 뽑힌 문헌 중 두 편(①&middot;②)이 같은 저자(Andr&eacute; Borrmann, TUM)로 이어져 있어 관련도 판단은 쉬웠던 반면, 표본이 한 연구그룹에 쏠리는 경향도 함께 남긴다.</div>
+  <ul>
+    <li><b>다음 회차는 TUM/Borrmann 계열 외 다른 연구그룹&middot;지역(아시아&middot;유럽 외) 문헌을 우선 탐색한다.</b> 같은 그룹의 연속 등장이 표본 다양성을 좁힐 수 있다.</li>
+    <li><b>buildingSMART Awards처럼 발표 당일과 겹치는 산업 뉴스는 &lsquo;확인된 사실(날짜&middot;구조)&rsquo;과 &lsquo;미확인 사실(결과)&rsquo;을 분리 표기하는 방식을 그대로 템플릿화한다.</b></li>
+    <li><b>Google Scholar 직접 조회가 이번에도 정상 접속됐다(4회 연속).</b> &lsquo;매 회차 첫 시도로 차단 여부 확인&rsquo; 원칙은 유지한다.</li>
+  </ul>
+</div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><span class="idx">01</span><h2>요일별 분석 주제</h2><span class="rule"></span><span class="sec-hint">요일을 눌러 지난 리포트 보기</span></div>
+    <div class="week">
+      <button type="button" class="day" data-dow="월"><span class="d">MON · 월</span><span class="t">BIM 업계 동향</span><span class="m">전문지·뉴스 브리핑</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="화"><span class="d">TUE · 화</span><span class="t">입찰·수주 동향</span><span class="m">나라장터·KAIA 공고</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="수"><span class="d">WED · 수</span><span class="t">실무자 의견</span><span class="m">커뮤니티 인사이트</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day on" data-dow="목"><span class="d">THU · 목</span><span class="t">연구개발 동향</span><span class="m">Scholar·AURIC 논문</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="금"><span class="d">FRI · 금</span><span class="t">역량강화 인사이트</span><span class="m">전문가 연설 분석</span><span class="cnt" hidden></span></button>
+    </div>
+    <div class="day-reports" id="dayReports" hidden>
+      <div class="dr-head"><span id="drTitle"></span><button type="button" class="dr-close" id="drClose" title="닫기">✕</button></div>
+      <ul class="dr-list" id="drList"></ul>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><span class="idx">02</span><h2>동작 방식</h2><span class="rule"></span></div>
+    <div class="flow">
+      <div class="step"><span class="n">STEP 1</span><div class="st">클라우드 조사</div><p class="sp">매일 08:00, 오늘 요일 주제로 웹 조사를 수행하고 HTML 리포트를 작성합니다.</p></div>
+      <div class="step"><span class="n">STEP 2</span><div class="st">이 페이지 갱신</div><p class="sp">이 고정 페이지를 제자리에서 업데이트해 최신 리포트를 맨 위에 배치합니다.</p></div>
+      <div class="step"><span class="n">STEP 3</span><div class="st">알림 · 자동 열기</div><p class="sp">푸시 알림을 보내고 PC를 켜면 이 페이지가 Chrome에 자동으로 열립니다.</p></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><span class="idx">03</span><h2>지난 리포트</h2><span class="rule"></span></div>
+    <details class="arch">
+      <summary>아카이브 · 지난 리포트 (최신순)</summary>
+      <div class="arch-item">
+        <details class="sub-arch">
+          <summary>2026-10-07 (수) &middot; 실무자 의견 &mdash; 레빗 포럼엔 &lsquo;30년째 멈춰있다&rsquo;는 글이 올라오고 학계 조사는 IFC를 정기적으로 쓰는 사람이 15%도 안 된다고 말한다</summary>
+          <div class="body">
 <div class="r-head">
   <h3>실무자 의견 — 레빗 포럼엔 &lsquo;30년째 멈춰있다&rsquo;는 글이 올라오고 학계 조사는 IFC를 정기적으로 쓰는 사람이 15%도 안 된다고 말한다</h3>
   <p class="meta">2026-10-07 (수) &middot; Asia/Seoul &middot; 소스: Autodesk Community/Revit Ideas(직접조회) &middot; AEC Magazine(노르딕 공동서한 후속보도) &middot; 케임브리지대 리포지토리 논문(openBIM 상호운용성 실태조사) &middot; BIM Corner 블로그 &middot; DC인사이드 토목공학 마이너 갤러리(직접조회) &middot; 키워드: BIM, Revit, openBIM, IFC &middot; 09-23 회차의 Issues 애드인 지연 건은 중복 방지로 제외</p>
@@ -291,37 +388,9 @@
     <li><b>Reddit&middot;LinkedIn에서 인용 가능한 스레드가 희박한 회차에는 학계 자료로 대체하는 흐름을 플레이북에 명시적으로 적어둔다.</b></li>
   </ul>
 </div>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="sec-h"><span class="idx">01</span><h2>요일별 분석 주제</h2><span class="rule"></span><span class="sec-hint">요일을 눌러 지난 리포트 보기</span></div>
-    <div class="week">
-      <button type="button" class="day" data-dow="월"><span class="d">MON · 월</span><span class="t">BIM 업계 동향</span><span class="m">전문지·뉴스 브리핑</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day" data-dow="화"><span class="d">TUE · 화</span><span class="t">입찰·수주 동향</span><span class="m">나라장터·KAIA 공고</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day on" data-dow="수"><span class="d">WED · 수</span><span class="t">실무자 의견</span><span class="m">커뮤니티 인사이트</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day" data-dow="목"><span class="d">THU · 목</span><span class="t">연구개발 동향</span><span class="m">Scholar·AURIC 논문</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day" data-dow="금"><span class="d">FRI · 금</span><span class="t">역량강화 인사이트</span><span class="m">전문가 연설 분석</span><span class="cnt" hidden></span></button>
-    </div>
-    <div class="day-reports" id="dayReports" hidden>
-      <div class="dr-head"><span id="drTitle"></span><button type="button" class="dr-close" id="drClose" title="닫기">✕</button></div>
-      <ul class="dr-list" id="drList"></ul>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="sec-h"><span class="idx">02</span><h2>동작 방식</h2><span class="rule"></span></div>
-    <div class="flow">
-      <div class="step"><span class="n">STEP 1</span><div class="st">클라우드 조사</div><p class="sp">매일 08:00, 오늘 요일 주제로 웹 조사를 수행하고 HTML 리포트를 작성합니다.</p></div>
-      <div class="step"><span class="n">STEP 2</span><div class="st">이 페이지 갱신</div><p class="sp">이 고정 페이지를 제자리에서 업데이트해 최신 리포트를 맨 위에 배치합니다.</p></div>
-      <div class="step"><span class="n">STEP 3</span><div class="st">알림 · 자동 열기</div><p class="sp">푸시 알림을 보내고 PC를 켜면 이 페이지가 Chrome에 자동으로 열립니다.</p></div>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="sec-h"><span class="idx">03</span><h2>지난 리포트</h2><span class="rule"></span></div>
-    <details class="arch">
-      <summary>아카이브 · 지난 리포트 (최신순)</summary>
+          </div>
+        </details>
+      </div>
       <div class="arch-item">
         <details class="sub-arch">
           <summary>2026-10-02 (금) &middot; 역량강화 인사이트 &mdash; 건설정책연구원이 &lsquo;AI로 날개 달자&rsquo;를 외친 날, 글로벌 플랫폼은 이미 가상 동반자 세 명을 현장에 심어뒀다</summary>
@@ -2699,7 +2768,7 @@
 
   <footer>
     MORNING ROUTINE CONSOLE · v1 · Asia/Seoul<br>
-    자동 조사 → 게시 → 알림 파이프라인 · 소스: 요일별 모닝루틴 플레이북 · 최종 갱신 2026-10-02 08:00 KST
+    자동 조사 → 게시 → 알림 파이프라인 · 소스: 요일별 모닝루틴 플레이북 · 최종 갱신 2026-10-08 08:00 KST
   </footer>
 </div>
 <button class="pdfbtn" id="pdfBtn" title="오늘 리포트를 PDF로 저장 (인쇄 → PDF로 저장)">🖨 PDF 저장</button>
