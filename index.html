@@ -207,16 +207,121 @@
     <div class="clock">
       <span class="big mono">08:00 KST</span>
       월–금 자동 실행<br>
-      <span class="mono">최종 갱신 2026-10-13</span>
+      <span class="mono">최종 갱신 2026-10-14</span>
     </div>
   </header>
 
   <section class="today">
     <div class="today-bar">
       <span class="tag">오늘의 리포트</span>
-      <span class="when mono">2026-10-13 (화) &middot; BIM 입찰&middot;수주 동향</span>
+      <span class="when mono">2026-10-14 (수) &middot; BIM 업계 실무자 의견</span>
     </div>
     <div class="today-body report">
+<div class="r-head">
+  <h3>레빗 포럼엔 &lsquo;30년째 그대로&rsquo;라는 성능 불만이, 블로그엔 AI 비서보다 외부 MCP를 쓰라는 조언이 쌓였다</h3>
+  <p class="meta">2026-10-14 (수) &middot; Asia/Seoul &middot; 조사범위: 비정량(최근 활성 게시물&middot;스레드 기준) &middot; 방법: 디시인사이드 BIM 마이너 갤러리 직접조회 + Autodesk Community&middot;GrabCAD 검색 기반 확인 + Reddit&middot;LinkedIn 검색 스니펫 시도 + AI 코파일럿 벤더 블로그(archilabs) 실무자 리뷰 종합 교차확인</p>
+  <p class="lead">이번 주 실무자 커뮤니티를 돌아보니 두 결이 섞여 있었다. 레빗 포럼에는 수십 년째 반복되는 성능 불만이 그대로 올라왔고, 같은 Autodesk 커뮤니티 블로그에는 내장 AI 비서보다 외부 AI를 직접 연결하라는 조언이 실렸다. 국내 쪽은 여전히 신호가 약했다 &mdash; 디시인사이드 BIM 갤러리는 자격증&middot;취업 질문이 대부분이었고 대형 네이버 카페도 이번에도 찾지 못했다.</p>
+</div>
+<div class="r-sec">
+  <h4><span class="k">01</span> 핵심 요약</h4>
+  <ul>
+    <li><strong>Autodesk 레빗 아이디어 포럼에 &lsquo;30 Years of Stagnation and Frustration&rsquo;이라는 글이 올라와 공감을 얻었다.</strong> 하드웨어 성능은 30년 동안 크게 좋아졌는데 레빗 자체는 여전히 심하게 느리다는 지적이다. 같은 포럼의 다중 사용자 환경 속도저하&middot;업그레이드 후 파일 열림 실패 스레드와 겹쳐 성능&middot;협업 안정성 불만이 패턴으로 보였다.</li>
+    <li><strong>Autodesk 커뮤니티 블로그(AEC 섹션, 회원 기고)는 레빗 2027의 내장 Autodesk Assistant 대신 Claude&middot;ChatGPT&middot;Cursor&middot;GitHub Copilot을 연결하는 외부 MCP 서버 쪽을 추천했다.</strong> &ldquo;AI가 정말 작동하길 원한다면&rdquo; MCP 설정에 20분을 들이는 편이 낫다는 논조였다.</li>
+    <li><strong>AI 코파일럿 벤더 archilabs가 정리한 실무자 리뷰에는 장점과 한계가 함께 담겼다.</strong> 시트 생성&middot;태그 작업이 몇 시간에서 몇 분으로 줄었다는 긍정 평가와 함께, ChatGPT로 만든 Dynamo 스크립트가 &ldquo;그럴듯하지만 작동하지 않는&rdquo; 경우가 있었고 로비의 &ldquo;개방감&rdquo; 같은 정성적 의도는 AI가 못 읽는다는 지적이 나왔다. 다만 이 회사도 레빗용 AI 코파일럿을 파는 처지라 한계 서술은 자사 제품을 돋보이게 하려는 유인과 함께 읽어야 한다.</li>
+    <li><strong>디시인사이드 BIM 마이너 갤러리는 이번 주도 활동이 뜸했다.</strong> 10월 2일 올라온 &lsquo;레빗 협업할 때 저작권 문제 없음?&rsquo; 질문에 구체적 답변은 확인되지 않았고, 그 외 글은 자격증 소요 기간&middot;취업 가능성 상담이 대부분이었다.</li>
+    <li><strong>Reddit&middot;LinkedIn은 이번 주 검색으로도 구체적 게시물을 찾지 못했고, 국내 대형 네이버 카페도 여전히 발굴하지 못했다.</strong></li>
+  </ul>
+</div>
+<div class="r-sec">
+  <h4><span class="k">02</span> 상세 발견사항 (소스별)</h4>
+
+  <h5>① Autodesk 레빗 아이디어 포럼 &mdash; &ldquo;30년째 그대로&rdquo;라는 성능 불만</h5>
+  <ul>
+    <li>원글은 지난 30년 동안 컴퓨터 하드웨어는 비약적으로 좋아졌지만 레빗은 &ldquo;여전히 심하게 느리다&rdquo;고 지적했다. (<a href="https://forums.autodesk.com/t5/revit-ideas/30-years-of-stagnation-and-frustration/idi-p/14246739" target="_blank" rel="noopener">Autodesk Community &middot; 30 Years of Stagnation and Frustration</a>) 직접조회가 403으로 막혀 검색 스니펫으로만 확인했고, 게시 시점은 검색 시점 기준 8일 전으로 추정될 뿐 정확한 날짜는 재확인이 필요하다.</li>
+    <li>같은 포럼의 다른 스레드들도 비슷한 결이었다. BIM 360에서 참여 인원이 늘수록 느려진다는 스레드, 2024&rarr;2026 업그레이드 10일 뒤 프로젝트가 열리지 않게 됐다는 스레드가 함께 검색됐다. 한 번의 불만이 아니라 반복되는 패턴으로 읽힌다.</li>
+  </ul>
+
+  <h5>② Autodesk 커뮤니티 블로그 &mdash; 레빗 2027의 AI 두 갈래, 그리고 &ldquo;MCP를 쓰라&rdquo;는 조언</h5>
+  <ul>
+    <li>레빗 2027은 메뉴에서 바로 켜는 내장 Autodesk Assistant와, Claude&middot;ChatGPT&middot;Cursor&middot;GitHub Copilot 같은 외부 AI를 모델에 직접 연결하는 MCP(Model Context Protocol) 서버를 동시에 제공한다. (<a href="https://forums.autodesk.com/t5/community-blog-aec-english/autodesk-revit-2027-comparing-two-ai-approaches-and-breaking/ba-p/14099063" target="_blank" rel="noopener">Autodesk Community &middot; Revit 2027: Comparing Two AI Approaches</a>)</li>
+    <li>글쓴이는 &ldquo;지금 레빗에서 AI를 써보고 싶고 정말 작동하길 원한다면&rdquo; MCP 설정에 20분을 들이는 쪽을 권했다. Assistant는 구독료에 포함돼 있지만 외부 도구는 별도 비용이 든다는 점도 함께 짚었다. 이 글은 Autodesk 공식 발표가 아니라 커뮤니티 블로그(회원 기고 섹션)에 실린 개인 평가라는 점을 함께 적어둔다.</li>
+    <li>Autodesk 자체 AEC 기술 블로그(2026-06-17)도 &lsquo;Revit Public MCP Server&rsquo;를 신뢰 기반 AI 워크플로의 토대로 소개해, 외부 AI 연결 자체는 Autodesk가 공식적으로 밀고 있는 방향임을 뒷받침했다.</li>
+  </ul>
+
+  <h5>③ archilabs(AI 코파일럿 벤더) 실무자 리뷰 종합 &mdash; 문서화는 줄었지만 설계의도&middot;책임은 못 넘어간다</h5>
+  <ul>
+    <li>(장점) 시트 생성&middot;뷰 배치&middot;태그 작업이 몇 시간에서 몇 분으로 줄었고, 문서 작업에 쏟던 시간(전체의 50% 이상으로 추정)이 줄어 설계&middot;검토에 더 쓸 수 있게 됐다는 리뷰가 소개됐다. (<a href="https://archilabs.ai/posts/what-ai-can-and-cant-do-in-revit-today-a-clear-guide" target="_blank" rel="noopener">archilabs &middot; What AI Can and Can&rsquo;t Do in Revit Today</a>, 2026-03-16)</li>
+    <li>(한계) ChatGPT로 만든 Dynamo 스크립트가 &ldquo;그럴듯하지만 작동하지 않는&rdquo; 경우가 있었다는 사례, 로비의 &ldquo;개방감&rdquo;처럼 정성적 요구를 AI가 못 읽는다는 지적, 오류가 나도 최종 책임은 AI가 아니라 담당자에게 돌아온다는 우려가 담겼다.</li>
+    <li>archilabs는 레빗용 AI 코파일럿을 판매하는 회사다. &ldquo;범용 AI의 한계&rdquo;를 부각하는 논조에는 자사 제품을 돋보이게 하려는 유인이 섞여 있을 수 있어, 장점 수치는 비교적 그대로 받아들일 만하지만 한계 서술은 실제 사용자 발언인지 archilabs의 재구성인지 원문에서 구분하기 어려웠다는 점을 밝혀둔다.</li>
+  </ul>
+
+  <h5>④ 디시인사이드 BIM 마이너 갤러리 &middot; GrabCAD &mdash; 국내&middot;보조 채널 모두 저조</h5>
+  <ul>
+    <li>2024년 10월 개설된 소규모 갤러리로, 최근 글은 &lsquo;BIM 2급 얼마나 걸리나&rsquo;&middot;&lsquo;고졸로 국비지원 취업 가능한가&rsquo; 같은 자격증&middot;취업 상담이 대부분이었다.</li>
+    <li>10월 2일 올라온 &lsquo;레빗 협업할 때 저작권 문제 없음?&rsquo; 질문은 답글이 2개 달렸지만 구체적 내용은 확인하지 못했다. 답을 떠나 실무자 사이에 협업 저작권을 둘러싼 불확실성이 존재한다는 신호로만 기록한다.</li>
+    <li>GrabCAD는 BIM 관련 질문 자체가 드물었고, 검색된 글도 대부분 SolidWorks&ndash;레빗 간 IFC 변환 같은 오래된 튜토리얼성 질문이었다.</li>
+  </ul>
+
+  <h5>⑤ Reddit&middot;LinkedIn&middot;국내 대형 카페 &mdash; 이번 주도 공백</h5>
+  <ul>
+    <li>Reddit&middot;LinkedIn 직접조회는 상시 차단돼 있고, 이번 주는 검색으로도 구체적 게시물 URL을 확보하지 못했다. 검색 스니펫조차 Capterra&middot;G2 리뷰 같은 2차 매체 위주였다.</li>
+    <li>국내 대형 네이버 카페도 이번 검색으로 찾지 못했다 &mdash; 직접 조회 실패가 아니라 검색으로도 후보 자체가 드러나지 않는 쪽이다.</li>
+  </ul>
+</div>
+<div class="r-sec">
+  <h4><span class="k">03</span> 시사점 / 액션 아이디어</h4>
+  <ul>
+    <li><b>레빗 포럼에서 반복되는 성능 불만을 NeXura의 속도&middot;안정성 차별화 메시지에 구체적 비교점으로 쓴다.</b> &lsquo;30년째 그대로&rsquo;라는 표현이 공감을 얻는 지점은 경쟁 제품이 파고들 틈이기도 하다.</li>
+    <li><b>archilabs가 지적한 &lsquo;정성적 설계의도 파악 불가&middot;책임소재&rsquo; 문제는, NeXura 품질검토 기능을 &lsquo;AI가 대신 책임진다&rsquo;가 아니라 &lsquo;AI가 걸러내고 사람이 최종 승인한다&rsquo;는 구도로 설명하는 근거로 쓸 만하다.</b></li>
+    <li><b>Autodesk가 내장 Assistant와 개방형 MCP를 동시에 미는 전략은 BIM AI 생태계가 벤더 종속형과 개방형으로 갈릴 조짐을 보여준다.</b> NeXura의 MCP 호환 여부를 다음 회차 조사 과제로 등록한다.</li>
+    <li><b>AI 관련 벤더 블로그를 실무자 의견 대리자료로 쓸 때는 그 벤더의 이해관계를 함께 적어야 한다는 점을 이번 조사에서 재확인했다.</b></li>
+  </ul>
+</div>
+<div class="r-sec">
+  <h4><span class="k">04</span> 이번 조사 방법 개선 제안</h4>
+  <div class="note-amber"><b>막힌 점:</b> Autodesk Community 포럼도 Reddit&middot;LinkedIn처럼 직접조회(WebFetch)가 403으로 막힌다는 사실을 이번에 처음 확인했다. 국내 쪽은 디시인사이드 갤러리&middot;GrabCAD 모두 소규모라 매주 신호가 약했고, 대형 네이버 카페는 이번에도 찾지 못했다.</div>
+  <ul>
+    <li><b>플레이북에 &ldquo;Autodesk Community도 검색 스니펫 기반&rdquo;이라는 문구를 추가한다.</b> Reddit&middot;LinkedIn과 같은 취급이 필요하다.</li>
+    <li><b>디시인사이드&middot;GrabCAD 대체로 디스코드&middot;카카오톡 오픈채팅 같은 채널을 다음 회차 발굴 대상으로 등록한다.</b> 대형 네이버 카페 탐색은 세 번째 시도에서도 실패했다.</li>
+    <li><b>Reddit 검색은 범용 쿼리로는 결과가 없었다. 다음 회차부터 서브레딧명(r/BIM, r/Revit)과 최근 기간을 조합한 쿼리로 좁혀 다시 시도한다.</b></li>
+    <li><b>AI 관련 벤더 블로그를 인용할 때 그 회사가 무엇을 파는지 한 줄로 밝히는 절차를 상시화한다(이번 archilabs 사례).</b></li>
+  </ul>
+</div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><span class="idx">01</span><h2>요일별 분석 주제</h2><span class="rule"></span><span class="sec-hint">요일을 눌러 지난 리포트 보기</span></div>
+    <div class="week">
+      <button type="button" class="day" data-dow="월"><span class="d">MON · 월</span><span class="t">BIM 업계 동향</span><span class="m">전문지·뉴스 브리핑</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="화"><span class="d">TUE · 화</span><span class="t">입찰·수주 동향</span><span class="m">나라장터·KAIA 공고</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day on" data-dow="수"><span class="d">WED · 수</span><span class="t">실무자 의견</span><span class="m">커뮤니티 인사이트</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="목"><span class="d">THU · 목</span><span class="t">연구개발 동향</span><span class="m">Scholar·AURIC 논문</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="금"><span class="d">FRI · 금</span><span class="t">역량강화 인사이트</span><span class="m">전문가 연설 분석</span><span class="cnt" hidden></span></button>
+    </div>
+    <div class="day-reports" id="dayReports" hidden>
+      <div class="dr-head"><span id="drTitle"></span><button type="button" class="dr-close" id="drClose" title="닫기">✕</button></div>
+      <ul class="dr-list" id="drList"></ul>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><span class="idx">02</span><h2>동작 방식</h2><span class="rule"></span></div>
+    <div class="flow">
+      <div class="step"><span class="n">STEP 1</span><div class="st">클라우드 조사</div><p class="sp">매일 08:00, 오늘 요일 주제로 웹 조사를 수행하고 HTML 리포트를 작성합니다.</p></div>
+      <div class="step"><span class="n">STEP 2</span><div class="st">이 페이지 갱신</div><p class="sp">이 고정 페이지를 제자리에서 업데이트해 최신 리포트를 맨 위에 배치합니다.</p></div>
+      <div class="step"><span class="n">STEP 3</span><div class="st">알림 · 자동 열기</div><p class="sp">푸시 알림을 보내고 PC를 켜면 이 페이지가 Chrome에 자동으로 열립니다.</p></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><span class="idx">03</span><h2>지난 리포트</h2><span class="rule"></span></div>
+    <details class="arch">
+      <summary>아카이브 · 지난 리포트 (최신순)</summary>
+      <div class="arch-item">
+        <details class="sub-arch">
+          <summary>2026-10-13 (화) &middot; BIM 입찰&middot;수주 동향 &mdash; 입찰 키워드는 이번에도 0건, 사전규격 속 도로공사 BIM 용역은 사흘 전 1조2780억원 공사로 이어졌다</summary>
+          <div class="body">
 <div class="r-head">
   <h3>입찰 키워드는 이번에도 0건, 사전규격 속 도로공사 BIM 용역은 사흘 전 1조2780억원 공사로 이어졌다</h3>
   <p class="meta">2026-10-13 (화) &middot; Asia/Seoul &middot; 조사범위: 최근 21일(2026-09-22~10-13) &middot; 방법: 나라장터 Open API(입찰공고+사전규격) 자동수집 결과 분석 + 발주기관 화이트리스트(LH&middot;KAIA&middot;한국건설기술연구원&middot;한국도로공사&middot;한국수자원공사&middot;국가철도공단) 개별 검색 보완</p>
@@ -280,37 +385,9 @@
     <li><b>검색 스니펫에 연도 표기가 없으면 원문 발행일을 다시 확인하는 절차를 조사 체크리스트에 명문화한다.</b> 이번 조사에서 철도공단 BIM 기사 하나가 2025년 보도임을 뒤늦게 확인했다.</li>
   </ul>
 </div>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="sec-h"><span class="idx">01</span><h2>요일별 분석 주제</h2><span class="rule"></span><span class="sec-hint">요일을 눌러 지난 리포트 보기</span></div>
-    <div class="week">
-      <button type="button" class="day" data-dow="월"><span class="d">MON · 월</span><span class="t">BIM 업계 동향</span><span class="m">전문지·뉴스 브리핑</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day on" data-dow="화"><span class="d">TUE · 화</span><span class="t">입찰·수주 동향</span><span class="m">나라장터·KAIA 공고</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day" data-dow="수"><span class="d">WED · 수</span><span class="t">실무자 의견</span><span class="m">커뮤니티 인사이트</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day" data-dow="목"><span class="d">THU · 목</span><span class="t">연구개발 동향</span><span class="m">Scholar·AURIC 논문</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day" data-dow="금"><span class="d">FRI · 금</span><span class="t">역량강화 인사이트</span><span class="m">전문가 연설 분석</span><span class="cnt" hidden></span></button>
-    </div>
-    <div class="day-reports" id="dayReports" hidden>
-      <div class="dr-head"><span id="drTitle"></span><button type="button" class="dr-close" id="drClose" title="닫기">✕</button></div>
-      <ul class="dr-list" id="drList"></ul>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="sec-h"><span class="idx">02</span><h2>동작 방식</h2><span class="rule"></span></div>
-    <div class="flow">
-      <div class="step"><span class="n">STEP 1</span><div class="st">클라우드 조사</div><p class="sp">매일 08:00, 오늘 요일 주제로 웹 조사를 수행하고 HTML 리포트를 작성합니다.</p></div>
-      <div class="step"><span class="n">STEP 2</span><div class="st">이 페이지 갱신</div><p class="sp">이 고정 페이지를 제자리에서 업데이트해 최신 리포트를 맨 위에 배치합니다.</p></div>
-      <div class="step"><span class="n">STEP 3</span><div class="st">알림 · 자동 열기</div><p class="sp">푸시 알림을 보내고 PC를 켜면 이 페이지가 Chrome에 자동으로 열립니다.</p></div>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="sec-h"><span class="idx">03</span><h2>지난 리포트</h2><span class="rule"></span></div>
-    <details class="arch">
-      <summary>아카이브 · 지난 리포트 (최신순)</summary>
+          </div>
+        </details>
+      </div>
       <div class="arch-item">
         <details class="sub-arch">
           <summary>2026-10-12 (월) &middot; BIM 업계 동향 &mdash; 건산연이 성숙도 50.5점을 내놓은 주, 적산 소프트웨어는 그 격차를 AI로 메우기 시작했다</summary>
