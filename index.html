@@ -207,16 +207,105 @@
     <div class="clock">
       <span class="big mono">08:00 KST</span>
       월–금 자동 실행<br>
-      <span class="mono">최종 갱신 2026-10-21</span>
+      <span class="mono">최종 갱신 2026-10-22</span>
     </div>
   </header>
 
   <section class="today">
     <div class="today-bar">
       <span class="tag">오늘의 리포트</span>
-      <span class="when mono">2026-10-21 (수) &middot; 실무자 의견</span>
+      <span class="when mono">2026-10-22 (목) &middot; 연구개발 동향</span>
     </div>
     <div class="today-body report">
+<div class="r-head">
+  <h3>국내 연구팀의 CityGML 질의 검증은 틀린 답을 32.7%에서 8.5%로 줄였고 독일 병원 스캔 데이터는 문 형상 정확도를 RANSAC보다 30% 가까이 끌어올렸다</h3>
+  <p class="meta">2026-10-22 (목) &middot; Asia/Seoul &middot; 방법: 관련도 우선 + 최신성 보정(하이브리드) &middot; 소스: Google Scholar(scisbd, 직접조회 정상)&middot;arXiv&middot;Energy Informatics.Academy Conference 2026(10&ndash;14~16일 베이징, Springer LNCS) 발표자료 &middot; 키워드: CityGML&middot;IFC 자연어 질의 검증, 스캔투BIM 자동화 파이프라인, 시설관리 디지털트윈(6D/7D) &middot; 지난 일곱 회차(09-03&middot;09-10&middot;09-17&middot;09-24&middot;10-01&middot;10-08&middot;10-15)에서 다룬 문헌은 제외</p>
+  <p class="lead">이번 주는 자연어 질의의 신뢰도를 높이는 연구와 BIM을 만드는 입구(스캔)&middot;BIM을 쓰는 출구(시설관리) 양쪽을 다루는 문헌으로 짰다. 10월 14&ndash;16일 베이징에서 열린 국제학술대회에서는 국내 연구팀이 CityGML 질의에 공간 무결성 검증을 더해 틀린 응답 비율을 크게 낮춘 결과를 내놓았다. 독일 병원을 스캔한 데이터셋으로는 벽&middot;문을 자동으로 BIM 객체로 바꾸는 파이프라인이 새 평가지표와 함께 공개됐고 조지아텍 캠퍼스 건물을 대상으로 한 연구는 레이저스캔&middot;BIM&middot;IoT를 한 틀에 묶어 시설관리 대시보드까지 만들었다.</p>
+</div>
+<div class="r-sec">
+  <h4><span class="k">01</span> 핵심 요약</h4>
+  <ul>
+    <li><strong>국내 연구팀(Lam Phuoc-Dat 외 5인)이 CityGML 자연어 질의에 공간 무결성 검증을 더해 틀린 응답 비율을 32.7%에서 8.5%로 낮췄다.</strong> 하이브리드(의미+기하) 검색 자체의 정답률은 91.2%, 평균 응답 지연은 1.931초였다.</li>
+    <li><strong>독일 병원 포인트클라우드를 BIM으로 바꾸는 완전자동 파이프라인 BIMStruct3D가 RANSAC 기반보다 문 형상 재구성 정확도를 29.5%포인트(3D-IoU 0.322&rarr;0.417) 끌어올렸다.</strong> 조각나거나 겹친 벽체를 인스턴스 매칭 없이 평가하는 새 지표(vIoU)와 함께 이 데이터셋(DeKH)을 공개했다.</li>
+    <li><strong>조지아텍 캠퍼스 한 건물을 대상으로 레이저스캔&middot;BIM&middot;IoT를 통합한 시설관리 디지털트윈 프레임워크가 장비 509개를 OmniClass로 분류하고 대시보드 10개를 만들었다.</strong> 다만 실제 센서가 많지 않아 데이터 대부분이 시뮬레이션으로 채워졌다는 한계도 함께 밝혔다.</li>
+    <li><strong>Google Scholar(scisbd) 직접조회는 이번에도 차단 없이 작동했다</strong> &mdash; 09-17부터 이번까지 6회 연속 안정이다.</li>
+  </ul>
+</div>
+<div class="r-sec">
+  <h4><span class="k">02</span> 상세 발견사항 (문헌별)</h4>
+
+  <div class="src">
+    <div class="s-name">① CityGML 자연어 질의 신뢰성 검증 &mdash; 국내 연구팀, EI.A 2026 베이징 발표(신규&middot;7일 이내&middot;CIM/자연어질의 계열)</div>
+    <p><strong>Reliable Natural-Language Interaction with CityGML Through Hybrid Retrieval and Spatial Integrity Verification</strong> &mdash; Lam Phuoc-Dat&middot;Gu Bon-Hyeon&middot;Jo Young-Hoon&middot;O Ji-Young&middot;O Soo-Yol&middot;Lee Suk-Hwan, Energy Informatics.Academy Conference 2026(2026-10-14&sim;16, 베이징 중&middot;덴 센터, Springer LNCS 프로시딩). 09-10 회차가 다룬 CityLLM&middot;IfcLLM(Lamsal&middot;Zlatanova&middot;Shen 그룹)과 마찬가지로 CityGML 자연어 질의를 다루지만 이 팀은 의미 검색과 기하&middot;위상 추론을 결합한 하이브리드 검색에 더해 <strong>답을 내놓기 전에 공간 정합성을 다시 검증하는 단계</strong>를 추가했다. 하이브리드 검색 자체 정답률 91.2%에 공간 무결성 검증을 얹어 <strong>틀린 응답 비율을 32.7%에서 8.5%로</strong> 낮췄고 평균 응답 지연은 1.931초로 대화형 사용에 쓸 수 있는 수준을 유지했다.<br>
+    <strong>&rsaquo; 우리 관점 시사점:</strong> &lsquo;검색만 잘하는 것&rsquo;과 &lsquo;틀린 답을 걸러내는 것&rsquo;을 분리한 설계는, NeXura의 자연어 질의&middot;품질검토 보조 기능에도 검색 단계 뒤에 별도의 기하 검증 레이어를 두는 구조로 참조할 만하다. 09-10에서 확인한 스케일 계층형 라우팅(IfcLLM&rarr;CityLLM)과 이번 검증 레이어를 합치면 더 신뢰할 만한 질의 아키텍처가 그려진다.</p>
+  </div>
+
+  <div class="src">
+    <div class="s-name">② BIMStruct3D &mdash; 완전자동 스캔투BIM 파이프라인, 독일 병원 데이터셋(DeKH) 공개 (arXiv 원문 확인 &middot; EC3 2026 발표 &middot; 자동화/스캔투BIM 계열)</div>
+    <p><strong>BIMStruct3D: A Fully Automated Hybrid Learning Scan-to-BIM Pipeline with Integrated Topology Refinement</strong> &mdash; Mahdi Chamseddine&middot;Fabian Kaufmann&middot;Marius Schellen&middot;Christian Glock&middot;Didier Stricker&middot;Jason Rambach, arXiv 2604.24311(2026-04-27 제출, 2026-05-05 v2, EC3 2026 발표). 학습 기반 의미 분할과 위상(topology) 인지 기하 복원을 결합해 포인트클라우드를 IFC 호환 BIM으로 바로 바꾼다. 조각나거나 서로 겹친 벽체처럼 <strong>인스턴스 단위 매칭이 어려운 형상을 평가하기 위해 클래스 단위로 복셀을 겹쳐 보는 새 지표(vIoU)</strong>를 제안하고 독일 병원 포인트클라우드&middot;정답 BIM&middot;주석을 담은 DeKH 데이터셋을 공개했다. DeKH 1개 동 기준 RANSAC 대비 <strong>문 3D-IoU 0.322&rarr;0.417(29.5%p 개선), 벽 vIoU 0.466&rarr;0.553(18.7%p 개선)</strong>을 보였다.<br>
+    <strong>&rsaquo; 우리 관점 시사점:</strong> vIoU처럼 인스턴스 매칭을 요구하지 않는 평가 방식은, NeXura CDE가 현장 스캔&middot;실측 데이터를 반입할 때 &lsquo;조각난 형상도 공정하게 채점하는&rsquo; 품질 게이트 지표로 참고할 만하다. 다만 전체 평균 vIoU가 DeKH 35.2%&middot;CV4AEC 27.3%로 아직 절반에 못 미쳐, 완전자동 변환을 그대로 쓰기보다는 사람 검수를 거치는 중간 단계로 자리매김할 수준이다.</p>
+  </div>
+
+  <div class="src">
+    <div class="s-name">③ 캠퍼스 시설관리 디지털트윈 통합 프레임워크 (arXiv 원문 확인 &middot; 6D/7D&middot;시설관리 계열)</div>
+    <p><strong>A Framework for Scalable Digital Twin Deployment in Smart Campus Building Facility Management</strong> &mdash; Thyda Siv, arXiv 2512.12149(2025-12-13 제출). 지상 레이저스캔(현실 포착)&middot;건축&middot;기계&middot;전기&middot;배관&middot;센서 체계를 담은 BIM&middot;장비 메타데이터&middot;유지보수 절차&middot;시뮬레이션 IoT를 연결한 디지털트윈 환경 세 단계를 하나로 엮었다. 조지아텍 Price Gilbert 빌딩에 적용해 <strong>장비 509개를 OmniClass 분류체계로 정리하고 대시보드 10개</strong>를 구축해 중앙화된 자산 문서화&middot;유지보수 가시성 개선을 보였다. 다만 실제 센서 보급이 적어 IoT 데이터 대부분을 시뮬레이션으로 채웠다는 한계를 저자 스스로 밝혔다.<br>
+    <strong>&rsaquo; 우리 관점 시사점:</strong> 스캔&middot;BIM&middot;운영데이터를 한 플랫폼에 엮는 3단 구조는 NeXura가 6D/7D(운영&middot;유지관리)로 확장할 때 참조할 선례지만 &lsquo;시뮬레이션 IoT로 검증&rsquo;이라는 한계는 국내 적용 전에 실제 센서 보급 현황부터 점검해야 한다는 경고로 함께 읽어야 한다.</p>
+  </div>
+</div>
+<div class="r-sec">
+  <h4><span class="k">03</span> 시사점 / 액션 아이디어</h4>
+  <ul>
+    <li><b>NeXura 자연어 질의&middot;품질검토 보조에 검색 뒤 별도의 기하&middot;위상 검증 단계를 추가하는 구조를 검토한다.</b> CityGML 사례처럼 검증 레이어 하나로 오답 비율을 큰 폭으로 낮출 수 있다.</li>
+    <li><b>CDE 반입 데이터 품질 게이트에 vIoU류(인스턴스 매칭 불필요) 지표를 참고 기준으로 검토한다.</b> 다만 BIMStruct3D의 평균 vIoU가 아직 30%대 수준이라 완전자동 변환이 아니라 사람 검수를 보완하는 중간 단계로 위치시킨다.</li>
+    <li><b>캠퍼스 시설관리 통합 아키텍처를 6D/7D 로드맵 참고 사례로 등록하되, &lsquo;시뮬레이션 IoT 검증&rsquo;의 한계를 국내 적용 전 반드시 재확인 대상으로 남긴다.</b></li>
+    <li><b>국내 Energy Informatics.Academy 발표팀처럼 openBIM&middot;CIM에 인접한 국내 연구그룹을 다음 회차부터 상시 추적 후보로 등록한다.</b> 이번처럼 국내 저자의 신규 성과를 해외 소스보다 먼저 포착할 수 있는 경로다.</li>
+  </ul>
+</div>
+<div class="r-sec">
+  <h4><span class="k">04</span> 이번 조사 방법 개선 제안</h4>
+  <div class="note-amber"><b>자기평가:</b> 지난 10-15 회차의 세 갈래(구조공학 벤치마크&middot;자동화 파이프라인&middot;인프라 디지털트윈) 분산 방식을 이어받아 이번엔 자연어질의 검증&middot;스캔투BIM&middot;시설관리 세 갈래로 다시 분산했다. 규정검토&middot;컴플라이언스 계열은 10-15 제안대로 격주 재편입을 검토할 차례였지만 이번 표본에서는 의도적으로 뺐다 &mdash; 다음 회차에 반영한다.</div>
+  <ul>
+    <li><b>규정검토&middot;컴플라이언스 계열을 다음 회차에 1편 재편입한다.</b> 10-15가 제안한 격주 주기를 이번엔 지키지 못했다.</li>
+    <li><b>Google Scholar(scisbd) 1차 소스 승격을 다시 검토할 시점이다.</b> 09-17&middot;09-24&middot;10-01&middot;10-08&middot;10-15&middot;10-22까지 6회 연속 차단 없이 접속됐다.</li>
+    <li><b>국내 학회(Energy Informatics.Academy 등) 프로시딩은 arXiv에 올라오지 않아 원문 전체를 확인하기 어렵다.</b> Springer LNCS 정식 출판 이후 재확인을 다음 회차 과제로 남긴다.</li>
+    <li><b>이번 표본의 세 문헌 모두 정확도&middot;지표가 아직 실무에 바로 쓸 수준(90%대 중반 이상, 또는 50% 이상 vIoU)에는 못 미쳤다.</b> &lsquo;얼마나 좋아졌는가&rsquo;와 함께 &lsquo;아직 얼마나 모자란가&rsquo;도 핵심 요약에 꾸준히 병기한다.</li>
+  </ul>
+</div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><span class="idx">01</span><h2>요일별 분석 주제</h2><span class="rule"></span><span class="sec-hint">요일을 눌러 지난 리포트 보기</span></div>
+    <div class="week">
+      <button type="button" class="day" data-dow="월"><span class="d">MON · 월</span><span class="t">BIM 업계 동향</span><span class="m">전문지·뉴스 브리핑</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="화"><span class="d">TUE · 화</span><span class="t">입찰·수주 동향</span><span class="m">나라장터·KAIA 공고</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="수"><span class="d">WED · 수</span><span class="t">실무자 의견</span><span class="m">커뮤니티 인사이트</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day on" data-dow="목"><span class="d">THU · 목</span><span class="t">연구개발 동향</span><span class="m">Scholar·AURIC 논문</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="금"><span class="d">FRI · 금</span><span class="t">역량강화 인사이트</span><span class="m">전문가 연설 분석</span><span class="cnt" hidden></span></button>
+    </div>
+    <div class="day-reports" id="dayReports" hidden>
+      <div class="dr-head"><span id="drTitle"></span><button type="button" class="dr-close" id="drClose" title="닫기">✕</button></div>
+      <ul class="dr-list" id="drList"></ul>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><span class="idx">02</span><h2>동작 방식</h2><span class="rule"></span></div>
+    <div class="flow">
+      <div class="step"><span class="n">STEP 1</span><div class="st">클라우드 조사</div><p class="sp">매일 08:00, 오늘 요일 주제로 웹 조사를 수행하고 HTML 리포트를 작성합니다.</p></div>
+      <div class="step"><span class="n">STEP 2</span><div class="st">이 페이지 갱신</div><p class="sp">이 고정 페이지를 제자리에서 업데이트해 최신 리포트를 맨 위에 배치합니다.</p></div>
+      <div class="step"><span class="n">STEP 3</span><div class="st">알림 · 자동 열기</div><p class="sp">푸시 알림을 보내고 PC를 켜면 이 페이지가 Chrome에 자동으로 열립니다.</p></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><span class="idx">03</span><h2>지난 리포트</h2><span class="rule"></span></div>
+    <details class="arch">
+      <summary>아카이브 · 지난 리포트 (최신순)</summary>
+      <div class="arch-item">
+        <details class="sub-arch">
+          <summary>2026-10-21 (수) &middot; 실무자 의견 &mdash; 레빗 포럼은 &lsquo;BIM&middot;AI 전환 5년&rsquo; 전망에 반론을 달았고 2027 업그레이드 불만은 그대로 쌓였다</summary>
+          <div class="body">
 <div class="r-head">
   <h3>레빗 포럼은 &lsquo;BIM&middot;AI 전환 5년&rsquo; 전망에 반론을 달았고 2027 업그레이드 불만은 그대로 쌓였다</h3>
   <p class="meta">2026-10-21 (수) &middot; Asia/Seoul &middot; 조사범위: 비정량(최근 활성 게시물&middot;스레드 기준) &middot; 방법: 디시인사이드 BIM 마이너 갤러리 직접조회 + Autodesk Community 커뮤니티 블로그&middot;포럼 검색 기반 확인 + 리셀러&middot;벤더 블로그(Axiom) 교차확인 + Reddit&middot;LinkedIn&middot;GrabCAD&middot;네이버 카페 재시도(지난 회차 제안 쿼리 적용)</p>
@@ -292,37 +381,9 @@
     <li><b>디시인사이드 갤러리처럼 활동이 뜸한 소스는 매주 전수 확인하는 대신, 새 글이 없으면 이번처럼 한 줄로 짧게 처리하고 그 시간을 해외 소스 심층 확인에 돌린다.</b></li>
   </ul>
 </div>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="sec-h"><span class="idx">01</span><h2>요일별 분석 주제</h2><span class="rule"></span><span class="sec-hint">요일을 눌러 지난 리포트 보기</span></div>
-    <div class="week">
-      <button type="button" class="day" data-dow="월"><span class="d">MON · 월</span><span class="t">BIM 업계 동향</span><span class="m">전문지·뉴스 브리핑</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day" data-dow="화"><span class="d">TUE · 화</span><span class="t">입찰·수주 동향</span><span class="m">나라장터·KAIA 공고</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day on" data-dow="수"><span class="d">WED · 수</span><span class="t">실무자 의견</span><span class="m">커뮤니티 인사이트</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day" data-dow="목"><span class="d">THU · 목</span><span class="t">연구개발 동향</span><span class="m">Scholar·AURIC 논문</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day" data-dow="금"><span class="d">FRI · 금</span><span class="t">역량강화 인사이트</span><span class="m">전문가 연설 분석</span><span class="cnt" hidden></span></button>
-    </div>
-    <div class="day-reports" id="dayReports" hidden>
-      <div class="dr-head"><span id="drTitle"></span><button type="button" class="dr-close" id="drClose" title="닫기">✕</button></div>
-      <ul class="dr-list" id="drList"></ul>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="sec-h"><span class="idx">02</span><h2>동작 방식</h2><span class="rule"></span></div>
-    <div class="flow">
-      <div class="step"><span class="n">STEP 1</span><div class="st">클라우드 조사</div><p class="sp">매일 08:00, 오늘 요일 주제로 웹 조사를 수행하고 HTML 리포트를 작성합니다.</p></div>
-      <div class="step"><span class="n">STEP 2</span><div class="st">이 페이지 갱신</div><p class="sp">이 고정 페이지를 제자리에서 업데이트해 최신 리포트를 맨 위에 배치합니다.</p></div>
-      <div class="step"><span class="n">STEP 3</span><div class="st">알림 · 자동 열기</div><p class="sp">푸시 알림을 보내고 PC를 켜면 이 페이지가 Chrome에 자동으로 열립니다.</p></div>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="sec-h"><span class="idx">03</span><h2>지난 리포트</h2><span class="rule"></span></div>
-    <details class="arch">
-      <summary>아카이브 · 지난 리포트 (최신순)</summary>
+          </div>
+        </details>
+      </div>
       <div class="arch-item">
         <details class="sub-arch">
           <summary>2026-10-20 (화) &middot; 입찰&middot;수주 동향 &mdash; 나라장터엔 또 BIM 직접공고가 없었지만 도로공사&middot;철도공단 등 6개 기관은 BIM 기준을 하나로 묶는 협약을 맺었다</summary>
