@@ -207,16 +207,114 @@
     <div class="clock">
       <span class="big mono">08:00 KST</span>
       월–금 자동 실행<br>
-      <span class="mono">최종 갱신 2026-10-27</span>
+      <span class="mono">최종 갱신 2026-10-28</span>
     </div>
   </header>
 
   <section class="today">
     <div class="today-bar">
       <span class="tag">오늘의 리포트</span>
-      <span class="when mono">2026-10-27 (화) &middot; BIM 입찰&middot;수주 동향</span>
+      <span class="when mono">2026-10-28 (수) &middot; 실무자 의견</span>
     </div>
     <div class="today-body report">
+<div class="r-head">
+  <h3>레빗 포럼엔 독립 개발자들이 만든 &lsquo;승인 없이는 못 쓰는&rsquo; Revit MCP 서버가 한 달 사이 여럿 올라왔고 pyRevit은 레빗 2026.4 업데이트와 넉 달째 충돌 중이다</h3>
+  <p class="meta">2026-10-28 (수) &middot; Asia/Seoul &middot; 조사범위: 비정량(최근 활성 게시물&middot;스레드 기준) &middot; 방법: 디시인사이드 BIM 마이너 갤러리 직접조회 + Autodesk Community 포럼&middot;GitHub 검색 기반 확인 + pyRevit GitHub Issues 직접조회(09-30 제안 반영, 신규) + LinkedIn&middot;Reddit&middot;GrabCAD 검색 스니펫 기반 확인</p>
+  <p class="lead">이번 주는 같은 커뮤니티 안에서 서로 다른 방향의 움직임이 함께 보였다. Autodesk Community의 Revit API 포럼과 GitHub에는 지난 한 달 사이 서로 무관한 개발자 여러 명이 각자 만든 Revit MCP(Model Context Protocol) 서버가 올라왔는데 그중 다수가 &lsquo;쓰기 동작은 기본값에서 빼고 승인된 경우에만 허용한다&rsquo;는 비슷한 설계를 내세웠다. 같은 생태계의 오픈소스 플러그인 pyRevit은 지난 4월 보고된 레빗 2026.4 어셈블리 충돌이 아직 풀리지 않은 채로 남아 있었다. 런던에서 열린 Women in BIM 컨퍼런스 2026에서는 언스트앤영(EY)의 한 BIM 매니저가 &lsquo;AI가 건설의 규칙을 바꾸고 있는가&rsquo;를 주제로 발표했고 비슷한 주제를 다루는 LinkedIn 글들에서도 직함 재편 논의가 함께 보였다. 국내 갤러리는 이번 주도 새 글이 없었고 Reddit&middot;GrabCAD는 구체적인 게시물을 다시 확보하지 못했다.</p>
+</div>
+<div class="r-sec">
+  <h4><span class="k">01</span> 핵심 요약</h4>
+  <ul>
+    <li><strong>Autodesk Community Revit API 포럼과 GitHub에 지난 한 달 사이 서로 무관한 개발자들이 각자 만든 Revit MCP 서버가 여러 건 올라왔다.</strong> Revit Model MCP&middot;aec-model-bridge&middot;horizun-revit-mcp&middot;revit-model-mcp(adity982)는 독립적으로 시작된 프로젝트지만 그중 다수가 &lsquo;쓰기 권한을 기본값에서 빼고 승인을 받아야 실행된다&rsquo;는 비슷한 결론에 이르렀다.</li>
+    <li>pyRevit GitHub 저장소의 미해결 이슈(#3317)에 따르면 <strong>레빗 2026.4가 시작할 때 불러오는 System.Collections.Immutable 8.0.0과 pyRevit이 요구하는 9.0.0 버전이 충돌해 pyRevit 리본 탭이 뜨지 않는다.</strong> 4월 18일 보고된 뒤 5월 15일까지 댓글이 달렸지만 해결책은 아직 나오지 않았다.</li>
+    <li>Women in BIM 컨퍼런스 2026 런던에서 EY의 BIM 매니저 로라 티부르치가 &lsquo;AI가 건설의 규칙을 바꾸고 있는가&rsquo;를 주제로 발표했다. <strong>비슷한 주제를 다룬 여러 LinkedIn 글에서도 &lsquo;BIM 매니저 다음은 AI 매니저인가&rsquo;라는 직함 재편 논의가 함께 보였다(검색 스니펫 기반).</strong></li>
+    <li>디시인사이드 BIM 마이너 갤러리는 10월 2일 글 이후 이번 주도 새 글이 없었다. Reddit&middot;GrabCAD는 검색으로 구체적인 최신 게시물을 확보하지 못해 이번 회차에도 반영하지 못했다.</li>
+  </ul>
+</div>
+<div class="r-sec">
+  <h4><span class="k">02</span> 상세 발견사항 (소스별)</h4>
+
+  <div class="src">
+    <div class="s-name">① Autodesk Community&middot;GitHub &mdash; 독립 개발자들의 Revit MCP 서버, &lsquo;승인 기반 쓰기&rsquo; 설계가 겹쳤다</div>
+    <p>Revit Model MCP(GitHub sharafutdinovdi, MIT 라이선스, Revit 2022&sim;2027까지 여섯 버전을 한 저장소로 지원, 18개 읽기 도구를 고정 질의로만 제공)를 비롯해 aec-model-bridge(Sam-AEC, &ldquo;Claude 등 AI 비서가 모델을 읽고 고치게 하되 변경마다 사람 승인을 받는다&rdquo;), revit-model-mcp(adity982, &ldquo;조회&middot;집계&middot;점검은 기본 제공하고 실행은 선택적 게이트 뒤에 둔다&rdquo;)가 Autodesk Community Revit API 포럼과 GitHub에 함께 올라왔다. 설치 쉬운 Windows 인스톨러를 내세운 horizun-revit-mcp(Revit 2023&sim;2027 지원)도 같은 시기에 등장했다.<br>
+    <strong>&rsaquo; 참고:</strong> 직접조회(WebFetch)는 이번에도 Autodesk Community 포럼에서 403으로 막혀 포럼 게시물은 검색 스니펫으로, 각 프로젝트의 기능 설명은 GitHub&middot;PyPI 저장소 설명으로 확인했다.</p>
+    <div class="links"><a href="https://github.com/sharafutdinovdi/revit-model-mcp" target="_blank" rel="noopener">GitHub &middot; sharafutdinovdi/revit-model-mcp</a> <a href="https://github.com/Sam-AEC/aec-model-bridge" target="_blank" rel="noopener">GitHub &middot; Sam-AEC/aec-model-bridge</a> <a href="https://github.com/adity982/revit-model-mcp" target="_blank" rel="noopener">GitHub &middot; adity982/revit-model-mcp</a> <a href="https://github.com/HorizunGroup/horizun-revit-mcp" target="_blank" rel="noopener">GitHub &middot; HorizunGroup/horizun-revit-mcp</a></div>
+  </div>
+
+  <div class="src">
+    <div class="s-name">② pyRevit GitHub Issues &mdash; 레빗 2026.4 어셈블리 충돌, 4월 보고 후 미해결 (09-30 제안 첫 적용)</div>
+    <p>pyRevit 마스터 브랜치를 레빗 2026.4에 설치하면 리본 탭이 뜨지 않는다는 이슈(#3317)가 올라와 있다. 레빗 2026.4가 시작 시 미리 불러오는 <span class="mono">System.Collections.Immutable 8.0.0</span>과 pyRevit이 쓰는 <span class="mono">Microsoft.CodeAnalysis 5.3.0</span>이 요구하는 <span class="mono">9.0.0</span> 버전이 맞지 않아 CoreCLR의 어셈블리 로드 컨텍스트가 같은 타입의 중복 로드를 막는 탓이다. 마스터 브랜치가 구버전 RevitAPI(25.4.20.0)로 빌드된 것과 실제 설치된 레빗(26.4.0.0)이 다른 SDK 미스매치도 함께 지적됐다. Microsoft.CodeAnalysis를 내리거나 Roslyn 의존성을 격리된 로드 컨텍스트로 옮기는 방안, .NET 9 런타임을 함께 담는 방안이 댓글로 제안됐다.<br>
+    <strong>&rsaquo; 참고:</strong> 09-30 회차 개선 제안에서 pyRevit GitHub Issues를 수요일 해외 실무자 의견 보조 소스로 검토하자고 했던 것을 이번에 처음 실행했다. 포럼 스니펫과 달리 보고일&middot;버전 번호가 이슈 본문에 그대로 남아 추적이 수월했다.</p>
+    <div class="links"><a href="https://github.com/pyrevitlabs/pyRevit/issues/3317" target="_blank" rel="noopener">GitHub &middot; pyRevit Issue #3317</a></div>
+  </div>
+
+  <div class="src">
+    <div class="s-name">③ Women in BIM 컨퍼런스 2026 &mdash; &lsquo;AI가 건설의 규칙을 바꾸는가&rsquo;, 직함 재편 논의</div>
+    <p>10월 15일 런던에서 열린 Women in BIM 컨퍼런스 2026은 &lsquo;AI in Action&rsquo;을 주제로 14개 세션&middot;22명의 발표자를 다뤘다. EY의 BIM 매니저이자 Women in BIM 이탈리아 지역 리드인 로라 티부르치는 &lsquo;AI가 건설의 규칙을 바꾸고 있는가&rsquo;를 주제로 이탈리아 건설업계를 출발점으로 삼아 조직 규모별 AI 활용 방안을 다뤘다. 검색으로 확인한 여러 LinkedIn 게시물에서도 &lsquo;BIM 매니저&middot;코디네이터를 밀어 올렸던 사람들이 이제 AI 매니저&middot;코디네이터 직함을 만들고 있다&rsquo;는 비슷한 관찰이 보였다.<br>
+    <strong>&rsaquo; 참고:</strong> LinkedIn 직접조회는 이번에도 막혀 게시물 본문은 검색 스니펫으로만 확인했다 &mdash; 플레이북의 Reddit&middot;LinkedIn 처리 원칙대로 &lsquo;검색 스니펫 기반&rsquo;임을 밝힌다.</p>
+    <div class="links"><a href="https://digitalconstructionplus.com/women-in-bim-conference-targets-ai-in-action/" target="_blank" rel="noopener">Digital Construction Plus &middot; Women in BIM conference targets AI in action</a> <a href="https://womeninbim.org/conference/" target="_blank" rel="noopener">Women in BIM &middot; Conference 2026</a></div>
+  </div>
+
+  <div class="src">
+    <div class="s-name">④ 국내 갤러리&middot;Reddit&middot;GrabCAD &mdash; 이번 주도 신규 게시물 확보 실패</div>
+    <p>디시인사이드 BIM 마이너 갤러리를 직접 조회한 결과 10월 2일 &lsquo;레빗 협업할 때 저작권 문제 없음?&rsquo; 글 이후 새 글이 없었다 &mdash; 지난 회차와 같은 상태다. Reddit은 r/Revit&middot;r/BIM을 겨냥한 검색을 여러 조합으로 시도했지만 구체적인 게시물 대신 소프트웨어 리뷰 사이트(Capterra&middot;G2) 결과만 노출됐고 GrabCAD도 질문 게시판 성격의 오래된 글만 확인됐다.<br>
+    <strong>&rsaquo; 참고:</strong> Reddit 직접 fetch 차단은 구조적 문제로 이미 여러 회차 반복됐다 &mdash; 검색 자체가 구체적 게시물을 못 찾는 이번 결과는 차단과는 별개로, 해당 기간 새 글이 적었을 가능성도 함께 고려해야 한다.</p>
+  </div>
+</div>
+<div class="r-sec">
+  <h4><span class="k">03</span> 시사점 / 액션 아이디어</h4>
+  <ul>
+    <li><b>서로 무관한 개발자 네 곳이 비슷한 시기에 &lsquo;쓰기는 승인 뒤에만&rsquo;이라는 같은 결론에 이른 것은 업계가 AI의 BIM 모델 직접 수정에 아직 신중하다는 신호로 읽을 수 있다.</b> NeXura의 AI 기능도 쓰기 동작에는 반드시 사용자 승인 단계를 두는 원칙을 재확인한다.</li>
+    <li><b>pyRevit 충돌은 레빗 자체 버그가 아니라 .NET 런타임 전환(CoreCLR) 과정에서 생긴 의존성 버전 문제다.</b> NeXura가 레빗 애드인을 배포할 계획이 있다면 같은 어셈블리 버전 충돌을 레빗 2026.4 기준으로 미리 점검한다.</li>
+    <li><b>Women in BIM 논의에 등장한 &lsquo;AI 매니저&middot;코디네이터&rsquo; 직함은 NeXura 영업 대상 조직에 새로 생길 수 있는 의사결정권자를 미리 파악해 두는 데 참고할 만하다.</b></li>
+    <li><b>pyRevit GitHub Issues는 이번 첫 적용에서 포럼 스니펫보다 보고일&middot;버전이 명확해 추적하기 쉬운 소스로 확인됐다.</b> 다음 회차부터 상시 보조 소스로 유지한다.</li>
+  </ul>
+</div>
+<div class="r-sec">
+  <h4><span class="k">04</span> 이번 조사 방법 개선 제안</h4>
+  <div class="note-amber"><b>자기평가:</b> 09-30 회차에서 제안했던 pyRevit GitHub Issues를 이번에 처음 실행해 구체적인 신규 발견(2026.4 어셈블리 충돌)으로 이어졌다. 다만 Reddit&middot;GrabCAD는 이번에도 구체적인 게시물을 찾지 못해 여러 회차째 이어진 한계가 그대로 남았다.</div>
+  <ul>
+    <li><b>Reddit&middot;GrabCAD는 여러 회차째 검색으로 구체적 게시물을 못 찾고 있다.</b> 플레이북이 언급한 teddit&middot;libreddit 미러나 Reddit 공식 API 키 확보를 다음 단계로 검토할 시점이다.</li>
+    <li><b>독립 개발자들의 Revit MCP 서버가 이번 회차에 네 건이나 한꺼번에 확인됐다.</b> &lsquo;오픈소스 Revit MCP 생태계&rsquo;를 수요일 상시 추적 카테고리로 등록해 다음 회차부터는 신규&middot;업데이트 건만 추가하는 방식을 검토한다.</li>
+    <li><b>LinkedIn 검색은 이번에 괜찮은 신호(Women in BIM 컨퍼런스)를 찾았지만 직접조회는 여전히 막혀 있다.</b> 검색 스니펫 기반이라는 한계를 계속 명시한다.</li>
+    <li><b>디시인사이드 BIM 갤러리는 10월 2일 이후 4주 가까이 새 글이 없다.</b> 갤러리 자체의 활성도가 낮아진 것인지 다음 회차에 다른 날짜대도 확인해 본다.</li>
+  </ul>
+</div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><span class="idx">01</span><h2>요일별 분석 주제</h2><span class="rule"></span><span class="sec-hint">요일을 눌러 지난 리포트 보기</span></div>
+    <div class="week">
+      <button type="button" class="day" data-dow="월"><span class="d">MON · 월</span><span class="t">BIM 업계 동향</span><span class="m">전문지·뉴스 브리핑</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="화"><span class="d">TUE · 화</span><span class="t">입찰·수주 동향</span><span class="m">나라장터·KAIA 공고</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day on" data-dow="수"><span class="d">WED · 수</span><span class="t">실무자 의견</span><span class="m">커뮤니티 인사이트</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="목"><span class="d">THU · 목</span><span class="t">연구개발 동향</span><span class="m">Scholar·AURIC 논문</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="금"><span class="d">FRI · 금</span><span class="t">역량강화 인사이트</span><span class="m">전문가 연설 분석</span><span class="cnt" hidden></span></button>
+    </div>
+    <div class="day-reports" id="dayReports" hidden>
+      <div class="dr-head"><span id="drTitle"></span><button type="button" class="dr-close" id="drClose" title="닫기">✕</button></div>
+      <ul class="dr-list" id="drList"></ul>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><span class="idx">02</span><h2>동작 방식</h2><span class="rule"></span></div>
+    <div class="flow">
+      <div class="step"><span class="n">STEP 1</span><div class="st">클라우드 조사</div><p class="sp">매일 08:00, 오늘 요일 주제로 웹 조사를 수행하고 HTML 리포트를 작성합니다.</p></div>
+      <div class="step"><span class="n">STEP 2</span><div class="st">이 페이지 갱신</div><p class="sp">이 고정 페이지를 제자리에서 업데이트해 최신 리포트를 맨 위에 배치합니다.</p></div>
+      <div class="step"><span class="n">STEP 3</span><div class="st">알림 · 자동 열기</div><p class="sp">푸시 알림을 보내고 PC를 켜면 이 페이지가 Chrome에 자동으로 열립니다.</p></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><span class="idx">03</span><h2>지난 리포트</h2><span class="rule"></span></div>
+    <details class="arch">
+      <summary>아카이브 · 지난 리포트 (최신순)</summary>
+      <div class="arch-item">
+        <details class="sub-arch">
+          <summary>2026-10-27 (화) &middot; BIM 입찰&middot;수주 동향 &mdash; 나라장터 3주 매칭 57건 중 건설 접점은 국토교통부 스마트시티 디지털트윈 2건뿐이었고 LH&middot;도로공사&middot;철도공단은 공고 대신 지난달 BIM 데이터 공유 협약으로 움직였다</summary>
+          <div class="body">
 <div class="r-head">
   <h3>나라장터 3주 매칭 57건 중 건설 접점은 국토교통부 스마트시티 디지털트윈 2건뿐이었고 LH&middot;도로공사&middot;철도공단은 공고 대신 지난달 BIM 데이터 공유 협약으로 움직였다</h3>
   <p class="meta">2026-10-27 (화) &middot; Asia/Seoul &middot; 조사범위: 최근 21일(2026-10-06&sim;10-27) &middot; 방법: 나라장터 입찰공고정보서비스&middot;사전규격(예고) Open API 자동수집(<span class="mono">.state\bids-2026-10-27.md</span>&middot;<span class="mono">prespec-2026-10-27.md</span>) + WebSearch로 orgWhitelist 발주기관(LH&middot;도로공사&middot;철도공단&middot;KAIA) 보완조회 &middot; 키워드: BIM, 건설정보모델링, 디지털트윈, 스마트건설, 3차원설계, 공간정보, CIM, 설계자동화, BIM설계지원, 공간정보플랫폼</p>
@@ -279,37 +377,9 @@
     <li><b>LH&middot;도로공사&middot;철도공단은 이번에 공고가 아니라 업계 뉴스(기관 간 협약)로 신호를 얻었다.</b> 다음엔 각 기관 전자조달 사전규격 페이지(ebid.lh.or.kr&middot;ebid.ex.co.kr)를 직접 조회해 뉴스성 신호와 공고성 신호를 함께 교차확인한다.</li>
   </ul>
 </div>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="sec-h"><span class="idx">01</span><h2>요일별 분석 주제</h2><span class="rule"></span><span class="sec-hint">요일을 눌러 지난 리포트 보기</span></div>
-    <div class="week">
-      <button type="button" class="day" data-dow="월"><span class="d">MON · 월</span><span class="t">BIM 업계 동향</span><span class="m">전문지·뉴스 브리핑</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day on" data-dow="화"><span class="d">TUE · 화</span><span class="t">입찰·수주 동향</span><span class="m">나라장터·KAIA 공고</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day" data-dow="수"><span class="d">WED · 수</span><span class="t">실무자 의견</span><span class="m">커뮤니티 인사이트</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day" data-dow="목"><span class="d">THU · 목</span><span class="t">연구개발 동향</span><span class="m">Scholar·AURIC 논문</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day" data-dow="금"><span class="d">FRI · 금</span><span class="t">역량강화 인사이트</span><span class="m">전문가 연설 분석</span><span class="cnt" hidden></span></button>
-    </div>
-    <div class="day-reports" id="dayReports" hidden>
-      <div class="dr-head"><span id="drTitle"></span><button type="button" class="dr-close" id="drClose" title="닫기">✕</button></div>
-      <ul class="dr-list" id="drList"></ul>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="sec-h"><span class="idx">02</span><h2>동작 방식</h2><span class="rule"></span></div>
-    <div class="flow">
-      <div class="step"><span class="n">STEP 1</span><div class="st">클라우드 조사</div><p class="sp">매일 08:00, 오늘 요일 주제로 웹 조사를 수행하고 HTML 리포트를 작성합니다.</p></div>
-      <div class="step"><span class="n">STEP 2</span><div class="st">이 페이지 갱신</div><p class="sp">이 고정 페이지를 제자리에서 업데이트해 최신 리포트를 맨 위에 배치합니다.</p></div>
-      <div class="step"><span class="n">STEP 3</span><div class="st">알림 · 자동 열기</div><p class="sp">푸시 알림을 보내고 PC를 켜면 이 페이지가 Chrome에 자동으로 열립니다.</p></div>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="sec-h"><span class="idx">03</span><h2>지난 리포트</h2><span class="rule"></span></div>
-    <details class="arch">
-      <summary>아카이브 · 지난 리포트 (최신순)</summary>
+          </div>
+        </details>
+      </div>
       <div class="arch-item">
         <details class="sub-arch">
           <summary>2026-10-26 (월) &middot; BIM 업계 동향 &mdash; 간삼건축이 BIM 어워즈 비전상을 받은 한 주, 조달청은 인허가 연계 전담조직을 논의하고 대우건설은 AI 번역기를 전 현장에 깔았다</summary>
