@@ -214,9 +214,116 @@
   <section class="today">
     <div class="today-bar">
       <span class="tag">오늘의 리포트</span>
-      <span class="when mono">2026-10-28 (수) &middot; 실무자 의견</span>
+      <span class="when mono">2026-10-29 (목) &middot; 연구개발 동향</span>
     </div>
     <div class="today-body report">
+<div class="r-head">
+  <h3>뮌헨공대는 IFC를 어떤 형식으로 바꿔 넘겨도 LLM 질의 정확도가 통계적으로 같다는 것을 507문항으로 보였고 독일&middot;이탈리아 두 팀은 IDS가 계산값을 검증하지 못한다는 같은 한계를 각각 확인했다</h3>
+  <p class="meta">2026-10-29 (목) &middot; Asia/Seoul &middot; 방법: 관련도 우선 + 최신성 보정(하이브리드) &middot; 소스: Google Scholar(<span class="mono">scisbd=1</span> 최신순, 쿼리 2개)&middot;Zenodo(ECPPM 2026 논문 레코드)&middot;ITcon 31권 원문&middot;저자 기관 공지&middot;SSRN&middot;MDPI 서지 &middot; 세부주제: IFC 자연어 질의와 데이터 표현, IDS 자동생성과 검증 한계, 지식그래프 기반 적응형 규정검토, 시공단계 LCA 시맨틱 보강 &middot; 중복 제외: 09-03&middot;09-10&middot;09-17&middot;09-24&middot;10-01&middot;10-08&middot;10-15&middot;10-22 회차에서 다룬 문헌</p>
+  <p class="lead">이번 회차 문헌 다섯 편은 서로 다른 문제를 풀면서 같은 지점을 가리켰다. 뮌헨공대 팀은 같은 BIM 모델을 네 가지 형식으로 바꿔 LLM 에이전트에게 507개 질문을 던졌는데 네 형식의 정확도 차이가 통계적으로 유의하지 않았다. 느린 쪽은 형식 선택이 아니라 값을 정확히 읽어내는 단계였다. 클라우스탈공대 팀과 폴리테크니코 밀라노 팀은 각각 다른 목적으로 IDS를 쓰다가 IDS로는 계산되거나 파생된 값을 검증할 수 없다는 같은 한계를 확인했고 둘 다 코드 실행으로 그 부분을 메웠다. 테크니온 팀은 LLM이 만든 검사 로직을 검증한 뒤 지식그래프에 영구 저장해 규칙을 늘려가는 방식을 Revit 애드인으로 구현했는데 파라미터 기반 검사는 100%였던 반면 공간추론 규칙은 20&sim;60%에 머물렀다. 뮌헨공대의 또 다른 팀은 시공장비를 기하 형상이 아니라 계산 가능한 IFC 객체로 바꿔 크레인 기종에 따라 온실가스가 21% 차이 난다는 것을 보였다.</p>
+</div>
+<div class="r-sec">
+  <h4><span class="k">01</span> 핵심 요약</h4>
+  <ul>
+    <li><strong>IFC를 네이티브 파일&middot;JSON 파일시스템&middot;관계형DB&middot;그래프DB 중 무엇으로 넘기든 LLM 에이전트의 질의 정확도는 통계적으로 같았다.</strong> 뮌헨공대 팀이 507개 IFC-Bench 문항으로 측정한 결과는 네이티브 IFC 78.7%&middot;파일시스템 76.3%&middot;그래프DB 75.5%&middot;SQL 74.6%였고 Cochran's Q와 McNemar 검정에서 유의수준 0.05로 차이가 없었다. 저자들은 병목을 형식이 아니라 값 추출&middot;단위 처리&middot;검증의 정확성(faithfulness)으로 지목했다.</li>
+    <li><strong>클라우스탈공대&middot;로스토크대 팀은 IDS를 사람이 미리 작성하는 요구사항 문서가 아니라 프롬프트마다 자동 생성되는 검증 산출물로 썼다.</strong> 자연어 프롬프트에서 BIM을 생성하면서 같은 프롬프트로 IDS를 만들어 규칙 검증을 돌리고 IDS로 표현할 수 없는 요구는 LLM이 쓴 코드로 검증한 뒤 두 결과를 되먹여 IFC를 고치는 폐루프다.</li>
+    <li><strong>폴리테크니코 밀라노 중심 팀은 이탈리아 위생&middot;접근성 규정을 IDS로 인코딩하다가 IDS가 계산&middot;파생 값을 검증하지 못한다는 한계를 확인하고 Python 프로토타입으로 IFC에서 파생 파라미터를 직접 계산했다.</strong> 위 클라우스탈 연구와 독립적으로 같은 경계선에 닿았다 &mdash; IDS로 선언할 수 있는 것과 계산해야 하는 것 사이다.</li>
+    <li><strong>테크니온 팀의 지식그래프+LLM 설계는 LLM이 생성한 새 검사 로직을 검증&middot;실행한 뒤 지식그래프에 영구 저장해 검증 엔진이 스스로 늘어나게 했다.</strong> 기존 6개 규칙 매핑은 100%, 자연어에서 새 실행 규칙을 만드는 작업은 20회 중 70% 성공, 파라미터 기반 검사는 100%였지만 공간추론이 들어가면 20&sim;60%로 떨어졌다.</li>
+  </ul>
+</div>
+<div class="r-sec">
+  <h4><span class="k">02</span> 상세 발견사항 (문헌별)</h4>
+
+  <div class="src">
+    <div class="s-name">① IFC 자연어 질의 &mdash; 데이터 표현 네 가지를 같은 조건에서 비교, 정확도 차이 없음 (신규&middot;2개월 내&middot;질의/데이터 파이프라인 계열)</div>
+    <p><strong>Querying BIM Models with LLM Agents: A Comparison of Data Representations</strong> &mdash; Changyu Du&middot;Sylvain Hellin&middot;Stefan Fuchs&middot;Andr&eacute; Borrmann(뮌헨공대 Chair of Computing in Civil and Building Engineering &amp; TUM Georg Nemetschek Institute), ECPPM 2026(2026-09-09&sim;11, 영국 카디프), DOI <span class="mono">10.5281/zenodo.22679659</span>.</p>
+    <p>같은 에이전트 설정 아래 모델 표현과 질의 도구를 네 쌍으로 바꿔 비교했다 &mdash; IFC STEP 파일을 IfcOpenShell로 질의, JSON 레코드를 파일시스템에 두고 명령행 도구로 질의, 관계형 데이터베이스를 SQL로 질의, 라벨 속성 그래프를 Cypher로 질의. 507개 IFC-Bench 문항에서 정확도는 네이티브 IFC 78.7%&middot;파일시스템 76.3%&middot;그래프DB 75.5%&middot;SQL 74.6%로 나왔고 Cochran's Q와 쌍별 McNemar 검정 모두 유의수준 0.05에서 차이를 찾지 못했다. 다만 운용 특성은 갈렸다 &mdash; 네이티브 IFC는 도구 호출 횟수가 가장 적고 실행 시간이 가장 짧았으며 SQL은 기하&middot;공간 계산 문항에서 상대적으로 좋았다. 저자들은 IFC 기반 표현들에서 공통된 병목이 faithfulness였다고 보고하고 값 추출&middot;단위 처리&middot;검증이 형식 선택보다 중요할 수 있다고 밝혔다. 코드는 GitHub에 공개했다.</p>
+    <p>&rsaquo; 우리 관점 시사점: NeXura에서 &lsquo;IFC를 어떤 저장소에 넣을까&rsquo;는 질의 정확도 문제가 아니다. 이 논문대로면 그 선택에 쓸 노력을 단위 변환&middot;값 검증&middot;속성 누락 확인에 돌리는 쪽이 같은 비용으로 더 큰 차이를 낸다. 반대로 네이티브 IFC의 도구 호출 수가 가장 적다는 결과는 중간 변환 계층을 들이기 전에 한 번 더 따져볼 근거가 된다.</p>
+  </div>
+
+  <div class="src">
+    <div class="s-name">② Text-to-BIM 자기검증 &mdash; IDS를 프롬프트에서 생성해 검증 산출물로 쓴다 (IDS 검증 계열 1/2)</div>
+    <p><strong>A Self-Verification Framework Toward Reliable Text-to-BIM Generation</strong> &mdash; T. Sesterhenn&middot;B. K. Nithyanantham&middot;S. L&uuml;dtke&middot;C. Bartelt(클라우스탈공대 소프트웨어&middot;시스템공학연구소 Bartelt 그룹, 로스토크대 L&uuml;dtke 그룹 협력), EC3 2026 short paper(2026-07-12&sim;15, 그리스 코르푸). 기관 공지 2026-06-02.</p>
+    <p>자연어 프롬프트에서 BIM 모델을 만드는 에이전트 프레임워크다. 생성 결과를 사람이 열어 확인하는 대신 프롬프트마다 두 가지 검증을 자동으로 만든다 &mdash; 형식으로 표현할 수 있는 요구는 IDS(Information Delivery Specification)로 바꿔 규칙 기반 검사를 돌리고 IDS로 표현하기 어렵거나 불가능한 요구는 LLM이 생성한 코드로 검사한다. 두 검사의 피드백을 다시 넣어 IFC 모델을 반복 수정하는 폐루프 구조다. 사례연구로 구현&middot;평가했고 자기수정 과정이 생성 모델의 품질을 높여 수동 교정 필요를 줄였다고 보고했다. 정량 지표는 기관 공지에 공개되지 않아 원문 확인이 필요하다.</p>
+    <p>&rsaquo; 우리 관점 시사점: IDS의 위치가 뒤집혔다. 보통 IDS는 발주자&middot;수급자가 미리 합의해 내려주는 입력이지만 여기서는 요구사항 문장에서 자동 생성되는 중간 산출물이다. NeXura 품질검토에 적용하면 검토 기준을 사람이 매번 세팅하지 않고 과업지시서 문장에서 초안 IDS를 뽑아 사람이 승인하는 흐름이 가능하다. 다만 생성한 IDS 자체의 정확성을 누가 보증하느냐가 남는 문제이고 ④의 &lsquo;검증된 로직만 저장&rsquo; 방식이 그 답에 가깝다.</p>
+  </div>
+
+  <div class="src">
+    <div class="s-name">③ 디지털 인허가 IDS &mdash; IDS는 계산값을 못 보고 그 자리를 코드가 메운다 (IDS 검증 계열 2/2)</div>
+    <p><strong>Information Delivery Specification (IDS) for Digital Building Permits: An Interoperable Framework for Semi-Automated Compliance Checking and Sustainable Information Management</strong> &mdash; M. Signorini&middot;G. Ponzini&middot;S. Comai&middot;Mastrolembo Ventura&middot;Ciribini&middot;Lupica Spagnolo(폴리테크니코 밀라노&middot;브레시아대 계열), <em>Sustainability</em> 18권 9667호(2026), 오픈액세스.</p>
+    <p>buildingSMART IDS(2024 표준화)로 이탈리아 국가&middot;지자체 규정 가운데 위생&middot;설비&middot;접근성 조항을 인코딩해 IFC 기반 BIM 모델에서 검증했다. 핵심 결과는 적용 범위의 경계다 &mdash; IDS는 모델에 들어 있는 값을 선언적으로 확인하는 데는 맞지만 계산되거나 파생되는 값을 검증하는 데는 한계가 있었다. 저자들은 IFC 모델에서 파생 파라미터를 직접 계산하는 Python 연구용 프로토타입을 덧붙여 주거 사례에 적용했다. 설계자와 공공 인허가 담당자가 반자동 적합성 검토를 수행하는 상황을 대상으로 한다.</p>
+    <p>&rsaquo; 우리 관점 시사점: ②와 ③은 서로 인용 관계가 없는데도 같은 결론에 닿았다 &mdash; IDS만으로는 끝나지 않고 코드 실행 계층이 반드시 붙는다. 품질검토 도구를 설계할 때 &lsquo;IDS 지원&rsquo;을 기능 목록에 넣는 것으로 충분하지 않고 IDS로 선언할 수 없는 항목(면적비&middot;환기량&middot;유효폭 같은 계산값)을 어디서 계산할지 함께 정해야 한다. 우리 쪽에서는 이 계산 계층이 기존 물량&middot;간섭 검토 로직과 겹치므로 새로 만들 부분이 많지 않다.</p>
+  </div>
+
+  <div class="src">
+    <div class="s-name">④ 지식그래프 + LLM 적응형 설계검토 &mdash; 검증된 로직을 영구 저장해 규칙을 늘린다 (신규&middot;3개월 내&middot;규정검토 계열)</div>
+    <p><strong>Integrating Large Language Models and Knowledge Graphs for Adaptive Design Review</strong> &mdash; Maen Alnuzha&middot;Tanya Bloch(이스라엘 테크니온 건설환경공학부), <em>ITcon</em>(Journal of Information Technology in Construction) 31권 888&sim;916쪽, 2026-05 투고&middot;2026-08 게재, DOI <span class="mono">10.36680/j.itcon.2026.038</span>, CC BY 오픈액세스.</p>
+    <p>기존 자동 적합성 검토(ACC) 시스템이 새 규정이나 프로젝트별&middot;조직별&middot;실무자 정의 규칙에 적응하지 못한다는 문제에서 출발한다. 지식그래프는 규칙과 실행 로직을 담는 구조화 저장소 역할을 하고 LLM은 그 저장소에 접근하는 인터페이스가 된다. 저자들이 핵심 기여로 꼽은 것은 사람이 개입하는 피드백 구조다 &mdash; LLM이 생성한 새 로직을 검증하고 실행한 뒤 지식그래프에 영구 저장해서 검증 엔진 자체가 쓰면서 커진다. Design Science Research 방법론을 따라 Autodesk Revit 애드인 형태의 프로토타입으로 구현했다. 두 번의 실험에서 기존 6개 규칙에 대한 매핑 정확도는 100%였고 자연어에서 새 실행 가능 규칙을 생성하는 작업은 20회 중 70%가 성공했다. 파라미터 기반 검사는 100%였지만 공간추론이 들어간 규칙에서는 20&sim;60%로 떨어져 LLM이 아직 믿을 만한 로직을 만들지 못한다고 진단했다.</p>
+    <p>&rsaquo; 우리 관점 시사점: 공간추론에서 성능이 무너지는 지점이 ①에서 SQL이 기하&middot;공간 계산에 상대적으로 강했다는 결과와 겹친다. 두 논문을 함께 읽으면 공간&middot;기하 질의는 LLM에게 직접 추론시키지 말고 계산을 수행하는 도구로 넘기는 설계가 맞다. 그리고 &lsquo;검증한 로직만 저장소에 남긴다&rsquo;는 규칙은 품질검토 노하우를 프로젝트마다 날리지 않고 자산으로 쌓는 방법이어서 우리 쪽 검토 규칙 관리에 바로 적용할 만하다.</p>
+  </div>
+
+  <div class="src">
+    <div class="s-name">⑤ 시공장비 시맨틱 보강 &mdash; 카테고리 평균값을 기종값으로 바꾸면 온실가스가 21% 갈린다 (신규&middot;3개월 내&middot;6D/7D 데이터 파이프라인 계열)</div>
+    <p><strong>IFC semantic enrichment of construction equipment for construction-phase LCA using large language models</strong> &mdash; Hongrui Chen&middot;Florian Noichl&middot;Farzan Banihashemi&middot;Chujun Zong&middot;Andr&eacute; Borrmann&middot;Werner Lang(뮌헨공대), SSRN 프리프린트(2026-08-01 게시).</p>
+    <p>시공단계 전과정평가(LCA)가 제대로 지원되지 않는 원인을 두 가지로 지적한다 &mdash; 기존 도구는 장비 카테고리 평균값과 공정 전체 기본값에 의존하고 IFC는 장비를 기하 형상으로만 표현한다. 제안 방식은 장비 한 대를 계산 가능한 IFC 객체로 모델링하고 LLM이 제조사 데이터시트에서 기종별 기술 파라미터를 추출해 3계층 IFC 속성집합에 담는 것이다 &mdash; 기술 파라미터, 프로젝트별 운전 데이터, LCA 결과. 타워크레인 18대&middot;126개 파라미터 인스턴스로 검증해 추출 정확도를 두 모델에서 89.0%와 96.0%로 보고했다. 사례연구에서 크레인 시나리오 사이의 온실가스 배출 차이는 21%였는데 카테고리 평균 데이터로는 이 차이를 구분할 수 없다.</p>
+    <p>&rsaquo; 우리 관점 시사점: 6D&middot;7D를 &lsquo;속성을 더 채우는 일&rsquo;로 두면 어디까지 채워야 하는지 끝이 없다. 이 논문은 그 기준을 분명히 제시한다 &mdash; 평균값으로 계산한 결과와 실제 기종값으로 계산한 결과가 21% 벌어지는 항목이면 채울 값어치가 있다. 데이터시트에서 파라미터를 뽑는 작업은 LLM으로 90% 선까지 자동화되므로 입력 부담도 예전만큼 크지 않다. 다만 추출 정확도 89&sim;96%는 사람 검수 없이 LCA 수치를 그대로 내보낼 수준은 아니다.</p>
+  </div>
+</div>
+<div class="r-sec">
+  <h4><span class="k">03</span> 시사점 / 액션 아이디어</h4>
+  <ul>
+    <li><b>IFC 저장 형식 선택은 정확도 의사결정이 아니다.</b> ①의 결과가 재현된다면 CDE 질의 계층을 그래프DB로 바꾸거나 관계형으로 바꾸는 작업은 정확도를 올려주지 않는다. 같은 공수를 단위 처리와 값 검증에 넣는 쪽을 먼저 본다. 선택 기준으로 남는 것은 도구 호출 수와 실행 시간(네이티브 IFC가 유리)과 기하&middot;공간 계산 문항(SQL이 유리)이다.</li>
+    <li><b>품질검토 로드맵에 &lsquo;IDS로 선언 못 하는 항목&rsquo; 목록을 명시적으로 둔다.</b> ②와 ③이 독립적으로 같은 경계를 확인했으므로 IDS 대응만으로는 검토 범위가 닫히지 않는다. 우리가 이미 가진 물량&middot;간섭&middot;면적 계산 로직을 &lsquo;IDS 보완 계산 계층&rsquo;으로 재배치하면 중복 개발을 피할 수 있다.</li>
+    <li><b>공간&middot;기하 판단은 LLM에게 추론시키지 않고 도구 호출로 넘긴다.</b> ①의 SQL 우위와 ④의 공간추론 20&sim;60%가 같은 방향을 가리킨다. 간섭&middot;이격&middot;유효폭 같은 검토는 LLM이 판단하는 구조가 아니라 LLM이 계산 함수를 고르고 호출하는 구조로 설계한다.</li>
+    <li><b>검토 규칙을 프로젝트 산출물이 아니라 누적 자산으로 관리한다.</b> ④의 핵심은 모델 성능이 아니라 &lsquo;검증한 로직만 저장소에 남긴다&rsquo;는 운영 규칙이다. 지금 프로젝트별로 흩어지는 검토 기준을 한 저장소에 모으고 검증 이력을 함께 남기는 것만으로도 같은 효과의 상당 부분을 얻는다.</li>
+    <li><b>6D&middot;7D 속성 채우기 우선순위를 &lsquo;결과가 유의하게 달라지는 항목&rsquo;으로 정한다.</b> ⑤의 21%처럼 평균값과 실측&middot;기종값의 결과 차이를 먼저 측정하고 그 차이가 큰 항목부터 채운다. 전 항목을 채우려는 접근보다 설득도 쉽고 공수도 적다.</li>
+  </ul>
+</div>
+<div class="r-sec">
+  <h4><span class="k">04</span> 이번 조사 방법 개선 제안</h4>
+  <ul>
+    <li><b>Google Scholar 최신순(<span class="mono">scisbd=1</span>) 쿼리를 세부주제별로 2개 이상 던진다.</b> 이번에 <span class="mono">BIM IFC validation LLM</span>과 <span class="mono">IDS "Information Delivery Specification" IFC automated checking</span> 두 쿼리를 돌렸는데 겹치는 결과가 거의 없었고 오늘 핵심 문헌 세 편(②③④)은 두 번째 쿼리에서만 나왔다. 한 쿼리로는 후보 폭이 좁다. 직접조회는 09-17 이후 8회 연속 작동했다.</li>
+    <li><b>MDPI&middot;ScienceDirect에 더해 SSRN도 개별 페이지 403 목록에 넣는다.</b> 이번에 MDPI 논문 페이지와 SSRN 초록 페이지가 모두 403으로 막혀 검색 스니펫과 저자 소속기관 공지로 서지를 보강했다. 해당 경로는 초록 전문을 확보하지 못하므로 수치를 인용할 때 출처를 명시한다.</li>
+    <li><b>학회&middot;저널 PDF는 본문을 추출해서 읽는 경로를 기본으로 한다.</b> ITcon과 EC3 proceedings PDF는 본문이 압축 스트림이라 그대로는 제목&middot;저자&middot;수치를 읽을 수 없었고 파일을 받아 텍스트를 뽑은 뒤에야 ④의 저자&middot;권호&middot;실험 수치를 확인했다. 검색 스니펫만 믿었다면 ④를 다른 논문으로 잘못 적었을 상황이었다(실제로 검색 결과는 ④를 전혀 다른 저자의 IDS 논문으로 제시했다).</li>
+    <li><b>목요일마다 다룬 문헌의 제목&middot;DOI를 누적 목록으로 남긴다.</b> 현재 중복 확인이 arXiv 번호에 의존해서 학회&middot;저널 논문은 제목을 눈으로 대조해야 한다. 오늘처럼 arXiv에 없는 문헌이 다섯 편 중 넷이면 다음 회차에서 중복을 놓칠 수 있다.</li>
+    <li><b>arXiv 월별 목록 직접조회는 경로가 바뀐 것으로 보인다.</b> <span class="mono">arxiv.org/list/cs.CE/2610</span>이 404를 반환했다. 다음 회차에는 arXiv 고급검색(날짜 필터)으로 바꿔 시도하고 결과를 기록한다.</li>
+  </ul>
+</div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><span class="idx">01</span><h2>요일별 분석 주제</h2><span class="rule"></span><span class="sec-hint">요일을 눌러 지난 리포트 보기</span></div>
+    <div class="week">
+      <button type="button" class="day" data-dow="월"><span class="d">MON · 월</span><span class="t">BIM 업계 동향</span><span class="m">전문지·뉴스 브리핑</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="화"><span class="d">TUE · 화</span><span class="t">입찰·수주 동향</span><span class="m">나라장터·KAIA 공고</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="수"><span class="d">WED · 수</span><span class="t">실무자 의견</span><span class="m">커뮤니티 인사이트</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day on" data-dow="목"><span class="d">THU · 목</span><span class="t">연구개발 동향</span><span class="m">Scholar·AURIC 논문</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="금"><span class="d">FRI · 금</span><span class="t">역량강화 인사이트</span><span class="m">전문가 연설 분석</span><span class="cnt" hidden></span></button>
+    </div>
+    <div class="day-reports" id="dayReports" hidden>
+      <div class="dr-head"><span id="drTitle"></span><button type="button" class="dr-close" id="drClose" title="닫기">✕</button></div>
+      <ul class="dr-list" id="drList"></ul>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><span class="idx">02</span><h2>동작 방식</h2><span class="rule"></span></div>
+    <div class="flow">
+      <div class="step"><span class="n">STEP 1</span><div class="st">클라우드 조사</div><p class="sp">매일 08:00, 오늘 요일 주제로 웹 조사를 수행하고 HTML 리포트를 작성합니다.</p></div>
+      <div class="step"><span class="n">STEP 2</span><div class="st">이 페이지 갱신</div><p class="sp">이 고정 페이지를 제자리에서 업데이트해 최신 리포트를 맨 위에 배치합니다.</p></div>
+      <div class="step"><span class="n">STEP 3</span><div class="st">알림 · 자동 열기</div><p class="sp">푸시 알림을 보내고 PC를 켜면 이 페이지가 Chrome에 자동으로 열립니다.</p></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><span class="idx">03</span><h2>지난 리포트</h2><span class="rule"></span></div>
+    <details class="arch">
+      <summary>아카이브 · 지난 리포트 (최신순)</summary>
+      <div class="arch-item">
+        <details class="sub-arch">
+          <summary>2026-10-28 (수) &middot; 실무자 의견 &mdash; 레빗 포럼엔 독립 개발자들이 만든 &lsquo;승인 없이는 못 쓰는&rsquo; Revit MCP 서버가 한 달 사이 여럿 올라왔고 pyRevit은 레빗 2026.4 업데이트와 넉 달째 충돌 중이다</summary>
+          <div class="body">
 <div class="r-head">
   <h3>레빗 포럼엔 독립 개발자들이 만든 &lsquo;승인 없이는 못 쓰는&rsquo; Revit MCP 서버가 한 달 사이 여럿 올라왔고 pyRevit은 레빗 2026.4 업데이트와 넉 달째 충돌 중이다</h3>
   <p class="meta">2026-10-28 (수) &middot; Asia/Seoul &middot; 조사범위: 비정량(최근 활성 게시물&middot;스레드 기준) &middot; 방법: 디시인사이드 BIM 마이너 갤러리 직접조회 + Autodesk Community 포럼&middot;GitHub 검색 기반 확인 + pyRevit GitHub Issues 직접조회(09-30 제안 반영, 신규) + LinkedIn&middot;Reddit&middot;GrabCAD 검색 스니펫 기반 확인</p>
@@ -280,37 +387,9 @@
     <li><b>디시인사이드 BIM 갤러리는 10월 2일 이후 4주 가까이 새 글이 없다.</b> 갤러리 자체의 활성도가 낮아진 것인지 다음 회차에 다른 날짜대도 확인해 본다.</li>
   </ul>
 </div>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="sec-h"><span class="idx">01</span><h2>요일별 분석 주제</h2><span class="rule"></span><span class="sec-hint">요일을 눌러 지난 리포트 보기</span></div>
-    <div class="week">
-      <button type="button" class="day" data-dow="월"><span class="d">MON · 월</span><span class="t">BIM 업계 동향</span><span class="m">전문지·뉴스 브리핑</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day" data-dow="화"><span class="d">TUE · 화</span><span class="t">입찰·수주 동향</span><span class="m">나라장터·KAIA 공고</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day on" data-dow="수"><span class="d">WED · 수</span><span class="t">실무자 의견</span><span class="m">커뮤니티 인사이트</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day" data-dow="목"><span class="d">THU · 목</span><span class="t">연구개발 동향</span><span class="m">Scholar·AURIC 논문</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day" data-dow="금"><span class="d">FRI · 금</span><span class="t">역량강화 인사이트</span><span class="m">전문가 연설 분석</span><span class="cnt" hidden></span></button>
-    </div>
-    <div class="day-reports" id="dayReports" hidden>
-      <div class="dr-head"><span id="drTitle"></span><button type="button" class="dr-close" id="drClose" title="닫기">✕</button></div>
-      <ul class="dr-list" id="drList"></ul>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="sec-h"><span class="idx">02</span><h2>동작 방식</h2><span class="rule"></span></div>
-    <div class="flow">
-      <div class="step"><span class="n">STEP 1</span><div class="st">클라우드 조사</div><p class="sp">매일 08:00, 오늘 요일 주제로 웹 조사를 수행하고 HTML 리포트를 작성합니다.</p></div>
-      <div class="step"><span class="n">STEP 2</span><div class="st">이 페이지 갱신</div><p class="sp">이 고정 페이지를 제자리에서 업데이트해 최신 리포트를 맨 위에 배치합니다.</p></div>
-      <div class="step"><span class="n">STEP 3</span><div class="st">알림 · 자동 열기</div><p class="sp">푸시 알림을 보내고 PC를 켜면 이 페이지가 Chrome에 자동으로 열립니다.</p></div>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="sec-h"><span class="idx">03</span><h2>지난 리포트</h2><span class="rule"></span></div>
-    <details class="arch">
-      <summary>아카이브 · 지난 리포트 (최신순)</summary>
+          </div>
+        </details>
+      </div>
       <div class="arch-item">
         <details class="sub-arch">
           <summary>2026-10-27 (화) &middot; BIM 입찰&middot;수주 동향 &mdash; 나라장터 3주 매칭 57건 중 건설 접점은 국토교통부 스마트시티 디지털트윈 2건뿐이었고 LH&middot;도로공사&middot;철도공단은 공고 대신 지난달 BIM 데이터 공유 협약으로 움직였다</summary>
@@ -801,7 +880,7 @@
   <div class="note-amber"><b>자기평가:</b> 지난 회차가 제안한 &lsquo;사전규격&rarr;공고 전환 추적&rsquo;을 이번에 실제로 적용해 평택시 건을 짝지을 수 있었다 &mdash; 사업명 기반 수동 대조만으로도 효과가 있었다. 다만 키워드 매칭 0건이 이어지는 상태에서 화이트리스트 개별 검색은 과거 보도자료만 반복해서 걸리고 이번 구간의 신규 신호는 업무협약 하나뿐이었다.</div>
   <ul>
     <li><b>MOU&middot;협약처럼 입찰 API로는 안 잡히는 정책&middot;제휴 신호를 화요일 조사에도 뉴스 검색으로 상시 보완하는 절차를 공식화한다.</b> 이번 주 핵심 신호(업무협약)도 API 바깥에서 나왔다.</li>
-    <li><b>사전규격&middot;입찰공고 중 사업명이 같거나 유사한 건을 자동으로 짝짓는 방식을 다음에도 적용한다.</b> 이번엔 평택시 건을 수동으로 대조했는데, 서울지방조달청의 두 유사명 건처럼 헷갈리는 경우도 있어 공고번호&middot;배정예산까지 함께 비교하는 기준이 필요하다.</li>
+    <li><b>사전규격&middot;입찰공고 중 사업명이 같거나 유사한 건을 자동으로 짝짓는 방식을 다음에도 적용한다.</b> 이번엔 평택시 건을 수동으로 대조했는데 서울지방조달청의 두 유사명 건처럼 헷갈리는 경우도 있어 공고번호&middot;배정예산까지 함께 비교하는 기준이 필요하다.</li>
     <li><b>화이트리스트 기관 검색이 몇 주째 과거 사례만 되짚고 있다.</b> 기관명 단독 검색보다 &lsquo;기관명 + 입찰&middot;사전규격&middot;용역발주&rsquo; 같은 조달 특화 쿼리로 바꾸거나, 가능하면 각 기관 전자조달 사이트의 BIM 카테고리를 직접 조회하는 방식을 다음 회차에 시도해 본다.</li>
   </ul>
 </div>
