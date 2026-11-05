@@ -214,9 +214,99 @@
   <section class="today">
     <div class="today-bar">
       <span class="tag">오늘의 리포트</span>
-      <span class="when mono">2026-11-04 (수) &middot; BIM 실무자 의견 파악</span>
+      <span class="when mono">2026-11-05 (목) &middot; BIM 연구개발 동향</span>
     </div>
     <div class="today-body report">
+<div class="r-head">
+  <h3>자연어 한 줄로 구조모델을 세우는 AI 에이전트, 어디까지 왔을까요?</h3>
+  <p class="meta">2026-11-05 (목) &middot; Asia/Seoul &middot; 접근: 관련도 우선 + 최신성 보정(최근 12개월 우선, 신규 3개월 포함) &middot; 소스: arXiv 원문, Smart and Sustainable Built Environment 저널 원문(WebFetch) &middot; 키워드: BIM, openBIM, 구조설계 자동화, 디지털트윈, CDE, generative AI construction</p>
+  <p class="lead">지난 10월 22일 스위스 ETH 취리히의 구조연구팀(Block Research Group)이 국제쉘공간구조학회(IASS) 2026 토리노 학회에 제출한 논문에서, 대형언어모델(LLM) 에이전트가 자연어 프롬프트만으로 구조모델을 세우고 고치는 초기 설계 도구를 공개하였습니다. 비슷한 시기 영국 연구팀은 ISO 19650 표준을 따르는 공통데이터환경(CDE)에서 보관 데이터가 디지털 탄소배출의 가장 큰 원인이라는 분석 결과를 내놓았는데요, 그렇다면 구조설계와 데이터 운영이라는 서로 다른 두 영역에서 이번 연구들은 각각 어떤 내용이었을까요? 오늘 리포트에서는 그 내용을 자세히 살펴보겠습니다.</p>
+</div>
+<div class="r-sec">
+  <h4><span class="k">01</span> 핵심 요약</h4>
+  <ul>
+    <li><strong>ETH 취리히 연구팀이 10월 22일 공개한 논문은 COMPAS 기반 구조모델링 API를 MCP(Model Context Protocol) 서버로 감싸 LLM 에이전트가 자연어로 직접 호출하게 하였습니다.</strong></li>
+    <li>이 에이전트는 그래프 기반 데이터모델로 기둥&middot;보 같은 건축요소를 명시적으로 표현하였고, 프롬프트 한 번으로 구조모델을 만드는 예시와 반복적으로 고쳐 가는 설계 시퀀스를 함께 시연하였습니다.</li>
+    <li>저자들은 아직 예비 단계 연구임을 밝히며, 복잡한 구조적 제약을 다루려면 도메인에 특화된 형상 배치와 의미가 풍부한 데이터 타입을 보강할 과제로 남겼습니다.</li>
+    <li><strong>영국 연구팀(Caldeira&middot;Martinez&middot;Rogage)은 2월 10일 Smart and Sustainable Built Environment에 게재한 논문에서 Cloud Carbon Footprint 방법론으로 ISO 19650 준수 주택 프로젝트의 디지털 탄소배출을 단계별로 정량화하였습니다.</strong></li>
+    <li>보관 단계가 장기 저장 때문에 가장 큰 배출원이었고, 파일 포맷을 IFC로 두면 레빗 포맷 대비 배출량이 <strong>최대 12%</strong> 줄었습니다.</li>
+  </ul>
+</div>
+<div class="r-sec">
+  <h4><span class="k">02</span> 상세 발견사항</h4>
+
+  <div class="src">
+    <div class="s-name">① ETH 취리히의 자연어 구조설계 에이전트</div>
+    <p>구조설계 초기 단계는 스케치와 수정을 반복하는 작업이 많아, 이 과정 자체를 에이전트가 거들 수 있는지가 관심사였습니다.</p>
+    <p>이 논문은 COMPAS(오픈소스 구조&middot;기하 모델링 라이브러리) 기반 API를 MCP 서버로 감싸고, 여기에 LLM 에이전트를 연결해 자연어 프롬프트로 구조모델을 직접 생성&middot;수정하게 하였습니다. 구조는 그래프 기반 데이터모델로 표현되어 기둥&middot;보 같은 건축요소가 명시적으로 드러나며, 저자들은 프롬프트 한 번으로 구조를 세우는 예시와 반복적으로 고쳐 가는 편집 시퀀스를 함께 시연하였습니다.</p>
+    <p>저자는 Ricardo Maia Avelino, Mennatallah El-Assady, Tom Van Mele, Philippe Block(ETH 취리히) 4인이며, 이 논문은 IASS 2026 토리노 학회에 제출되어 arXiv에 10월 22일 공개되었습니다. 저자들은 스스로 예비 단계 연구라고 밝히며, 복잡한 구조적 제약을 반영하려면 도메인에 특화된 형상 배치와 의미가 풍부한 데이터 타입이 더 필요하다고 짚었습니다.</p>
+    <p>&rsaquo; 우리 관점 시사점: 레빗 MCP 생태계와 마찬가지로 구조설계에서도 사람이 검증할 수 있는 중간 데이터구조가 에이전트 설계에서 되풀이되는 조건으로 자리잡고 있으므로, NeXura가 설계 자동화 기능을 넓힐 때 그래프 기반 요소 표현 방식을 참고할 만합니다.</p>
+    <div class="links"><a href="https://arxiv.org/abs/2610.31113" target="_blank" rel="noopener">arXiv &middot; Can AI Co-Design Structures? An AI Agent for Early-Stage Structural Design</a></div>
+  </div>
+
+  <div class="src">
+    <div class="s-name">② 영국 연구팀의 CDE 탄소배출 정량화</div>
+    <p>ISO 19650 기반 CDE는 설계 협업의 사실상 표준이지만, 클라우드 저장과 운영에서 나오는 디지털 탄소배출은 그동안 따로 다뤄지지 않았습니다.</p>
+    <p>Caldeira, Martinez, Rogage 세 연구자는 Cloud Carbon Footprint 방법론을 ISO 19650 준수 주택 프로젝트에 적용해 작업 중&middot;공유&middot;발행&middot;보관 네 단계별 탄소배출을 정량화하였습니다. 보관 데이터가 장기 저장 때문에 가장 큰 배출원이었고, 작업 중&middot;공유 단계에서 따로 드러나지 않고 쌓이는 &lsquo;다크 데이터&rsquo;(쓰이지 않고 남는 데이터)도 배출을 늘리는 요인으로 지목되었습니다. 파일 포맷을 IFC로 두면 레빗 포맷 대비 배출량이 최대 12% 줄어드는 결과도 함께 제시되었습니다.</p>
+    <p>이 논문은 2월 10일 Smart and Sustainable Built Environment에 게재되었습니다. 같은 시기 ISO 19650 자체도 개정 작업에 들어가 지난 3월 1&middot;2부 초안이 공개 협의에 올라갔고, 최종 발행은 2027년으로 예정되어 있습니다.</p>
+    <p>&rsaquo; 우리 관점 시사점: NeXura CDE 운영에서도 보관 주기와 파일 포맷 선택이 비용뿐 아니라 탄소배출에 영향을 준다는 뜻이므로, 버전관리&middot;보관기한 정책을 설계할 때 참고할 수 있습니다.</p>
+    <div class="links"><a href="https://doi.org/10.1108/SASBE-08-2025-0512" target="_blank" rel="noopener">Smart and Sustainable Built Environment &middot; Digital carbon footprint of common data environments in ISO 19650-compliant construction projects</a></div>
+  </div>
+
+  <p>또한, 두 연구는 서로 다른 주제를 다루면서도 공통적으로 BIM 생태계에 AI와 클라우드 인프라가 깊이 들어올수록 검증 가능성과 지속가능성이라는 새로운 운영 기준이 함께 필요하다는 결론을 말하고 있습니다.</p>
+</div>
+<div class="r-sec">
+  <h4><span class="k">03</span> 시사점 / 액션 아이디어</h4>
+  <p>앞서 살펴본 내용에 따르면, 구조설계 자동화와 데이터 운영 효율화라는 서로 다른 영역에서도 검증 가능성과 지속가능성을 함께 설계해야 한다는 같은 요구가 나타난다는 것을 확인할 수 있는데요, 그렇다면 우리는 이 흐름에서 무엇을 먼저 챙겨야 할까요? 바로 &lsquo;그래프 기반 중간표현&rsquo;과 &lsquo;CDE 보관 정책&rsquo;이라는 두 가지 점검 과제입니다.</p>
+  <ul>
+    <li><b>ETH 취리히 사례처럼 구조요소를 그래프로 명시하는 중간표현은 에이전트의 출력을 사람이 검증할 수 있게 하므로, NeXura의 설계 자동화 기능을 넓힐 때 같은 표현 방식을 검토할 필요가 있습니다.</b></li>
+    <li><b>예를 들어 NeXura CDE가 보관 데이터를 기한 없이 쌓아 둔다면 이번 연구가 지목한 &lsquo;다크 데이터&rsquo; 문제가 그대로 나타날 수 있으므로, 보관기한과 파일 포맷 정책을 함께 점검해야 합니다.</b></li>
+    <li><b>ISO 19650 개정판이 2027년 발행을 앞두고 있으므로, 공개 협의 결과를 다음 분기에 다시 확인해 CDE 운영 기준에 반영할 시점을 가늠해야 합니다.</b></li>
+  </ul>
+</div>
+<div class="r-sec">
+  <h4><span class="k">04</span> 이번 조사 방법 개선 제안</h4>
+  <ul>
+    <li><b>Google Scholar를 거치지 않고 WebSearch로 arXiv&middot;저널 원문을 직접 찾는 방식이 이번에도 효과적이었습니다.</b> 지난 회차들이 매번 Scholar 차단 여부부터 확인했는데, 이번 결과로 볼 때 &lsquo;Scholar 우선, 막히면 WebSearch&rsquo; 순서를 &lsquo;WebSearch 우선, 필요할 때만 Scholar 보조&rsquo;로 뒤집는 안을 검토할 만합니다.</li>
+    <li><b>ETH 취리히 Block Research Group의 COMPAS&middot;MCP 계열 연구는 수요일 주제인 레빗 MCP 생태계와 접점이 커 보입니다.</b> 이 그룹의 후속 논문을 목요일 주 소스 목록에 별도로 추가하는 안을 다음 승인 때 검토해 주시기 바랍니다.</li>
+    <li><b>CDE 탄소배출처럼 지속가능성 관점의 BIM 연구는 기존 배경맥락 목록에 없던 주제입니다.</b> 배경맥락 주제 목록에 &lsquo;CDE&middot;데이터 운영의 지속가능성&rsquo;을 추가할지 다음 승인 때 검토가 필요합니다.</li>
+  </ul>
+</div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><span class="idx">01</span><h2>요일별 분석 주제</h2><span class="rule"></span><span class="sec-hint">요일을 눌러 지난 리포트 보기</span></div>
+    <div class="week">
+      <button type="button" class="day" data-dow="월"><span class="d">MON · 월</span><span class="t">BIM 업계 동향</span><span class="m">전문지·뉴스 브리핑</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="화"><span class="d">TUE · 화</span><span class="t">입찰·수주 동향</span><span class="m">나라장터·KAIA 공고</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="수"><span class="d">WED · 수</span><span class="t">실무자 의견</span><span class="m">커뮤니티 인사이트</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day on" data-dow="목"><span class="d">THU · 목</span><span class="t">연구개발 동향</span><span class="m">Scholar·AURIC 논문</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="금"><span class="d">FRI · 금</span><span class="t">역량강화 인사이트</span><span class="m">전문가 연설 분석</span><span class="cnt" hidden></span></button>
+    </div>
+    <div class="day-reports" id="dayReports" hidden>
+      <div class="dr-head"><span id="drTitle"></span><button type="button" class="dr-close" id="drClose" title="닫기">✕</button></div>
+      <ul class="dr-list" id="drList"></ul>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><span class="idx">02</span><h2>동작 방식</h2><span class="rule"></span></div>
+    <div class="flow">
+      <div class="step"><span class="n">STEP 1</span><div class="st">클라우드 조사</div><p class="sp">매일 08:00, 오늘 요일 주제로 웹 조사를 수행하고 HTML 리포트를 작성합니다.</p></div>
+      <div class="step"><span class="n">STEP 2</span><div class="st">이 페이지 갱신</div><p class="sp">이 고정 페이지를 제자리에서 업데이트해 최신 리포트를 맨 위에 배치합니다.</p></div>
+      <div class="step"><span class="n">STEP 3</span><div class="st">알림 · 자동 열기</div><p class="sp">푸시 알림을 보내고 PC를 켜면 이 페이지가 Chrome에 자동으로 열립니다.</p></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><span class="idx">03</span><h2>지난 리포트</h2><span class="rule"></span></div>
+    <details class="arch">
+      <summary>아카이브 · 지난 리포트 (최신순)</summary>
+      <div class="arch-item">
+        <details class="sub-arch">
+          <summary>2026-11-04 (수) &middot; 실무자 의견 파악 &mdash; AI에게 레빗 쓰기 권한을 내준 지 두 달, 실무자들은 지금 어디서 막혔을까요?</summary>
+          <div class="body">
 <div class="r-head">
   <h3>AI에게 레빗 쓰기 권한을 내준 지 두 달, 실무자들은 지금 어디서 막혔을까요?</h3>
   <p class="meta">2026-11-04 (수) &middot; Asia/Seoul &middot; 소스: Autodesk Community 공지&middot;아이디어 게시판(검색 스니펫 기반, 직접조회는 403으로 막힘) &middot; pyRevit&middot;서드파티 Revit MCP 서버 GitHub Issues(직접조회) &middot; AEC Magazine(벤더 독립) &middot; DC인사이드 BIM 마이너 갤러리(직접조회) &middot; GrabCAD Questions &middot; 키워드: BIM, Revit, MCP, openBIM &middot; Reddit&middot;LinkedIn은 이번 주제로 구체적인 신규 게시물을 찾지 못함</p>
@@ -291,37 +381,9 @@
     <li><b>pyRevit과 서드파티 MCP 서버의 GitHub Issues가 이번에도 가장 구체적이고 날짜가 분명한 실무 신호를 주었습니다.</b> 09-30&middot;10-28 회차에서 이미 제안한 대로, 이 채널을 수요일 1차 보조 소스로 정식 격상하는 안을 다시 상정합니다.</li>
   </ul>
 </div>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="sec-h"><span class="idx">01</span><h2>요일별 분석 주제</h2><span class="rule"></span><span class="sec-hint">요일을 눌러 지난 리포트 보기</span></div>
-    <div class="week">
-      <button type="button" class="day" data-dow="월"><span class="d">MON · 월</span><span class="t">BIM 업계 동향</span><span class="m">전문지·뉴스 브리핑</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day" data-dow="화"><span class="d">TUE · 화</span><span class="t">입찰·수주 동향</span><span class="m">나라장터·KAIA 공고</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day on" data-dow="수"><span class="d">WED · 수</span><span class="t">실무자 의견</span><span class="m">커뮤니티 인사이트</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day" data-dow="목"><span class="d">THU · 목</span><span class="t">연구개발 동향</span><span class="m">Scholar·AURIC 논문</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day" data-dow="금"><span class="d">FRI · 금</span><span class="t">역량강화 인사이트</span><span class="m">전문가 연설 분석</span><span class="cnt" hidden></span></button>
-    </div>
-    <div class="day-reports" id="dayReports" hidden>
-      <div class="dr-head"><span id="drTitle"></span><button type="button" class="dr-close" id="drClose" title="닫기">✕</button></div>
-      <ul class="dr-list" id="drList"></ul>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="sec-h"><span class="idx">02</span><h2>동작 방식</h2><span class="rule"></span></div>
-    <div class="flow">
-      <div class="step"><span class="n">STEP 1</span><div class="st">클라우드 조사</div><p class="sp">매일 08:00, 오늘 요일 주제로 웹 조사를 수행하고 HTML 리포트를 작성합니다.</p></div>
-      <div class="step"><span class="n">STEP 2</span><div class="st">이 페이지 갱신</div><p class="sp">이 고정 페이지를 제자리에서 업데이트해 최신 리포트를 맨 위에 배치합니다.</p></div>
-      <div class="step"><span class="n">STEP 3</span><div class="st">알림 · 자동 열기</div><p class="sp">푸시 알림을 보내고 PC를 켜면 이 페이지가 Chrome에 자동으로 열립니다.</p></div>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="sec-h"><span class="idx">03</span><h2>지난 리포트</h2><span class="rule"></span></div>
-    <details class="arch">
-      <summary>아카이브 · 지난 리포트 (최신순)</summary>
+          </div>
+        </details>
+      </div>
       <div class="arch-item">
         <details class="sub-arch">
           <summary>2026-11-03 (화) &middot; 입찰&middot;수주 동향 &mdash; 스마트건설 스타트업을 지원하는 사업은 11억원 규모로 다시 이어질까요?</summary>
