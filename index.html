@@ -207,16 +207,110 @@
     <div class="clock">
       <span class="big mono">08:00 KST</span>
       월–금 자동 실행<br>
-      <span class="mono">최종 갱신 2026-11-10</span>
+      <span class="mono">최종 갱신 2026-11-11</span>
     </div>
   </header>
 
   <section class="today">
     <div class="today-bar">
       <span class="tag">오늘의 리포트</span>
-      <span class="when mono">2026-11-10 (화) &middot; 입찰&middot;수주 동향</span>
+      <span class="when mono">2026-11-11 (수) &middot; 실무자 의견 파악</span>
     </div>
     <div class="today-body report">
+<div class="r-head">
+  <h3>Revit 2027이 지운 옵션 바를 두고, 실무자들은 왜 아직도 복구를 요구할까요?</h3>
+  <p class="meta">2026-11-11 (수) &middot; Asia/Seoul &middot; 소스: Autodesk Community Revit Ideas&middot;Revit MEP Forum(직접 조회 403 &rarr; WebSearch 스니펫 기반) &middot; DC인사이드 건설정보모델링(BIM) 마이너 갤러리(직접 조회) &middot; 키워드: BIM, Revit, openBIM</p>
+  <p class="lead">Autodesk Community의 Revit 아이디어 게시판에는 Revit 2027에서 사라진 옵션 바(Options Bar)를 복구해 달라는 요청이 건축 설계용과 MEP(기계&middot;전기&middot;배관)용으로 따로 올라와 있고, 11월 11일 현재 각각 <strong>83표&middot;댓글 28개</strong>와 <strong>64표&middot;댓글 22개</strong>를 모았습니다. 같은 게시판에서 8월 27일 올라온 성능 정체 비판 글도 <strong>73표</strong>를 모아 지지를 이어가고 있습니다. 그렇다면 실무자들은 구체적으로 무엇이 불편하다고 말하고 있을까요? 오늘 리포트에서는 그 내용을 자세히 살펴보겠습니다.</p>
+</div>
+<div class="r-sec">
+  <h4><span class="k">01</span> 핵심 요약</h4>
+  <ul>
+    <li>Revit 2027은 벽&middot;배관&middot;덕트 등을 그리는 동안 즉시 치수&middot;레벨을 바꾸던 옵션 바를 없애고 그 기능을 리본과 속성(Properties) 창으로 옮겼습니다. 9월 21일 올라온 복구 요청 아이디어는 <strong>83표&middot;댓글 28개</strong>를 모았습니다.</li>
+    <li>MEP 전용 복구 요청 게시물(<strong>64표&middot;댓글 22개</strong>)에는 배관 지름을 작업 중간에 바꾸는 동작이 2026 버전에서는 옵션 바에서 바로 끝나는 세 번의 입력이었지만 2027에서는 속성 창을 찾아 값을 입력한 뒤 되돌아오는 과정으로 늘었다는 구체적 불편이 올라와 있습니다.</li>
+    <li>같은 게시판에서 8월 27일 올라온 &lsquo;30 Years of Stagnation and Frustration&rsquo;은 <strong>73표</strong>를 모으며, 컴퓨터 성능은 좋아졌는데 Revit은 그만큼 빨라지지 않았다는 불만을 이어가고 있습니다.</li>
+    <li>국내 DC인사이드 BIM 갤러리에서는 클라우드 공동작업 중 한 회사가 다른 회사가 만든 패밀리(구성요소)를 열람&middot;저장할 수 있다는 점을 두고 저작권 문제가 있는지 묻는 질문이 10월 2일 올라왔습니다(댓글 2개).</li>
+  </ul>
+</div>
+<div class="r-sec">
+  <h4><span class="k">02</span> 상세 발견사항</h4>
+
+  <div class="src">
+    <div class="s-name">① Revit 2027 옵션 바 삭제 &mdash; 되살려 달라는 요청</div>
+    <p>Autodesk Community의 Revit 아이디어 게시판은 사용자가 기능 개선을 제안하고 다른 사용자가 투표&middot;댓글로 지지를 표시하는 공간입니다.</p>
+    <p>Revit 2027은 벽&middot;배관&middot;덕트&middot;케이블트레이 등을 그리는 동안 화면 아래에 떠 있던 옵션 바를 없애고 그 기능을 리본이나 속성 창으로 옮겼습니다. 9월 21일 &lsquo;Restore the contextual Options Bar&rsquo; 제목으로 복구 요청이 올라왔고, 이후 MEP 전용 버전도 따로 올라왔습니다. 11월 11일 현재 건축 설계용 게시물은 83표&middot;댓글 28개, MEP용 게시물은 64표&middot;댓글 22개를 모았습니다.</p>
+    <p>MEP 포럼에 올라온 불편 사례에 따르면, 배관 지름을 작업 중간에 바꾸는 동작이 2026 버전에서는 옵션 바에서 바로 끝나는 세 번의 입력이었지만 2027에서는 속성 창으로 옮겨가 해당 항목을 찾아 클릭하고 값을 입력한 뒤 다시 모델링 화면으로 돌아오는 과정으로 늘었습니다. 옵션 바는 위치가 고정된 한 줄이라 손이 자동으로 움직였지만, 속성 창은 선택한 요소 종류와 스크롤 위치에 따라 항목 위치가 달라져 매번 눈으로 찾아야 한다는 지적도 함께 올라왔습니다.</p>
+    <p>&rsaquo; 우리 관점 시사점: 실무자의 손에 익은 반복 동작을 UI 변경으로 깨면 생산성 불만이 바로 따라온다는 점을 확인하였으므로, NeXura 제품의 화면 구조를 바꿀 때도 기존 워크플로우의 반복 동작을 유지하는 선택지를 함께 제공할 필요가 있습니다.</p>
+    <div class="links"><a href="https://forums.autodesk.com/t5/revit-ideas/restore-the-contextual-options-bar/idi-p/14273338" target="_blank" rel="noopener">Autodesk Community(검색 스니펫 기반) &middot; Restore the contextual Options Bar</a><a href="https://forums.autodesk.com/t5/revit-mep-forum/options-bar-revit-2027/td-p/14320547" target="_blank" rel="noopener">Autodesk Community(검색 스니펫 기반) &middot; Options Bar - Revit 2027</a></div>
+  </div>
+
+  <div class="src">
+    <div class="s-name">② &lsquo;30년째 정체&rsquo; &mdash; 이어지는 성능 불만</div>
+    <p>같은 아이디어 게시판에는 8월 27일 &lsquo;30 Years of Stagnation and Frustration&rsquo; 제목의 글이 올라와 있습니다.</p>
+    <p>글쓴이는 컴퓨터 하드웨어 성능은 크게 좋아졌는데 Revit은 그만큼 체감 속도가 빨라지지 않았고 그래픽카드(GPU)도 거의 쓰이지 않는다고 지적하였습니다. 11월 11일 현재 73표를 모았고 상태는 &lsquo;Gathering Support(지지 모으는 중)&rsquo;입니다.</p>
+    <p>일부 댓글은 Autodesk가 아이디어 게시판의 요청들 대신 그 주의 유행에 가까운 AI 기능 쪽으로 방향을 돌렸다고 꼬집었는데요, 옵션 바 삭제 논란과 같은 흐름에서 나온 지적입니다.</p>
+    <p>&rsaquo; 우리 관점 시사점: 기본 성능과 UI 안정성에 대한 불만이 AI 기능 투자와 맞물려 나오고 있다는 점은, 신기능 추가보다 기존 기능의 체감 속도&middot;안정성 개선을 먼저 원하는 실무자층이 있다는 뜻으로 읽힙니다.</p>
+    <div class="links"><a href="https://forums.autodesk.com/t5/revit-ideas/30-years-of-stagnation-and-frustration/idi-p/14246739" target="_blank" rel="noopener">Autodesk Community(검색 스니펫 기반) &middot; 30 Years of Stagnation and Frustration</a></div>
+  </div>
+
+  <div class="src">
+    <div class="s-name">③ 국내 BIM 갤러리 &mdash; 클라우드 협업 중 저작권 질문</div>
+    <p>DC인사이드 건설정보모델링(BIM) 마이너 갤러리는 소규모 갤러리라 자격증 시험&middot;취업 상담 글이 대부분이고, 논쟁보다는 질문 위주입니다.</p>
+    <p>10월 2일 올라온 글에서는 A사가 클라우드 프로젝트에 접속해 B사가 만든 패밀리(구성요소)를 열람하고 자신의 파일에 저장할 수 있는 상황을 들어, 이 경우 B사가 저작권 문제를 제기할 수 있는지 의견을 구하였습니다. 댓글 2개가 달렸지만 구체적인 결론은 확인되지 않았습니다.</p>
+    <p>&rsaquo; 우리 관점 시사점: 여러 회사가 같은 클라우드 모델에 참여하는 CDE 환경에서는 패밀리&middot;콘텐츠의 소유권과 사용 범위를 프로젝트 시작 전에 명확히 정해 두는 거버넌스가 필요하다는 점을 보여주는 사례입니다.</p>
+    <div class="links"><a href="https://gall.dcinside.com/mgallery/board/view/?id=bim&amp;no=76" target="_blank" rel="noopener">DC인사이드 BIM 갤러리 &middot; 래빗 협업할때 저작권 문제 없음?</a></div>
+  </div>
+</div>
+<div class="r-sec">
+  <h4><span class="k">03</span> 시사점 / 액션 아이디어</h4>
+  <p>앞서 살펴본 내용에 따르면, 해외 실무자들은 익숙한 UI가 사라지는 변화에 민감하게 반응하고 국내 실무자들은 협업 과정에서 생기는 소유권 문제에 아직 명확한 답을 찾지 못하고 있다는 점을 확인할 수 있는데요, 그렇다면 우리는 이 두 신호를 제품에 어떻게 반영해야 할까요? 바로 변경 전후 워크플로우 비교와 협업 거버넌스 가이드를 함께 준비하는 일입니다.</p>
+  <ul>
+    <li><b>옵션 바처럼 반복 사용되는 조작 요소를 바꿀 때는 변경 전후 클릭 수&middot;이동 경로를 실제로 비교해 보고, 필요하면 이전 방식을 유지하는 설정을 함께 제공할 필요가 있습니다.</b></li>
+    <li><b>여러 회사가 참여하는 CDE 프로젝트를 설계할 때는 패밀리&middot;콘텐츠의 소유권과 재사용 범위를 계약 단계에서 먼저 정리해 두는 체크리스트를 마련할 필요가 있습니다.</b></li>
+    <li><b>Autodesk Community Ideas 게시판의 투표수&middot;댓글수는 실무자 우선순위를 보여주는 정량 지표이므로, 다음 분기 로드맵을 정할 때 참고 자료로 모아 둘 필요가 있습니다.</b></li>
+  </ul>
+</div>
+<div class="r-sec">
+  <h4><span class="k">04</span> 이번 조사 방법 개선 제안</h4>
+  <ul>
+    <li><b>WebSearch에서 &lsquo;site:reddit.com&rsquo; 연산자를 쓴 질의는 결과가 거의 없었습니다.</b> 다음 회차부터는 site: 연산자 대신 &lsquo;reddit Revit BIM&rsquo; 같은 일반 키워드 조합으로 바꿉니다. &rarr; 반영함</li>
+    <li><b>Autodesk Community Ideas 게시판은 게시물별 투표수&middot;댓글수가 공개되어 있어 실무자 불만의 크기를 가늠할 수 있는 정량 지표입니다.</b> 상시 보조 소스에 &lsquo;Ideas 게시판 최다 투표 게시물 확인&rsquo;을 추가합니다. &rarr; 반영함</li>
+  </ul>
+</div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><span class="idx">01</span><h2>요일별 분석 주제</h2><span class="rule"></span><span class="sec-hint">요일을 눌러 지난 리포트 보기</span></div>
+    <div class="week">
+      <button type="button" class="day" data-dow="월"><span class="d">MON · 월</span><span class="t">BIM 업계 동향</span><span class="m">전문지·뉴스 브리핑</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="화"><span class="d">TUE · 화</span><span class="t">입찰·수주 동향</span><span class="m">나라장터·KAIA 공고</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day on" data-dow="수"><span class="d">WED · 수</span><span class="t">실무자 의견</span><span class="m">커뮤니티 인사이트</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="목"><span class="d">THU · 목</span><span class="t">연구개발 동향</span><span class="m">Scholar·AURIC 논문</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="금"><span class="d">FRI · 금</span><span class="t">역량강화 인사이트</span><span class="m">전문가 연설 분석</span><span class="cnt" hidden></span></button>
+    </div>
+    <div class="day-reports" id="dayReports" hidden>
+      <div class="dr-head"><span id="drTitle"></span><button type="button" class="dr-close" id="drClose" title="닫기">✕</button></div>
+      <ul class="dr-list" id="drList"></ul>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><span class="idx">02</span><h2>동작 방식</h2><span class="rule"></span></div>
+    <div class="flow">
+      <div class="step"><span class="n">STEP 1</span><div class="st">클라우드 조사</div><p class="sp">매일 08:00, 오늘 요일 주제로 웹 조사를 수행하고 HTML 리포트를 작성합니다.</p></div>
+      <div class="step"><span class="n">STEP 2</span><div class="st">이 페이지 갱신</div><p class="sp">이 고정 페이지를 제자리에서 업데이트해 최신 리포트를 맨 위에 배치합니다.</p></div>
+      <div class="step"><span class="n">STEP 3</span><div class="st">알림 · 자동 열기</div><p class="sp">푸시 알림을 보내고 PC를 켜면 이 페이지가 Chrome에 자동으로 열립니다.</p></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><span class="idx">03</span><h2>지난 리포트</h2><span class="rule"></span></div>
+    <details class="arch">
+      <summary>아카이브 · 지난 리포트 (최신순)</summary>
+      <div class="arch-item">
+        <details class="sub-arch">
+          <summary>2026-11-10 (화) &middot; 입찰&middot;수주 동향 &mdash; 사전규격으로 먼저 지켜보던 사업들은 이번 주 정식 입찰로 이어졌을까요?</summary>
+          <div class="body">
 <div class="r-head">
   <h3>사전규격으로 먼저 지켜보던 사업들은 이번 주 정식 입찰로 이어졌을까요?</h3>
   <p class="meta">2026-11-10 (화) &middot; Asia/Seoul &middot; 조사범위: 최근 21일(2026-10-20&sim;11-10) &middot; 1차 소스: 나라장터 입찰공고정보서비스 <b>39건</b> + 사전규격정보서비스 <b>33건</b>(Open API 자동수집) &middot; 건설접점 자동 분류를 1차 제안으로 두고 전건 재검토 &middot; 보조: LH&middot;한국도로공사&middot;한국수자원공사 전자조달 교차확인(WebSearch)&middot;스마트건설 얼라이언스 공식 사이트&middot;뉴스 검증 &middot; 키워드: BIM, 건설정보모델링, 디지털트윈, 스마트건설, 3차원설계, 공간정보, CIM, 설계자동화, BIM설계, BIM용역, BIM구축, 공간정보플랫폼</p>
@@ -281,37 +375,9 @@
     <li><b>&lsquo;[대림대학교] BIM설비유지관리과&rsquo; 해외직무연수 공고 2건은 학과명에 BIM이 들어 있어 자동판정에서 &lsquo;관련&rsquo;으로 걸렸지만, 실제로는 교육연수 사업이라 건설발주 신호가 아니었습니다.</b> 학과명&middot;과정명에 키워드가 들어간 교육연수성 사업은 자동판정 결과와 무관하게 건설발주 신호로 보지 않는다는 기준을 추가합니다. &rarr; 반영함</li>
   </ul>
 </div>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="sec-h"><span class="idx">01</span><h2>요일별 분석 주제</h2><span class="rule"></span><span class="sec-hint">요일을 눌러 지난 리포트 보기</span></div>
-    <div class="week">
-      <button type="button" class="day" data-dow="월"><span class="d">MON · 월</span><span class="t">BIM 업계 동향</span><span class="m">전문지·뉴스 브리핑</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day on" data-dow="화"><span class="d">TUE · 화</span><span class="t">입찰·수주 동향</span><span class="m">나라장터·KAIA 공고</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day" data-dow="수"><span class="d">WED · 수</span><span class="t">실무자 의견</span><span class="m">커뮤니티 인사이트</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day" data-dow="목"><span class="d">THU · 목</span><span class="t">연구개발 동향</span><span class="m">Scholar·AURIC 논문</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day" data-dow="금"><span class="d">FRI · 금</span><span class="t">역량강화 인사이트</span><span class="m">전문가 연설 분석</span><span class="cnt" hidden></span></button>
-    </div>
-    <div class="day-reports" id="dayReports" hidden>
-      <div class="dr-head"><span id="drTitle"></span><button type="button" class="dr-close" id="drClose" title="닫기">✕</button></div>
-      <ul class="dr-list" id="drList"></ul>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="sec-h"><span class="idx">02</span><h2>동작 방식</h2><span class="rule"></span></div>
-    <div class="flow">
-      <div class="step"><span class="n">STEP 1</span><div class="st">클라우드 조사</div><p class="sp">매일 08:00, 오늘 요일 주제로 웹 조사를 수행하고 HTML 리포트를 작성합니다.</p></div>
-      <div class="step"><span class="n">STEP 2</span><div class="st">이 페이지 갱신</div><p class="sp">이 고정 페이지를 제자리에서 업데이트해 최신 리포트를 맨 위에 배치합니다.</p></div>
-      <div class="step"><span class="n">STEP 3</span><div class="st">알림 · 자동 열기</div><p class="sp">푸시 알림을 보내고 PC를 켜면 이 페이지가 Chrome에 자동으로 열립니다.</p></div>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="sec-h"><span class="idx">03</span><h2>지난 리포트</h2><span class="rule"></span></div>
-    <details class="arch">
-      <summary>아카이브 · 지난 리포트 (최신순)</summary>
+          </div>
+        </details>
+      </div>
       <div class="arch-item">
         <details class="sub-arch">
           <summary>2026-11-09 (월) &middot; BIM 업계 동향 &mdash; 건설 현장의 데이터를 AI가 읽게 만들려면 무엇부터 손봐야 할까요?</summary>
@@ -4406,7 +4472,7 @@
 
   <footer>
     MORNING ROUTINE CONSOLE · v1 · Asia/Seoul<br>
-    자동 조사 → 게시 → 알림 파이프라인 · 소스: 요일별 모닝루틴 플레이북 · 최종 갱신 2026-11-10
+    자동 조사 → 게시 → 알림 파이프라인 · 소스: 요일별 모닝루틴 플레이북 · 최종 갱신 2026-11-11
   </footer>
 </div>
 <button class="pdfbtn" id="pdfBtn" title="오늘 리포트를 PDF로 저장 (인쇄 → PDF로 저장)">🖨 PDF 저장</button>
