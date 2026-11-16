@@ -4,211 +4,238 @@
 <style>
   :root{
     --font:Pretendard,"Pretendard Variable",-apple-system,"Segoe UI","Malgun Gothic",system-ui,sans-serif;
-    --em:#9333a8;
-    --bg:#eef1f6; --grid:#dde3ec;
-    --card:#ffffff; --card2:#f6f8fb;
-    --ink:#16202e; --muted:#5b6b7d; --faint:#8a99a9;
-    --line:#dce3ec; --accent:#1f5fa8; --accent-soft:#e7eff8;
-    --amber:#a8660f; --amber-soft:#f6ecdc;
-    --ok:#2f7d55;
-    --shadow:0 1px 2px rgba(22,32,46,.06),0 8px 24px -12px rgba(22,32,46,.18);
+    /* 도면 시트: 제도 필름처럼 차가운 종이 + 먹선, 파란 도면선, 붉은 검토 마크(오늘·개정 표시에만) */
+    --bg:#F1F4F3; --grid:#E1E7E5;
+    --card:#FFFFFF; --card2:#F7F9F8;
+    --ink:#17212B; --muted:#4D5964; --faint:#7B8691;
+    --line:#D4DBD9; --accent:#1E56A0; --accent-soft:#E7EEF8;
+    --red:#C8372D; --red-soft:#FBEAE8;
+    --em:#0E6B6B;
+    --amber:#A8660F; --amber-soft:#F6ECDC; --ok:#2F7D55;
+    --shadow:0 1px 0 rgba(23,33,43,.05);
   }
   @media (prefers-color-scheme:dark){
     :root:not([data-theme="light"]){
-      --bg:#0d131b; --grid:#182231;
-      --card:#151f2b; --card2:#111a24;
-      --ink:#e7eef7; --muted:#9fb0c2; --faint:#6d7f92;
-      --line:#243244; --accent:#5aa2e6; --accent-soft:#16283c;
-      --amber:#d69a4e; --amber-soft:#2a2216;
-      --ok:#6cc394; --em:#d19af0;
-      --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -14px rgba(0,0,0,.6);
+      --bg:#0E1316; --grid:#19222A;
+      --card:#151C21; --card2:#12181C;
+      --ink:#E4EAEE; --muted:#A2AEB7; --faint:#75828C;
+      --line:#2A353C; --accent:#79AEEB; --accent-soft:#18283A;
+      --red:#F0695D; --red-soft:#3A1E1B;
+      --em:#5CC8C3;
+      --amber:#D69A4E; --amber-soft:#2A2216; --ok:#6CC394;
+      --shadow:0 1px 0 rgba(0,0,0,.3);
     }
   }
   :root[data-theme="dark"]{
-    --bg:#0d131b; --grid:#182231;
-    --card:#151f2b; --card2:#111a24;
-    --ink:#e7eef7; --muted:#9fb0c2; --faint:#6d7f92;
-    --line:#243244; --accent:#5aa2e6; --accent-soft:#16283c;
-    --amber:#d69a4e; --amber-soft:#2a2216;
-    --ok:#6cc394; --em:#d19af0;
-    --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 30px -14px rgba(0,0,0,.6);
+    --bg:#0E1316; --grid:#19222A;
+    --card:#151C21; --card2:#12181C;
+    --ink:#E4EAEE; --muted:#A2AEB7; --faint:#75828C;
+    --line:#2A353C; --accent:#79AEEB; --accent-soft:#18283A;
+    --red:#F0695D; --red-soft:#3A1E1B;
+    --em:#5CC8C3;
+    --amber:#D69A4E; --amber-soft:#2A2216; --ok:#6CC394;
+    --shadow:0 1px 0 rgba(0,0,0,.3);
   }
   *{box-sizing:border-box}
-  body{
-    margin:0; background:var(--bg); color:var(--ink);
-    font-family:var(--font);
-    line-height:1.6; -webkit-font-smoothing:antialiased;
-    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
-    background-size:26px 26px; background-position:-1px -1px;
-  }
-  .wrap{max-width:980px; margin:0 auto; padding:clamp(20px,4vw,44px) clamp(16px,3vw,28px) 72px}
-  a{color:var(--accent); text-underline-offset:2px}
-  .mono{font-family:var(--font); font-variant-numeric:tabular-nums}
+  body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--font);
+    line-height:1.65; -webkit-font-smoothing:antialiased; word-break:keep-all; overflow-wrap:break-word}
+  .report .r-head .meta, .src .links a, .dr-list button{overflow-wrap:anywhere}
+  .wrap{max-width:1040px; margin:0 auto; padding:clamp(20px,4vw,48px) clamp(16px,3vw,32px) 88px}
+  a{color:var(--accent); text-underline-offset:3px; text-decoration-thickness:1px}
+  a:hover{text-decoration-thickness:2px}
+  :focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+  .mono{font-variant-numeric:tabular-nums}
   /* 이탤릭은 화면에서 구분이 약해 색상으로 강조 (기울임 대신 색) */
   em, i{font-style:normal; color:var(--em); font-weight:600}
-  /* PDF 저장 버튼 (플로팅) */
+
+  /* PDF 저장 버튼 */
   .pdfbtn{position:fixed; right:18px; bottom:18px; z-index:50; cursor:pointer;
     font-family:var(--font); font-size:13px; font-weight:600; color:var(--card);
-    background:var(--accent); border:none; border-radius:999px; padding:10px 16px;
-    box-shadow:var(--shadow)}
-  .pdfbtn:hover{filter:brightness(1.08)}
+    background:var(--ink); border:none; border-radius:999px; padding:10px 16px}
+  .pdfbtn:hover{background:var(--accent)}
   .pdf-note{position:fixed; right:18px; bottom:62px; z-index:50; max-width:320px;
-    font-family:var(--font); font-size:12px; line-height:1.55; color:var(--ink);
-    background:var(--amber-soft); border:1px solid var(--amber); border-radius:10px;
-    padding:11px 14px; box-shadow:var(--shadow)}
+    font-size:12px; line-height:1.55; color:var(--ink);
+    background:var(--amber-soft); border:1px solid var(--amber); border-radius:8px; padding:11px 14px}
   .pdf-note b{color:var(--amber)}
-  @media print{
-    body{background:#fff !important; background-image:none !important}
-    .pdfbtn, .pdf-note, .sec, .today-bar .when{display:none !important}
-    .today{box-shadow:none; border:none; margin-top:8px}
-    .wrap{max-width:none; padding:0}
-    a{color:var(--ink)}
-  }
 
-  /* Header */
-  header.hd{
-    display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between;
-    gap:18px; padding-bottom:20px; border-bottom:2px solid var(--ink);
-  }
-  .brand{display:flex; flex-direction:column; gap:6px}
-  .eyebrow{font-family:var(--font); font-size:12px; letter-spacing:.18em;
-    text-transform:uppercase; color:var(--accent); font-weight:600}
-  h1{font-size:clamp(26px,4.5vw,38px); font-weight:700; margin:0; letter-spacing:-.01em; text-wrap:balance}
-  .sub{color:var(--muted); font-size:14.5px; max-width:52ch}
-  .clock{text-align:right; color:var(--muted); font-size:12.5px; line-height:1.5}
-  .clock .big{display:block; color:var(--ink); font-size:15px; font-weight:600}
+  /* 머리글 = 도면 표제란 */
+  header.hd{display:grid; grid-template-columns:minmax(0,1fr) 272px;
+    border:1.5px solid var(--ink); background:var(--card)}
+  .brand{position:relative; padding:clamp(22px,3.4vw,36px) clamp(20px,3vw,34px) clamp(20px,3vw,30px);
+    background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+    background-size:24px 24px; background-position:-1px -1px}
+  h1{margin:0; font-size:clamp(44px,8vw,84px); font-weight:800; line-height:.98; letter-spacing:-.045em}
+  .sub{display:block; margin:18px 0 0; max-width:34em; font-size:15px; color:var(--muted)}
+  .titleblock{margin:0; display:grid; grid-template-rows:repeat(3,1fr); border-left:1.5px solid var(--ink)}
+  .titleblock > div{display:grid; grid-template-columns:52px 1fr; align-items:center;
+    border-top:1px solid var(--ink); padding:0 16px; min-height:58px}
+  .titleblock > div:first-child{border-top:0}
+  .titleblock dt{font-size:12px; color:var(--faint); font-weight:600}
+  .titleblock dd{margin:0; font-size:14px; font-weight:600; font-variant-numeric:tabular-nums}
+  .titleblock .rev dd{display:flex; align-items:center; gap:8px}
+  .titleblock .rev dd::before{content:""; width:0; height:0; flex:none;
+    border-left:7px solid transparent; border-right:7px solid transparent; border-bottom:12px solid var(--red)}
 
-  /* Today card */
-  .today{
-    margin-top:26px; background:var(--card); border:1px solid var(--line);
-    border-radius:14px; box-shadow:var(--shadow); overflow:hidden;
-  }
-  .today-bar{
-    display:flex; align-items:center; gap:12px; padding:14px 20px;
-    background:var(--accent-soft); border-bottom:1px solid var(--line);
-  }
-  .tag{font-family:var(--font); font-size:11.5px; font-weight:600;
-    letter-spacing:.1em; text-transform:uppercase; color:var(--accent);
-    background:var(--card); border:1px solid var(--line); border-radius:999px; padding:3px 10px}
+  /* 오늘의 리포트 */
+  .today{margin-top:28px; background:var(--card); border:1px solid var(--line); border-radius:6px}
+  .today-bar{display:flex; align-items:center; gap:12px; padding:14px clamp(20px,4vw,44px);
+    border-bottom:1px solid var(--line)}
+  .tag{font-size:13px; font-weight:700; color:var(--red); display:inline-flex; align-items:center; gap:8px}
+  .tag::before{content:""; width:8px; height:8px; border-radius:50%; background:var(--red)}
   .today-bar .when{color:var(--muted); font-size:13px; margin-left:auto}
   .today-body{padding:34px 24px 40px; text-align:center}
-  .status-dot{width:9px; height:9px; border-radius:50%; background:var(--amber); display:inline-block; margin-right:7px;
-    box-shadow:0 0 0 4px var(--amber-soft)}
+  .status-dot{width:9px; height:9px; border-radius:50%; background:var(--amber); display:inline-block; margin-right:7px}
   .empty-h{font-size:20px; font-weight:600; margin:14px 0 8px}
-  .empty-p{color:var(--muted); font-size:14.5px; max-width:46ch; margin:0 auto}
-  .pending{display:inline-flex; align-items:center; font-family:var(--font);
-    font-size:12.5px; color:var(--amber); background:var(--amber-soft);
-    border-radius:999px; padding:5px 13px; margin-bottom:6px}
+  .empty-p{color:var(--muted); font-size:15px; max-width:46ch; margin:0 auto}
+  .pending{display:inline-flex; align-items:center; font-size:12.5px; color:var(--amber);
+    background:var(--amber-soft); border-radius:999px; padding:5px 13px; margin-bottom:6px}
 
-  /* Today — populated report */
-  .today-body.report{padding:26px clamp(18px,3.5vw,30px) 36px; text-align:left}
-  .report .r-head h3{font-size:clamp(18px,2.6vw,22px); font-weight:700; margin:0 0 5px; letter-spacing:-.01em}
-  .report .r-head .meta{font-family:var(--font); font-size:12px; color:var(--faint); margin-bottom:8px}
-  .report .r-head .lead{color:var(--muted); font-size:13.5px; margin:0 0 4px}
-  .r-sec{margin-top:26px}
-  .r-sec > h4{display:flex; align-items:baseline; gap:9px; font-size:13px; font-weight:600;
-    letter-spacing:.03em; margin:0 0 11px; color:var(--accent)}
-  .r-sec > h4 .k{font-family:var(--font); font-size:11px; color:var(--faint)}
-  .report ul{margin:0; padding-left:19px}
-  .report li{margin:8px 0; font-size:13.5px}
-  .report li strong{font-weight:600}
-  .src{border:1px solid var(--line); border-radius:10px; background:var(--card2); padding:12px 15px; margin:10px 0}
-  .src .s-name{font-size:12px; font-weight:600; color:var(--muted); letter-spacing:.02em; margin-bottom:4px}
-  .src p{margin:0; font-size:13px}
-  .src .links{margin-top:7px; font-size:12px; display:flex; flex-wrap:wrap; gap:4px 16px}
-  .note-amber{background:var(--amber-soft); border:1px solid var(--amber); border-radius:10px;
-    padding:12px 15px; font-size:12.5px; color:var(--ink); margin-bottom:11px}
+  /* 리포트 본문: 읽기 폭을 한 줄 45자 안팎으로 묶는다 */
+  .today-body.report{padding:34px clamp(20px,4vw,44px) 44px; text-align:left}
+  .report > *{max-width:46em}
+  .report .r-head h3{font-size:clamp(22px,3vw,28px); font-weight:750; line-height:1.38;
+    margin:0 0 12px; letter-spacing:-.025em; text-wrap:balance}
+  .report .r-head .meta{font-size:12.5px; line-height:1.7; color:var(--faint); margin:0 0 18px}
+  .report .r-head .lead{font-size:16.5px; line-height:1.85; color:var(--ink); margin:0}
+  .r-sec{margin-top:40px}
+  .r-sec > h4{display:flex; align-items:center; gap:10px; margin:0 0 14px;
+    font-size:17px; font-weight:700; letter-spacing:-.01em; color:var(--ink)}
+  /* 섹션 번호 = 도면 상세 표식(원 안 번호) */
+  .r-sec > h4 .k{display:inline-grid; place-items:center; width:26px; height:26px; flex:none;
+    border:1.5px solid var(--ink); border-radius:50%; font-size:11.5px; font-weight:700;
+    font-variant-numeric:tabular-nums; color:var(--ink)}
+  .report ul{margin:0; padding-left:20px}
+  .report li{margin:10px 0; font-size:15.5px; line-height:1.8}
+  .report li::marker{color:var(--faint)}
+  .report li strong, .report p strong{font-weight:700}
+  .src{border-top:1px solid var(--line); padding:22px 0 4px; margin:0}
+  .r-sec > h4 + .src, .r-sec > .src:first-of-type{border-top:0; padding-top:4px}
+  .src .s-name{font-size:17px; font-weight:700; line-height:1.5; color:var(--ink); margin:0 0 10px; letter-spacing:-.01em}
+  .src p{margin:0 0 12px; font-size:15.5px; line-height:1.85}
+  .src .links{margin:2px 0 14px; font-size:13px; display:flex; flex-wrap:wrap; gap:6px 18px}
+  .note-amber{background:var(--amber-soft); border-left:3px solid var(--amber); border-radius:0 6px 6px 0;
+    padding:12px 16px; font-size:14px; color:var(--ink); margin-bottom:14px}
   .note-amber b{color:var(--amber)}
+  .report table{border-collapse:collapse; width:100%; font-size:14px; margin:10px 0 16px}
+  .report th, .report td{border-bottom:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top}
+  .report th{font-weight:700; color:var(--muted); border-bottom-color:var(--ink)}
 
-  /* Section titles */
-  .sec{margin-top:40px}
-  .sec-h{display:flex; align-items:baseline; gap:12px; margin-bottom:16px}
-  .sec-h h2{font-size:15px; font-weight:600; margin:0; letter-spacing:.02em}
+  /* 아래쪽 섹션 머리 */
+  .sec{margin-top:56px}
+  .sec-h{display:flex; align-items:baseline; gap:14px; margin-bottom:18px}
+  .sec-h h2{font-size:19px; font-weight:750; margin:0; letter-spacing:-.02em}
   .sec-h .rule{flex:1; height:1px; background:var(--line)}
-  .sec-h .idx{font-family:var(--font); font-size:12px; color:var(--faint)}
+  .sec-hint{font-size:12.5px; color:var(--faint)}
 
-  /* Weekday strip */
-  .week{display:grid; grid-template-columns:repeat(5,1fr); gap:10px}
-  @media (max-width:640px){.week{grid-template-columns:repeat(2,1fr)}}
-  .day{
-    background:var(--card); border:1px solid var(--line); border-radius:11px;
-    padding:14px 14px 16px; display:flex; flex-direction:column; gap:9px; min-height:118px;
-  }
-  .day .d{font-family:var(--font); font-size:12px; font-weight:600; color:var(--faint); letter-spacing:.06em}
-  .day .t{font-size:14px; font-weight:600; line-height:1.4}
-  .day .m{font-size:12px; color:var(--muted); margin-top:auto}
-  .day.on{border-color:var(--accent); box-shadow:0 0 0 1px var(--accent) inset}
-  .day.on .d{color:var(--accent)}
-  .day.on::after{content:"TODAY"; font-family:var(--font); font-size:9.5px; letter-spacing:.14em;
-    color:var(--card); background:var(--accent); align-self:flex-start; padding:2px 7px; border-radius:5px; margin-top:2px}
-  /* 요일 버튼(클릭 시 지난 리포트) */
-  .week .day{font:inherit; text-align:left; cursor:pointer; color:inherit; -webkit-appearance:none; appearance:none;
-    transition:border-color .12s, box-shadow .12s}
-  .week .day:hover{border-color:var(--accent)}
-  .week .day:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
-  .week .day.sel{border-color:var(--accent); box-shadow:0 0 0 2px var(--accent) inset; background:var(--accent-soft)}
-  .day .cnt{font-family:var(--font); font-size:10.5px; font-weight:600; color:var(--accent);
-    background:var(--accent-soft); border-radius:999px; padding:1px 7px; align-self:flex-start}
-  .sec-hint{font-size:11.5px; color:var(--faint); margin-left:2px}
+  /* 요일 띠 = 도면 축선 버블 */
+  .week{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); border-top:1.5px solid var(--ink); border-bottom:1px solid var(--line)}
+  .week .day{font:inherit; color:inherit; text-align:left; cursor:pointer; -webkit-appearance:none; appearance:none;
+    background:transparent; border:0; border-left:1px dashed var(--line); border-radius:0;
+    padding:18px 16px 18px; display:flex; flex-direction:column; gap:6px; min-height:150px;
+    transition:background-color .15s}
+  .week .day:first-child{border-left:0}
+  .week .day:hover{background:var(--card)}
+  .week .day.sel{background:var(--accent-soft)}
+  .day .d{display:inline-grid; place-items:center; width:36px; height:36px; border:1.5px solid var(--ink);
+    border-radius:50%; font-size:15px; font-weight:700; color:var(--ink); background:var(--card); margin-bottom:6px}
+  .day.on .d{background:var(--red); border-color:var(--red); color:#fff}
+  .day .t{font-size:15px; font-weight:700; line-height:1.4}
+  .day .m{font-size:12.5px; color:var(--muted)}
+  .day.on .t::after{content:"오늘"; margin-left:6px; font-size:11.5px; font-weight:700; color:var(--red); vertical-align:1px}
+  .day .cnt{margin-top:auto; align-self:flex-start; font-size:12px; font-weight:600; color:var(--accent)}
+  .day.sel .cnt{text-decoration:underline; text-underline-offset:3px}
+
   /* 요일별 지난 리포트 패널 */
-  .day-reports{margin-top:12px; background:var(--card); border:1px solid var(--line); border-radius:11px; padding:6px}
-  .dr-head{display:flex; align-items:center; gap:10px; padding:8px 10px 6px}
-  #drTitle{font-size:13px; font-weight:600}
-  .dr-close{margin-left:auto; cursor:pointer; border:none; background:transparent; color:var(--faint); font-size:14px; line-height:1; padding:4px}
-  .dr-close:hover{color:var(--ink)}
-  .dr-list{list-style:none; margin:0; padding:0 4px 6px}
+  .day-reports{margin-top:0; background:var(--card); border:1px solid var(--line); border-top:0; padding:6px 6px 8px}
+  .dr-head{display:flex; align-items:center; gap:10px; padding:10px 12px 6px}
+  #drTitle{font-size:14px; font-weight:700}
+  .dr-close{margin-left:auto; cursor:pointer; border:1px solid var(--line); background:transparent; color:var(--muted);
+    font:inherit; font-size:12.5px; line-height:1; padding:6px 10px; border-radius:6px}
+  .dr-close:hover{color:var(--ink); border-color:var(--ink)}
+  .dr-list{list-style:none; margin:0; padding:0 4px}
   .dr-list button{width:100%; text-align:left; cursor:pointer; font:inherit; color:var(--ink);
-    background:transparent; border:none; border-radius:8px; padding:9px 10px; font-size:13px; display:flex; gap:8px; align-items:baseline}
+    background:transparent; border:0; border-radius:6px; padding:10px 12px; font-size:14.5px;
+    display:flex; gap:14px; align-items:baseline}
   .dr-list button:hover{background:var(--card2)}
-  .dr-list .dt{font-family:var(--font); font-variant-numeric:tabular-nums; color:var(--faint); font-size:11.5px; white-space:nowrap}
-  .dr-empty{padding:9px 12px 12px; color:var(--muted); font-size:12.5px}
+  .dr-list .dt{font-variant-numeric:tabular-nums; color:var(--faint); font-size:13px; white-space:nowrap}
+  .dr-empty{padding:10px 12px 12px; color:var(--muted); font-size:13.5px}
   .arch-flash{animation:archflash 1.6s ease}
   @keyframes archflash{0%,100%{background:transparent}18%{background:var(--accent-soft)}}
 
-  /* How it works */
-  .flow{display:grid; grid-template-columns:repeat(3,1fr); gap:12px}
-  @media (max-width:640px){.flow{grid-template-columns:1fr}}
-  .step{background:var(--card2); border:1px solid var(--line); border-radius:11px; padding:16px 16px 18px}
-  .step .n{font-family:var(--font); font-size:12px; color:var(--accent); font-weight:600}
-  .step .st{font-size:14px; font-weight:600; margin:6px 0 4px}
-  .step .sp{font-size:12.5px; color:var(--muted); line-height:1.55}
+  /* 동작 방식 (실제 순서가 있는 흐름) */
+  .flow{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:0; counter-reset:none}
+  .step{position:relative; padding:4px 26px 4px 0}
+  .step + .step{padding-left:26px; border-left:1px solid var(--line)}
+  .step .n{display:inline-grid; place-items:center; width:26px; height:26px; border:1.5px solid var(--ink);
+    border-radius:50%; font-size:12px; font-weight:700}
+  .step .st{font-size:15.5px; font-weight:700; margin:10px 0 4px}
+  .step .sp{font-size:14px; color:var(--muted); line-height:1.7; margin:0}
 
-  /* Archive */
-  details.arch{background:var(--card); border:1px solid var(--line); border-radius:11px; padding:2px 4px}
-  details.arch summary{cursor:pointer; padding:14px 16px; font-size:14px; font-weight:600; list-style:none;
+  /* 지난 리포트 */
+  details.arch{background:var(--card); border:1px solid var(--line); border-radius:6px; padding:2px 4px}
+  details.arch > summary{cursor:pointer; padding:16px 18px; font-size:15px; font-weight:700; list-style:none;
     display:flex; align-items:center; gap:10px}
   details.arch summary::-webkit-details-marker{display:none}
-  details.arch summary::before{content:"\25B8"; color:var(--faint); transition:transform .15s}
-  details.arch[open] summary::before{transform:rotate(90deg)}
-  .arch-empty{padding:6px 18px 18px; color:var(--muted); font-size:13px}
-  .arch-item{padding:4px 18px 18px}
-  .arch-item h4{font-size:13.5px; margin:0 0 4px}
-  .arch-item p{font-size:12.5px; color:var(--muted); margin:0}
-  details.sub-arch{border:1px solid var(--line); border-radius:9px; background:var(--card2); padding:2px 4px; margin-top:4px}
-  details.sub-arch > summary{cursor:pointer; padding:11px 13px; font-size:13px; font-weight:600; color:var(--muted);
-    list-style:none; display:flex; align-items:center; gap:9px}
+  details.arch > summary::before{content:"\25B8"; color:var(--faint); transition:transform .15s}
+  details.arch[open] > summary::before{transform:rotate(90deg)}
+  .arch-empty{padding:6px 18px 18px; color:var(--muted); font-size:14px}
+  .arch-item{padding:0 14px}
+  .arch-item h4{font-size:14px; margin:0 0 4px}
+  .arch-item p{font-size:14px; margin:0}
+  details.sub-arch{border-top:1px solid var(--line); padding:0}
+  details.sub-arch > summary{cursor:pointer; padding:13px 6px; font-size:14px; font-weight:600; color:var(--ink);
+    list-style:none; display:flex; align-items:baseline; gap:10px; line-height:1.55}
   details.sub-arch > summary::-webkit-details-marker{display:none}
   details.sub-arch > summary::before{content:"\25B8"; color:var(--faint); transition:transform .15s}
   details.sub-arch[open] > summary::before{transform:rotate(90deg)}
-  details.sub-arch .body{padding:2px 14px 14px}
+  details.sub-arch > summary:hover{color:var(--accent)}
+  details.sub-arch .body{padding:6px 6px 26px 22px}
+  details.sub-arch .body .r-sec{margin-top:28px}
 
-  footer{margin-top:48px; padding-top:20px; border-top:1px solid var(--line);
-    color:var(--faint); font-size:12px; font-family:var(--font); line-height:1.7}
+  footer{margin-top:56px; padding-top:18px; border-top:1.5px solid var(--ink);
+    color:var(--faint); font-size:12.5px; line-height:1.7}
   footer a{color:var(--faint)}
+
+  @media (max-width:760px){
+    header.hd{grid-template-columns:1fr}
+    .titleblock{border-left:0; border-top:1.5px solid var(--ink); grid-template-rows:none; grid-template-columns:repeat(3,minmax(0,1fr))}
+    .titleblock > div{display:block; border-top:0; border-left:1px solid var(--ink); padding:10px 12px; min-height:0}
+    .titleblock > div:first-child{border-left:0}
+    .titleblock{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .titleblock .rev{grid-column:1 / -1; border-left:0; border-top:1px solid var(--ink)}
+    .titleblock .rev dd{white-space:nowrap}
+    .titleblock dd{font-size:13px}
+    .week .day{padding:14px 8px; min-height:118px}
+    .day .m{display:none}
+    .day .t{font-size:13px}
+    .day.on .t::after{display:block; margin:2px 0 0}
+    .flow{grid-template-columns:1fr; gap:18px}
+    .step, .step + .step{padding:0; border-left:0}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none !important; animation:none !important}
+  }
+  @media print{
+    body{background:#fff !important}
+    .pdfbtn, .pdf-note, .sec, .today-bar .when{display:none !important}
+    .today{border:none; margin-top:8px}
+    .wrap{max-width:none; padding:0}
+    .report > *{max-width:none}
+    a{color:var(--ink)}
+  }
 </style>
 
 <div class="wrap">
   <header class="hd">
     <div class="brand">
-      <span class="eyebrow">BIM &middot; Construction Intelligence</span>
       <h1>오늘의 BIM</h1>
-      <span class="sub">매일 아침(월~금) BIM&middot;건설 업계 현황을 자동 조사해 이 페이지에 게시합니다. 최신 리포트가 항상 맨 위에 옵니다.</span>
+      <span class="sub">평일 아침마다 BIM·건설 업계 소식을 조사해 이 페이지 맨 위에 새 리포트를 올립니다.</span>
     </div>
-    <div class="clock">
-      <span class="big mono">08:00 KST</span>
-      월–금 자동 실행<br>
-      <span class="mono">최종 갱신 2026-11-16</span>
-    </div>
+    <dl class="titleblock">
+      <div><dt>발행</dt><dd>평일 오전 8시</dd></div>
+      <div><dt>주제</dt><dd>요일마다 다른 5개 주제</dd></div>
+      <div class="rev"><dt>개정</dt><dd class="mono">최종 갱신 2026-11-16</dd></div>
+    </dl>
   </header>
 
   <section class="today">
@@ -275,13 +302,13 @@
   </section>
 
   <section class="sec">
-    <div class="sec-h"><span class="idx">01</span><h2>요일별 분석 주제</h2><span class="rule"></span><span class="sec-hint">요일을 눌러 지난 리포트 보기</span></div>
+    <div class="sec-h"><h2>요일별 분석 주제</h2><span class="rule"></span><span class="sec-hint">요일을 눌러 지난 리포트 보기</span></div>
     <div class="week">
-      <button type="button" class="day on" data-dow="월"><span class="d">MON · 월</span><span class="t">BIM 업계 동향</span><span class="m">전문지·뉴스 브리핑</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day" data-dow="화"><span class="d">TUE · 화</span><span class="t">입찰·수주 동향</span><span class="m">나라장터·KAIA 공고</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day" data-dow="수"><span class="d">WED · 수</span><span class="t">실무자 의견</span><span class="m">커뮤니티 인사이트</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day" data-dow="목"><span class="d">THU · 목</span><span class="t">연구개발 동향</span><span class="m">Scholar·AURIC 논문</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day" data-dow="금"><span class="d">FRI · 금</span><span class="t">역량강화 인사이트</span><span class="m">전문가 연설 분석</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day on" data-dow="월"><span class="d">월</span><span class="t">BIM 업계 동향</span><span class="m">전문지·뉴스 브리핑</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="화"><span class="d">화</span><span class="t">입찰·수주 동향</span><span class="m">나라장터·KAIA 공고</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="수"><span class="d">수</span><span class="t">실무자 의견</span><span class="m">커뮤니티 인사이트</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="목"><span class="d">목</span><span class="t">연구개발 동향</span><span class="m">Scholar·AURIC 논문</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="금"><span class="d">금</span><span class="t">역량강화 인사이트</span><span class="m">전문가 연설 분석</span><span class="cnt" hidden></span></button>
     </div>
     <div class="day-reports" id="dayReports" hidden>
       <div class="dr-head"><span id="drTitle"></span><button type="button" class="dr-close" id="drClose" title="닫기">✕</button></div>
@@ -290,18 +317,18 @@
   </section>
 
   <section class="sec">
-    <div class="sec-h"><span class="idx">02</span><h2>동작 방식</h2><span class="rule"></span></div>
+    <div class="sec-h"><h2>동작 방식</h2><span class="rule"></span></div>
     <div class="flow">
-      <div class="step"><span class="n">STEP 1</span><div class="st">클라우드 조사</div><p class="sp">매일 08:00, 오늘 요일 주제로 웹 조사를 수행하고 HTML 리포트를 작성합니다.</p></div>
-      <div class="step"><span class="n">STEP 2</span><div class="st">이 페이지 갱신</div><p class="sp">이 고정 페이지를 제자리에서 업데이트해 최신 리포트를 맨 위에 배치합니다.</p></div>
-      <div class="step"><span class="n">STEP 3</span><div class="st">알림 · 자동 열기</div><p class="sp">푸시 알림을 보내고 PC를 켜면 이 페이지가 Chrome에 자동으로 열립니다.</p></div>
+      <div class="step"><span class="n">1</span><div class="st">조사</div><p class="sp">평일 아침, 그날 요일 주제로 웹과 공공 데이터를 조사해 리포트를 씁니다.</p></div>
+      <div class="step"><span class="n">2</span><div class="st">게시</div><p class="sp">새 리포트를 이 페이지 맨 위에 올리고 지난 리포트는 아래로 옮깁니다.</p></div>
+      <div class="step"><span class="n">3</span><div class="st">열람</div><p class="sp">PC에서는 Chrome에 바로 열리고, 다른 기기에서는 이 주소로 봅니다.</p></div>
     </div>
   </section>
 
   <section class="sec">
-    <div class="sec-h"><span class="idx">03</span><h2>지난 리포트</h2><span class="rule"></span></div>
+    <div class="sec-h"><h2>지난 리포트</h2><span class="rule"></span></div>
     <details class="arch">
-      <summary>아카이브 · 지난 리포트 (최신순)</summary>
+      <summary>지난 리포트 전체 보기 (최신순)</summary>
       <div class="arch-item">
         <details class="sub-arch">
           <summary>2026-11-13 (금) &middot; 역량강화 인사이트 &mdash; 건설 인력 공백을 AI 에이전트와 로봇이 채울 수 있을까요?</summary>
