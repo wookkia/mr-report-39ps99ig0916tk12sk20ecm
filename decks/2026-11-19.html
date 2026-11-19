@@ -1,0 +1,2058 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>오늘의 BIM · 2026-11-19 원문 설명 자료</title>
+<style data-inlined-from="fonts.css">
+/* html-ppt :: shared webfonts */
+/* Korean: Pretendard (Hangul body/display) + Noto Sans/Serif KR fallback */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@200;300;400;500;600;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,800;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap');
+
+</style>
+<style data-inlined-from="base.css">
+/* html-ppt :: base.css — reset + shared tokens + layout primitives */
+/* Default tokens. Themes in assets/themes/*.css override the :root block. */
+:root {
+  --bg: #ffffff;
+  --bg-soft: #f7f7f8;
+  --surface: #ffffff;
+  --surface-2: #f2f2f4;
+  --border: rgba(0,0,0,.08);
+  --border-strong: rgba(0,0,0,.16);
+  --text-1: #111216;
+  --text-2: #55596a;
+  --text-3: #8a8f9e;
+  --accent: #3b6cff;
+  /* Text drawn on top of an --accent fill. Every theme in assets/themes/
+   * and every full-deck style.css overrides this with whichever of white /
+   * near-black clears WCAG AA against its own accent — a hardcoded ink
+   * cannot, because accents here range from #ffffff to #000000.
+   * This default is black rather than white on purpose: against the default
+   * --accent #3b6cff, white measures 4.40:1 and black 4.77:1, so only black
+   * clears AA for normal text. Reached by any deck that links no theme. */
+  --accent-ink: #000000;
+  --accent-2: #7a5cff;
+  --accent-3: #ff5c8a;
+  --good: #1aaf6c;
+  --warn: #f5a524;
+  --bad:  #e0445a;
+  --grad: linear-gradient(135deg,#3b6cff,#7a5cff 55%,#ff5c8a);
+  --grad-soft: linear-gradient(135deg,#eef2ff,#f5ecff 55%,#ffeef5);
+  --radius: 18px;
+  --radius-sm: 12px;
+  --radius-lg: 26px;
+  --shadow: 0 10px 30px rgba(18,24,40,.08), 0 2px 6px rgba(18,24,40,.04);
+  --shadow-lg: 0 24px 60px rgba(18,24,40,.14), 0 6px 16px rgba(18,24,40,.06);
+  --font-sans: 'Inter','Pretendard','Noto Sans SC','Noto Sans KR',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+  --font-serif: 'Playfair Display','Noto Serif SC','Noto Serif KR',Georgia,serif;
+  --font-mono: 'JetBrains Mono','IBM Plex Mono',SFMono-Regular,Menlo,monospace;
+  --font-display: var(--font-sans);
+  --letter-tight: -.03em;
+  --letter-normal: -.01em;
+  --ease: cubic-bezier(.4,0,.2,1);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text-1);
+  font-family:var(--font-sans);font-weight:400;line-height:1.6;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  letter-spacing:var(--letter-normal)}
+
+/* Korean decks (<html lang="ko">): break lines between words, never inside
+   one (어절 단위 줄바꿈). Without this a Hangul word splits mid-word at the
+   line end, which reads as a typo to Korean audiences. */
+html:lang(ko) body{word-break:keep-all;overflow-wrap:break-word}
+html:lang(ko) .kicker,html:lang(ko) .eyebrow{letter-spacing:.04em}
+
+/* Viewport host: centres the fixed-size design canvas and letterboxes the rest.
+   Every px in a slide therefore means the same thing in the browser, in the
+   presenter preview, in the overview thumbnail and in a headless render. */
+body{width:100vw;height:100vh;overflow:hidden;
+  display:flex;align-items:center;justify-content:center}
+img,svg,video{max-width:100%;display:block}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+code,kbd,pre,samp{font-family:var(--font-mono)}
+
+/* ================= SLIDE SYSTEM ================= */
+/* ================= DESIGN CANVAS =================
+   Slides are authored against a FIXED 1920x1080 canvas and scaled to fit the
+   viewport by runtime.js (--deck-scale). Before this, .deck was 100vw/100vh
+   while type and spacing stayed in absolute px, so a 1512x850 laptop window
+   and a 1920x1080 render produced visibly different pages (issue #20).
+
+   Escape hatches:
+     <body data-fit="fluid">      -> old behaviour, canvas follows the viewport
+     <div class="deck" data-w=".." data-h="..">  -> custom canvas (e.g. 1080x1440 for 3:4)
+*/
+.deck{position:relative;flex:none;
+  width:var(--deck-w,1920px);height:var(--deck-h,1080px);
+  overflow:hidden;background:var(--bg);
+  transform:scale(var(--deck-scale,1));transform-origin:center center}
+
+/* Opt out: fluid canvas, exactly what the deck did before. */
+body[data-fit="fluid"]{display:block}
+body[data-fit="fluid"] .deck{width:100vw;height:100vh;transform:none}
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:72px 96px;
+  box-sizing:border-box;
+  opacity:0;pointer-events:none;
+  transition:opacity .5s var(--ease), transform .5s var(--ease);
+  transform:translateX(30px);
+  overflow:hidden;
+}
+.slide.is-active{opacity:1;pointer-events:auto;transform:translateX(0);z-index:2}
+.slide.is-prev{transform:translateX(-30px)}
+
+/* single-page standalone (used when a layout file is opened directly) */
+body.single .slide{position:relative;width:100%;height:100%;opacity:1;transform:none;pointer-events:auto}
+body[data-fit="fluid"].single .slide{width:100vw;height:100vh}
+
+/* ================= TYPOGRAPHY ================= */
+.eyebrow{font-size:13px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3)}
+.kicker{font-size:14px;font-weight:600;color:var(--accent);letter-spacing:.08em;text-transform:uppercase}
+h1.title,.h1{font-family:var(--font-display);font-size:72px;line-height:1.05;font-weight:800;letter-spacing:var(--letter-tight);margin:0 0 18px;color:var(--text-1)}
+h2.title,.h2{font-family:var(--font-display);font-size:54px;line-height:1.1;font-weight:700;letter-spacing:var(--letter-tight);margin:0 0 14px}
+h3,.h3{font-size:32px;line-height:1.2;font-weight:600;letter-spacing:var(--letter-normal);margin:0 0 10px}
+h4,.h4{font-size:22px;line-height:1.3;font-weight:600;margin:0 0 8px}
+.lede{font-size:22px;line-height:1.55;color:var(--text-2);font-weight:300;max-width:62ch}
+.dim{color:var(--text-2)}
+.dim2{color:var(--text-3)}
+.mono{font-family:var(--font-mono)}
+.serif{font-family:var(--font-serif)}
+.gradient-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+
+/* ================= LAYOUT PRIMITIVES ================= */
+.stack>*+*{margin-top:14px}
+.row{display:flex;gap:24px;align-items:center}
+.row.wrap{flex-wrap:wrap}
+.grid{display:grid;gap:24px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.center{display:flex;align-items:center;justify-content:center;text-align:center}
+.fill{flex:1}
+.sp-t{padding-top:24px}.sp-b{padding-bottom:24px}
+.mt-s{margin-top:8px}.mt-m{margin-top:18px}.mt-l{margin-top:32px}
+.mb-s{margin-bottom:8px}.mb-m{margin-bottom:18px}.mb-l{margin-bottom:32px}
+
+/* ================= CARDS ================= */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:26px 28px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.card-soft{background:var(--surface-2);border:1px solid var(--border)}
+.card-outline{background:transparent;border:1.5px solid var(--border-strong);box-shadow:none}
+.card-accent{background:var(--surface);border-top:3px solid var(--accent)}
+.card-hover{transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+.card-hover:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+
+.pill{display:inline-block;padding:4px 12px;border-radius:999px;font-size:12px;font-weight:500;
+  background:var(--surface-2);color:var(--text-2);border:1px solid var(--border)}
+.pill-accent{background:color-mix(in srgb,var(--accent) 12%,transparent);color:var(--accent);border-color:color-mix(in srgb,var(--accent) 28%,transparent)}
+
+/* ================= BARS / DIVIDERS ================= */
+.divider{height:1px;background:var(--border);width:100%}
+.divider-accent{height:3px;width:72px;background:var(--accent);border-radius:2px}
+
+/* ================= IMAGES (issue #17) =================
+ * Framing primitives shared by every image-* layout. The frame owns the
+ * aspect ratio and the crop; the <img> just fills it. That's what lets you
+ * swap in a photo of any shape without touching the layout.
+ *   <figure class="img-frame"><img src="…" alt=""></figure>
+ *   .img-frame.contain  -> letterbox instead of crop (screenshots, diagrams,
+ *                          logos — anything where cropping loses information)
+ *   --img-ratio         -> aspect ratio of the frame (default 16/10)
+ *   --img-pos           -> object-position, e.g. "top" to protect a headline
+ */
+.img-frame{position:relative;margin:0;overflow:hidden;
+  border-radius:var(--radius);box-shadow:var(--shadow);background:var(--surface-2);
+  aspect-ratio:var(--img-ratio,16/10)}
+.img-frame > img{width:100%;height:100%;object-fit:cover;object-position:var(--img-pos,center)}
+.img-frame.contain{background:var(--bg-soft);box-shadow:none;border:1px solid var(--border)}
+.img-frame.contain > img{object-fit:contain}
+.img-frame.fill{height:100%;aspect-ratio:auto}
+.img-scrim{position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 42%,rgba(8,10,20,.72))}
+.img-cap{margin:10px 2px 0;font-size:14px;line-height:1.5;color:var(--text-3)}
+.img-tag{position:absolute;top:14px;left:14px;padding:5px 12px;border-radius:999px;
+  background:rgba(10,12,20,.55);color:#fff;font-size:12px;letter-spacing:.06em;
+  text-transform:uppercase;backdrop-filter:blur(6px)}
+
+/* ================= CHROME (header/footer/progress) ================= */
+.deck-header{position:absolute;top:24px;left:40px;right:40px;display:flex;align-items:center;justify-content:space-between;
+  font-size:12px;color:var(--text-3);letter-spacing:.12em;text-transform:uppercase;z-index:10;pointer-events:none}
+.deck-footer{position:absolute;bottom:24px;left:40px;right:40px;display:flex;align-items:center;justify-content:space-between;
+  font-size:12px;color:var(--text-3);z-index:10;pointer-events:none}
+.slide-number::before{content:attr(data-current)}
+.slide-number::after{content:" / " attr(data-total)}
+.progress-bar{position:fixed;left:0;right:0;bottom:0;height:3px;background:transparent;z-index:20}
+.progress-bar > span{display:block;height:100%;width:0;background:var(--accent);transition:width .3s var(--ease)}
+
+/* ---- custom logo (issue #11) ----
+ * One logo per deck, drawn over the slide area. Two ways in, same CSS:
+ *   1. hand-author it  -> <img class="deck-logo" data-pos="bottom-right" src="…">
+ *   2. declare it once -> <body data-logo="…" data-logo-position="bottom-right">
+ * (1) needs no JS at all; (2) is created by runtime.js. It lives inside .deck
+ * so it scales with the deck. On an exported PDF it is painted per page by the
+ * @media print block below, not by this element — see the note there. */
+.deck-logo{position:absolute;z-index:11;pointer-events:none;
+  height:var(--logo-size,44px);width:auto;max-width:30%;object-fit:contain;
+  opacity:var(--logo-opacity,.9)}
+.deck-logo[data-pos="top-left"]     {top:var(--logo-inset-y,28px);left:var(--logo-inset-x,40px)}
+.deck-logo[data-pos="top-right"]    {top:var(--logo-inset-y,28px);right:var(--logo-inset-x,40px)}
+.deck-logo[data-pos="bottom-left"]  {bottom:var(--logo-inset-y,28px);left:var(--logo-inset-x,40px)}
+.deck-logo[data-pos="bottom-right"] {bottom:var(--logo-inset-y,28px);right:var(--logo-inset-x,40px)}
+.deck-logo:not([data-pos])          {top:28px;right:40px}
+
+/* ================= PRESENTER / OVERVIEW ================= */
+/* Keep this list in sync with NOTE_SEL in assets/runtime.js — the runtime
+ * reads speaker notes from all of these, so all of them must be hidden
+ * from the audience. */
+.notes,.speaker-notes{display:none!important}
+.notes-overlay{position:fixed;inset:auto 0 0 0;max-height:42vh;background:rgba(20,22,30,.95);color:#e8ebf4;
+  padding:20px 32px;font-size:16px;line-height:1.6;border-top:1px solid rgba(255,255,255,.1);transform:translateY(100%);
+  transition:transform .3s var(--ease);z-index:40;overflow:auto;font-family:var(--font-sans)}
+.notes-overlay.open{transform:translateY(0)}
+.overview{position:fixed;inset:0;background:rgba(10,12,18,.92);backdrop-filter:blur(12px);z-index:50;
+  display:none;padding:40px;overflow:auto}
+.overview.open{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;align-content:start}
+.overview .thumb{background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  aspect-ratio:16/9;overflow:hidden;cursor:pointer;position:relative;color:var(--text-1);padding:16px;
+  font-size:11px;transition:transform .2s var(--ease)}
+.overview .thumb:hover{transform:scale(1.04)}
+.overview .thumb .n{position:absolute;top:8px;left:10px;font-weight:700;font-size:14px;color:var(--text-3)}
+.overview .thumb .t{position:absolute;bottom:10px;left:14px;right:14px;font-weight:600;color:var(--text-1)}
+
+/* ================= PRESENTER VIEW ================= */
+/* Presenter view opens in a separate popup window (S key).
+ * All presenter styles are self-contained in the popup HTML generated by runtime.js.
+ * The audience window (this file) is NOT affected — it stays as normal deck view.
+ * Only the .notes class below is needed to hide speaker notes from audience. */
+
+/* ================= UTILITY ================= */
+.hidden{display:none!important}
+.nowrap{white-space:nowrap}
+.tr{text-align:right}.tc{text-align:center}.tl{text-align:left}
+.uppercase{text-transform:uppercase;letter-spacing:.12em}
+
+/* ================= PRINT ================= */
+@media print{
+  /* Every declaration here is !important on purpose. A template stylesheet
+   * scopes its rules as `.tpl-name .slide`, which is specificity (0,2,0) and
+   * beats a bare `.slide` at (0,1,0) — so without !important a template
+   * silently keeps its screen layout in print. That is how dir-key-nav-minimal
+   * (position:absolute) printed 8 slides onto 1 page and xhs-post printed 9
+   * onto 2: only the opacity/transform declarations on this rule carried
+   * !important, and the ones that decide pagination did not. */
+  body{display:block!important;width:auto!important;height:auto!important;overflow:visible!important}
+  .deck{transform:none!important;width:100%!important;height:auto!important;
+        min-height:0!important;display:block!important}
+  .slide{position:relative!important;inset:auto!important;
+         opacity:1!important;transform:none!important;
+         page-break-after:always;break-after:page;
+         width:100%!important;height:100vh!important;max-height:100vh!important}
+  .slide:last-child{page-break-after:auto;break-after:auto}
+  .deck-header,.deck-footer,.progress-bar,.notes-overlay,.overview{display:none!important}
+
+  /* Logo in print. The .deck-logo element is position:absolute inside .deck,
+   * and print collapses .deck to height:auto with every slide stacked — so the
+   * element can only anchor ONCE against the whole document and lands on a
+   * single page (or none). Hide it and paint the logo per slide instead: in
+   * print one .slide is exactly one page. runtime.js mirrors the image URL and
+   * placement onto .deck (--logo-print / data-logo-print), so this only kicks
+   * in when the runtime is present; a JS-less deck keeps the element. */
+  .deck[data-logo-print] > .deck-logo{display:none!important}
+  .deck[data-logo-print] .slide:not([data-no-logo])::after{
+    content:"";position:absolute;z-index:11;pointer-events:none;
+    width:30%;height:var(--logo-size,44px);
+    background-image:var(--logo-print);background-repeat:no-repeat;
+    background-size:contain;opacity:var(--logo-opacity,.9)}
+  .deck[data-logo-print="top-left"]     .slide:not([data-no-logo])::after{top:var(--logo-inset-y,28px);left:var(--logo-inset-x,40px);background-position:left top}
+  .deck[data-logo-print="top-right"]    .slide:not([data-no-logo])::after{top:var(--logo-inset-y,28px);right:var(--logo-inset-x,40px);background-position:right top}
+  .deck[data-logo-print="bottom-left"]  .slide:not([data-no-logo])::after{bottom:var(--logo-inset-y,28px);left:var(--logo-inset-x,40px);background-position:left bottom}
+  .deck[data-logo-print="bottom-right"] .slide:not([data-no-logo])::after{bottom:var(--logo-inset-y,28px);right:var(--logo-inset-x,40px);background-position:right bottom}
+}
+
+</style>
+<style data-inlined-from="animations.css">
+/* html-ppt :: animations.css
+ * Apply by adding class="anim-<name>" or data-anim="<name>".
+ * Durations are deliberately snappy; tweak --anim-dur per element.
+ */
+:root{--anim-dur:.7s;--anim-ease:cubic-bezier(.4,0,.2,1)}
+
+/* ---------- FADE DIRECTIONALS ---------- */
+@keyframes kf-fade-up{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:none}}
+@keyframes kf-fade-down{from{opacity:0;transform:translateY(-32px)}to{opacity:1;transform:none}}
+@keyframes kf-fade-left{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
+@keyframes kf-fade-right{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
+.anim-fade-up{animation:kf-fade-up var(--anim-dur) var(--anim-ease) both}
+.anim-fade-down{animation:kf-fade-down var(--anim-dur) var(--anim-ease) both}
+.anim-fade-left{animation:kf-fade-left var(--anim-dur) var(--anim-ease) both}
+.anim-fade-right{animation:kf-fade-right var(--anim-dur) var(--anim-ease) both}
+
+/* ---------- RISE / DROP / ZOOM / BLUR / GLITCH ---------- */
+@keyframes kf-rise{from{opacity:0;transform:translateY(60px) scale(.97);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+@keyframes kf-drop{from{opacity:0;transform:translateY(-60px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes kf-zoom{0%{opacity:0;transform:scale(.6)}60%{transform:scale(1.04)}100%{opacity:1;transform:scale(1)}}
+@keyframes kf-blur{from{opacity:0;filter:blur(18px)}to{opacity:1;filter:none}}
+@keyframes kf-glitch{0%{opacity:0;transform:translateX(0);clip-path:inset(0 0 0 0)}
+  20%{opacity:1;transform:translateX(-6px);clip-path:inset(20% 0 30% 0)}
+  40%{transform:translateX(4px);clip-path:inset(50% 0 10% 0)}
+  60%{transform:translateX(-3px);clip-path:inset(10% 0 60% 0)}
+  80%{transform:translateX(2px);clip-path:inset(0 0 0 0)}
+  100%{opacity:1;transform:none}}
+.anim-rise-in{animation:kf-rise .9s var(--anim-ease) both}
+.anim-drop-in{animation:kf-drop .8s var(--anim-ease) both}
+.anim-zoom-pop{animation:kf-zoom .7s cubic-bezier(.22,1.3,.36,1) both}
+.anim-blur-in{animation:kf-blur .8s var(--anim-ease) both}
+.anim-glitch-in{animation:kf-glitch .8s steps(5,end) both}
+
+/* ---------- TYPEWRITER ---------- */
+.anim-typewriter{display:inline-block;overflow:hidden;white-space:nowrap;border-right:2px solid currentColor;
+  width:0;animation:kf-type 2.4s steps(40,end) forwards, kf-caret 1s step-end infinite}
+@keyframes kf-type{to{width:100%}}
+@keyframes kf-caret{50%{border-color:transparent}}
+
+/* ---------- GLOW / SHIMMER / GRADIENT-FLOW ---------- */
+@keyframes kf-neon{0%,100%{text-shadow:0 0 8px var(--accent),0 0 20px var(--accent)}
+  50%{text-shadow:0 0 16px var(--accent),0 0 40px var(--accent),0 0 80px var(--accent)}}
+.anim-neon-glow{animation:kf-neon 2s ease-in-out infinite}
+
+.anim-shimmer-sweep{position:relative;overflow:hidden}
+.anim-shimmer-sweep::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(110deg,transparent 40%,rgba(255,255,255,.55) 50%,transparent 60%);
+  transform:translateX(-100%);animation:kf-shimmer 2.4s var(--anim-ease) infinite}
+@keyframes kf-shimmer{to{transform:translateX(100%)}}
+
+.anim-gradient-flow{background:linear-gradient(90deg,var(--accent),var(--accent-2,var(--accent)),var(--accent-3,var(--accent)),var(--accent));
+  background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+  animation:kf-gradflow 4s linear infinite}
+@keyframes kf-gradflow{to{background-position:300% 0}}
+
+/* ---------- STAGGER LIST ---------- */
+.anim-stagger-list > *{opacity:0;animation:kf-rise .65s var(--anim-ease) both}
+.anim-stagger-list > *:nth-child(1){animation-delay:.05s}
+.anim-stagger-list > *:nth-child(2){animation-delay:.15s}
+.anim-stagger-list > *:nth-child(3){animation-delay:.25s}
+.anim-stagger-list > *:nth-child(4){animation-delay:.35s}
+.anim-stagger-list > *:nth-child(5){animation-delay:.45s}
+.anim-stagger-list > *:nth-child(6){animation-delay:.55s}
+.anim-stagger-list > *:nth-child(7){animation-delay:.65s}
+.anim-stagger-list > *:nth-child(8){animation-delay:.75s}
+.anim-stagger-list > *:nth-child(n+9){animation-delay:.85s}
+
+/* ---------- COUNTER-UP (JS-driven, marker class only) ---------- */
+.counter{font-variant-numeric:tabular-nums}
+
+/* ---------- SVG PATH DRAW ---------- */
+.anim-path-draw path,.anim-path-draw line,.anim-path-draw polyline,.anim-path-draw circle,.anim-path-draw rect{
+  stroke-dasharray:1000;stroke-dashoffset:1000;animation:kf-draw 2s var(--anim-ease) forwards}
+@keyframes kf-draw{to{stroke-dashoffset:0}}
+
+/* ---------- PARALLAX TILT (hover) ---------- */
+.anim-parallax-tilt{transform-style:preserve-3d;transition:transform .4s var(--anim-ease)}
+.anim-parallax-tilt:hover{transform:perspective(900px) rotateX(6deg) rotateY(-8deg) translateZ(10px)}
+
+/* ---------- CARD FLIP 3D ---------- */
+@keyframes kf-flip{from{transform:perspective(1200px) rotateY(-90deg);opacity:0}
+  to{transform:perspective(1200px) rotateY(0);opacity:1}}
+.anim-card-flip-3d{animation:kf-flip .9s var(--anim-ease) both;transform-style:preserve-3d;backface-visibility:hidden}
+
+/* ---------- CUBE ROTATE 3D ---------- */
+@keyframes kf-cube{from{transform:perspective(1200px) rotateX(20deg) rotateY(-90deg) translateZ(-200px);opacity:0}
+  to{transform:perspective(1200px) rotateX(0) rotateY(0) translateZ(0);opacity:1}}
+.anim-cube-rotate-3d{animation:kf-cube 1s var(--anim-ease) both}
+
+/* ---------- PAGE TURN 3D ---------- */
+@keyframes kf-pageturn{from{transform:perspective(1600px) rotateY(-85deg);transform-origin:left center;opacity:0}
+  to{transform:perspective(1600px) rotateY(0);opacity:1}}
+.anim-page-turn-3d{animation:kf-pageturn 1s var(--anim-ease) both;transform-origin:left center}
+
+/* ---------- PERSPECTIVE ZOOM ---------- */
+@keyframes kf-pzoom{from{opacity:0;transform:perspective(1400px) translateZ(-400px) rotateX(12deg)}
+  to{opacity:1;transform:none}}
+.anim-perspective-zoom{animation:kf-pzoom 1s var(--anim-ease) both}
+
+/* ---------- MARQUEE SCROLL ---------- */
+.anim-marquee-scroll{display:flex;gap:48px;white-space:nowrap;animation:kf-marquee 20s linear infinite}
+@keyframes kf-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ---------- KEN BURNS ---------- */
+@keyframes kf-kenburns{0%{transform:scale(1) translate(0,0)}100%{transform:scale(1.15) translate(-2%,-1%)}}
+.anim-kenburns{animation:kf-kenburns 14s ease-in-out infinite alternate}
+
+/* ---------- CONFETTI BURST (pseudo — pure CSS sparkles) ---------- */
+.anim-confetti-burst{position:relative}
+.anim-confetti-burst::before,.anim-confetti-burst::after{
+  content:"";position:absolute;top:50%;left:50%;width:8px;height:8px;border-radius:50%;
+  background:var(--accent);box-shadow:
+    20px -30px 0 var(--accent-2,var(--accent)),-25px -20px 0 var(--accent-3,var(--accent)),
+    30px 20px 0 var(--good,#1aaf6c),-30px 25px 0 var(--warn,#f5a524),
+    40px -10px 0 var(--bad,#e0445a),-45px 0 0 var(--accent),
+    10px 40px 0 var(--accent-2,var(--accent)),-15px -40px 0 var(--accent-3,var(--accent));
+  opacity:0;animation:kf-confetti 1.2s var(--anim-ease) forwards}
+.anim-confetti-burst::after{animation-delay:.15s;transform:rotate(45deg)}
+@keyframes kf-confetti{0%{opacity:0;transform:scale(.2)}30%{opacity:1}100%{opacity:0;transform:scale(2.2)}}
+
+/* ---------- SPOTLIGHT ---------- */
+@keyframes kf-spot{0%{clip-path:circle(0% at 50% 50%)}100%{clip-path:circle(140% at 50% 50%)}}
+.anim-spotlight{animation:kf-spot 1.1s var(--anim-ease) both}
+
+/* ---------- MORPH SHAPE (SVG) ---------- */
+.anim-morph-shape path{animation:kf-morph 6s ease-in-out infinite alternate}
+@keyframes kf-morph{0%{d:path("M60,120 Q120,20 180,120 T300,120")}
+  100%{d:path("M60,120 Q120,220 180,120 T300,120")}}
+
+/* ---------- RIPPLE REVEAL ---------- */
+@keyframes kf-ripple{0%{clip-path:circle(0% at 20% 80%);opacity:.4}
+  100%{clip-path:circle(160% at 20% 80%);opacity:1}}
+.anim-ripple-reveal{animation:kf-ripple 1.2s var(--anim-ease) both}
+
+/* reduced motion */
+@media (prefers-reduced-motion: reduce){
+  [class*="anim-"]{animation:none!important;transition:none!important}
+}
+
+</style>
+<style data-inlined-from="kr-seminar.css">
+/* kr-seminar — 세미나·교육 (밝고 친근한 톤, 장 구분 + 그림 중심 설명 + 발표 대본) */
+.tpl-kr-seminar{
+  --bg:#fbfaf6;--bg-soft:#f2f0e8;--surface:#ffffff;--surface-2:#f2f0e8;
+  --border:rgba(40,38,30,.10);--border-strong:rgba(40,38,30,.22);
+  --text-1:#1f2a2e;--text-2:#525b5f;--text-3:#8e9497;
+  --accent:#0d8f7a;--accent-2:#163a3f;--accent-3:#f2a33a;
+  --accent-ink:#ffffff;
+  --good:#0d8f7a;--warn:#f2a33a;--bad:#d9534f;
+  --radius:16px;--radius-lg:24px;
+  --shadow:0 8px 24px rgba(40,38,30,.07);
+  --font-sans:'Pretendard','Noto Sans KR','Malgun Gothic',sans-serif;
+  --font-display:var(--font-sans);
+  --letter-tight:-.02em;--letter-normal:-.01em;
+  font-family:var(--font-sans);
+}
+.tpl-kr-seminar .slide{background:var(--bg);padding:80px 110px}
+.tpl-kr-seminar .label{display:inline-flex;align-items:center;gap:10px;font-size:22px;font-weight:700;color:var(--accent)}
+.tpl-kr-seminar .label::before{content:"";width:28px;height:6px;border-radius:3px;background:var(--accent-3)}
+.tpl-kr-seminar .title{font-size:56px;line-height:1.3;font-weight:800;letter-spacing:-.025em;margin:14px 0 0;color:var(--text-1)}
+.tpl-kr-seminar .title em{font-style:normal;background:linear-gradient(transparent 62%,rgba(242,163,58,.45) 62%)}
+.tpl-kr-seminar .lead{font-size:28px;line-height:1.6;color:var(--text-2);margin-top:18px}
+.tpl-kr-seminar .pg{position:absolute;right:110px;bottom:44px;font-size:18px;color:var(--text-3);font-weight:600}
+
+/* 표지 */
+.tpl-kr-seminar .cover{background:var(--accent-2);color:#fff;justify-content:center}
+.tpl-kr-seminar .cover .label{color:color-mix(in srgb,var(--accent) 45%,#fff)}
+.tpl-kr-seminar .cover h1{font-size:92px;line-height:1.22;font-weight:800;letter-spacing:-.03em;margin:26px 0 0}
+.tpl-kr-seminar .cover h1 span{color:var(--accent-3)}
+.tpl-kr-seminar .cover .who{margin-top:56px;display:flex;gap:16px;flex-wrap:wrap}
+.tpl-kr-seminar .cover .who span{font-size:24px;padding:10px 22px;border-radius:999px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.85)}
+.tpl-kr-seminar .cover .deco{position:absolute;right:110px;top:50%;transform:translateY(-50%);width:520px;height:520px}
+
+/* 목차 */
+.tpl-kr-seminar .toc{display:grid;grid-template-columns:repeat(2,1fr);gap:26px;margin-top:48px}
+.tpl-kr-seminar .toc .item{display:flex;align-items:center;gap:28px;background:var(--surface);border-radius:var(--radius-lg);padding:34px 38px;box-shadow:var(--shadow)}
+.tpl-kr-seminar .toc .no{font-size:56px;font-weight:800;color:var(--accent);line-height:1;min-width:84px}
+.tpl-kr-seminar .toc h3{font-size:34px;font-weight:700;margin:0}
+.tpl-kr-seminar .toc p{font-size:22px;color:var(--text-2);margin:6px 0 0}
+.tpl-kr-seminar .goal{margin-top:36px;font-size:26px;color:var(--text-2)}
+.tpl-kr-seminar .goal b{color:var(--accent-2)}
+
+/* 간지 */
+.tpl-kr-seminar .chapter{background:var(--accent);color:var(--accent-ink);justify-content:center}
+.tpl-kr-seminar .chapter .big{font-size:260px;font-weight:900;line-height:.9;color:color-mix(in srgb,var(--accent-ink) 18%,transparent);letter-spacing:-.04em}
+.tpl-kr-seminar .chapter h2{font-size:84px;font-weight:800;margin:-40px 0 0;letter-spacing:-.03em}
+.tpl-kr-seminar .chapter p{font-size:30px;color:color-mix(in srgb,var(--accent-ink) 80%,transparent);margin-top:20px}
+
+/* 개념: 그림 + 설명 */
+.tpl-kr-seminar .split{display:grid;grid-template-columns:1.05fr 1fr;gap:64px;align-items:center;margin-top:44px;flex:1}
+.tpl-kr-seminar .figure{background:var(--surface);border-radius:var(--radius-lg);box-shadow:var(--shadow);padding:36px;display:flex;align-items:center;justify-content:center}
+.tpl-kr-seminar .figure svg{width:100%;height:auto}
+.tpl-kr-seminar .points{display:flex;flex-direction:column;gap:30px}
+.tpl-kr-seminar .point{display:flex;gap:22px}
+.tpl-kr-seminar .point .n{flex:none;width:52px;height:52px;border-radius:50%;background:var(--accent);color:var(--accent-ink);font-size:26px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.tpl-kr-seminar .point h3{font-size:32px;font-weight:700;margin:4px 0 6px}
+.tpl-kr-seminar .point p{font-size:24px;line-height:1.55;color:var(--text-2);margin:0}
+
+/* 절차 */
+.tpl-kr-seminar .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;margin-top:64px}
+.tpl-kr-seminar .step{position:relative;background:var(--surface);border-radius:var(--radius-lg);padding:40px 32px 36px;box-shadow:var(--shadow);border-top:8px solid var(--accent)}
+.tpl-kr-seminar .step:nth-child(4){border-top-color:var(--accent-3)}
+.tpl-kr-seminar .step:not(:last-child)::after{content:"";position:absolute;right:-24px;top:50%;width:18px;height:18px;border-top:4px solid var(--text-3);border-right:4px solid var(--text-3);transform:translateY(-50%) rotate(45deg)}
+.tpl-kr-seminar .step .s{font-size:22px;font-weight:800;color:var(--accent)}
+.tpl-kr-seminar .step h3{font-size:34px;font-weight:800;margin:12px 0 16px}
+.tpl-kr-seminar .step p{font-size:23px;line-height:1.55;color:var(--text-2);margin:0}
+.tpl-kr-seminar .tip{margin-top:44px;background:rgba(242,163,58,.14);border-radius:var(--radius);padding:24px 30px;font-size:25px;color:#6b4a12}
+.tpl-kr-seminar .tip b{color:#a0620a;margin-right:10px}
+
+/* 비교 */
+.tpl-kr-seminar .vs{display:grid;grid-template-columns:1fr 1fr;gap:36px;margin-top:48px}
+.tpl-kr-seminar .vs .col{border-radius:var(--radius-lg);padding:36px 40px}
+.tpl-kr-seminar .vs .before{background:var(--bg-soft)}
+.tpl-kr-seminar .vs .after{background:var(--accent-2);color:#fff}
+.tpl-kr-seminar .vs h3{font-size:30px;font-weight:800;margin:0 0 20px}
+.tpl-kr-seminar .vs .before h3{color:var(--text-2)}
+.tpl-kr-seminar .vs .after h3{color:color-mix(in srgb,var(--accent) 45%,#fff)}
+.tpl-kr-seminar .vs ul{list-style:none;margin:0;padding:0}
+.tpl-kr-seminar .vs li{font-size:26px;line-height:1.5;padding:14px 0 14px 44px;position:relative;border-top:1px solid var(--border)}
+.tpl-kr-seminar .vs .after li{border-top-color:rgba(255,255,255,.14)}
+.tpl-kr-seminar .vs .before li::before{content:"✕";position:absolute;left:4px;color:var(--bad);font-weight:800}
+.tpl-kr-seminar .vs .after li::before{content:"✓";position:absolute;left:4px;color:var(--accent-3);font-weight:800}
+
+/* 핵심 정리 */
+.tpl-kr-seminar .takeaways{display:flex;flex-direction:column;gap:24px;margin-top:44px}
+.tpl-kr-seminar .take{display:grid;grid-template-columns:120px 1fr;align-items:center;background:var(--surface);border-radius:var(--radius-lg);box-shadow:var(--shadow);padding:30px 40px}
+.tpl-kr-seminar .take .k{font-size:64px;font-weight:900;color:var(--accent-3);line-height:1}
+.tpl-kr-seminar .take h3{font-size:36px;font-weight:800;margin:0}
+.tpl-kr-seminar .take p{font-size:24px;color:var(--text-2);margin:6px 0 0}
+
+/* 실습 체크리스트 */
+.tpl-kr-seminar .lab{display:grid;grid-template-columns:1.3fr 1fr;gap:48px;margin-top:44px}
+.tpl-kr-seminar .checks{list-style:none;margin:0;padding:0}
+.tpl-kr-seminar .checks li{display:flex;gap:20px;align-items:flex-start;font-size:28px;line-height:1.45;padding:18px 0;border-bottom:1px dashed var(--border-strong)}
+.tpl-kr-seminar .checks li::before{content:"";flex:none;width:34px;height:34px;margin-top:3px;border:3px solid var(--accent);border-radius:8px}
+.tpl-kr-seminar .timer{background:var(--accent);color:var(--accent-ink);border-radius:var(--radius-lg);padding:44px;display:flex;flex-direction:column;justify-content:center;text-align:center}
+.tpl-kr-seminar .timer .t{font-size:120px;font-weight:900;line-height:1;letter-spacing:-.03em}
+.tpl-kr-seminar .timer p{font-size:26px;color:color-mix(in srgb,var(--accent-ink) 80%,transparent);margin-top:16px}
+
+/* Q&A */
+.tpl-kr-seminar .qa{background:var(--accent-2);color:#fff;align-items:center;justify-content:center;text-align:center}
+.tpl-kr-seminar .qa h2{font-size:150px;font-weight:900;margin:0;letter-spacing:-.03em;color:var(--accent-3)}
+.tpl-kr-seminar .qa p{font-size:32px;color:rgba(255,255,255,.85);margin-top:20px}
+
+</style>
+<style data-inlined-from="morning.css">
+/* 오늘의 BIM '원문 설명 자료' — kr-seminar 위에 리포트 '도면 시트' 톤을 입힌다.
+   색: 글자 남색 #17212B · 강조 파랑 #1E56A0 · 보조 청록 #0E6B6B · 문제 빨강 #C8372D · 바탕 #F1F4F3 */
+.tpl-kr-seminar.mr-deck{
+  --bg:#f4f6f5;--bg-soft:#e8edeb;--surface:#ffffff;--surface-2:#eef2f1;
+  --border:rgba(23,33,43,.10);--border-strong:rgba(23,33,43,.22);
+  --text-1:#17212b;--text-2:#46525e;--text-3:#7d8893;
+  --accent-3:#0e6b6b;--good:#0e6b6b;--warn:#b7791f;--bad:#c8372d;
+  --shadow:0 6px 20px rgba(23,33,43,.07);
+}
+/* 도면 모눈 — 바탕에 아주 옅게 */
+.mr-deck .slide{background-color:var(--bg);
+  background-image:linear-gradient(rgba(30,86,160,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(30,86,160,.045) 1px,transparent 1px);
+  background-size:48px 48px}
+.mr-deck .slide.cover,.mr-deck .slide.qa{background-image:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px)}
+.mr-deck .title em{background:linear-gradient(transparent 64%,rgba(30,86,160,.20) 64%)}
+.mr-deck .label::before{background:var(--accent)}
+.mr-deck .cover .label{color:#9fbde6}
+.mr-deck .cover h1 span{color:#8fc3ff}
+.mr-deck .cover .who span{background:rgba(255,255,255,.08)}
+
+/* 하단 주석(※) — 중요한 보충 설명, 출처 */
+.mr-deck .fn{position:absolute;left:110px;right:200px;bottom:40px;font-size:18px;line-height:1.5;color:var(--text-3)}
+.mr-deck .fn b{color:var(--text-2);font-weight:700}
+.mr-deck .fn a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(30,86,160,.35)}
+
+/* 우리 관점 상자 */
+.mr-deck .lens{margin-top:34px;display:flex;gap:22px;align-items:flex-start;background:var(--surface);border-left:8px solid var(--accent-3);
+  border-radius:0 var(--radius) var(--radius) 0;padding:22px 30px;font-size:25px;line-height:1.55;color:var(--text-1);box-shadow:var(--shadow)}
+.mr-deck .lens b{flex:none;color:var(--accent-3);font-weight:800}
+
+/* 숫자 카드 */
+.mr-deck .kpis{display:grid;grid-template-columns:repeat(var(--n,3),1fr);gap:26px;margin-top:46px}
+.mr-deck .kpi{background:var(--surface);border-radius:var(--radius-lg);box-shadow:var(--shadow);padding:30px 32px 28px;border-top:8px solid var(--accent)}
+.mr-deck .kpi.sub{border-top-color:var(--border-strong)}
+.mr-deck .kpi .k{font-size:23px;font-weight:700;color:var(--text-2)}
+.mr-deck .kpi .v{font-size:76px;font-weight:900;letter-spacing:-.03em;line-height:1.08;color:var(--accent);margin-top:10px}
+.mr-deck .kpi.sub .v{color:var(--text-1);font-size:64px}
+.mr-deck .kpi .v small{font-size:30px;font-weight:700;margin-left:4px;color:var(--text-2)}
+.mr-deck .kpi p{font-size:22px;line-height:1.5;color:var(--text-2);margin:10px 0 0}
+
+/* 단계 흐름(원문 처리 과정) — kr-seminar .steps 를 5칸까지 */
+.mr-deck .steps.five{grid-template-columns:repeat(5,1fr);gap:26px}
+.mr-deck .steps .step:nth-child(4){border-top-color:var(--accent)}
+.mr-deck .steps .step.end{border-top-color:var(--accent-3)}
+.mr-deck .step h3{font-size:30px}
+.mr-deck .step p{font-size:22px}
+
+/* 데이터 연결 흐름(공통점 장) */
+.mr-deck .chain{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:56px;position:relative}
+.mr-deck .chain .node{position:relative;padding:0 18px}
+.mr-deck .chain .bar{height:14px;background:var(--accent);opacity:.18}
+.mr-deck .chain .node:first-child .bar{border-radius:7px 0 0 7px}
+.mr-deck .chain .node:last-child .bar{border-radius:0 7px 7px 0}
+.mr-deck .chain .dot{position:absolute;left:18px;top:-11px;width:36px;height:36px;border-radius:50%;background:var(--accent);border:6px solid var(--bg)}
+.mr-deck .chain .stage{font-size:22px;font-weight:800;color:var(--accent);margin-top:30px;letter-spacing:.02em}
+.mr-deck .chain h3{font-size:32px;font-weight:800;margin:8px 0 10px}
+.mr-deck .chain p{font-size:22px;line-height:1.55;color:var(--text-2);margin:0}
+.mr-deck .chain .node:last-child .dot{background:var(--accent-3)}
+.mr-deck .chain .node:last-child .stage{color:var(--accent-3)}
+
+/* 원문 목록(마지막 장) */
+.mr-deck .srcs{list-style:none;margin:44px 0 0;padding:0;display:flex;flex-direction:column;gap:18px}
+.mr-deck .srcs li{display:grid;grid-template-columns:70px 1fr;gap:18px;align-items:baseline;background:var(--surface);border-radius:var(--radius);padding:20px 28px;box-shadow:var(--shadow)}
+.mr-deck .srcs .no{font-size:30px;font-weight:900;color:var(--accent)}
+.mr-deck .srcs .t{font-size:24px;font-weight:700;line-height:1.4;color:var(--text-1)}
+.mr-deck .srcs .m{font-size:20px;color:var(--text-2);margin-top:4px}
+.mr-deck .srcs a{color:inherit;text-decoration:none}
+.mr-deck .srcs a:hover .t{color:var(--accent)}
+
+/* 시안 1차 보정: 표지 바탕, 세로 가운데 정렬, 글자·카드 키움 */
+.mr-deck .slide.cover,.mr-deck .slide.qa{background-color:var(--accent-2)}
+.mr-deck .slide:not(.cover):not(.qa){justify-content:center;padding-bottom:110px}
+.mr-deck .split{flex:none}
+.mr-deck .toc .item{padding:44px 44px}
+.mr-deck .toc h3{font-size:40px}
+.mr-deck .toc p{font-size:25px;margin-top:10px}
+.mr-deck .goal{font-size:25px}
+.mr-deck .kpi{padding:40px 38px 36px}
+.mr-deck .kpi .k{font-size:25px}
+.mr-deck .kpi .v{font-size:96px}
+.mr-deck .kpi.sub .v{font-size:80px}
+.mr-deck .kpi .v small{font-size:34px}
+.mr-deck .kpi p{font-size:23px}
+.mr-deck .lens{font-size:27px;padding:26px 34px;margin-top:40px}
+.mr-deck .steps.five .step{padding:44px 30px 40px}
+.mr-deck .chain{margin-top:80px}
+.mr-deck .chain .stage{font-size:25px}
+.mr-deck .chain h3{font-size:36px}
+.mr-deck .chain p{font-size:25px}
+.mr-deck .srcs li{padding:24px 32px}
+.mr-deck .srcs .t{font-size:27px}
+.mr-deck .srcs .m{font-size:21px}
+.mr-deck .take{padding:36px 44px}
+
+/* ===================== 도형·표·그래프 부품 (작성 규칙 deck-rules.md 4~7절) ===================== */
+/* 괄호 안 글은 조금 작게 (PPT 규칙 28) */
+.mr-deck .paren{font-size:.85em;color:var(--text-2)}
+
+/* 표 — 머리글 26px · 본문 24px, 숫자 오른쪽 정렬, 강조 행은 하나 */
+.mr-deck .tbl{width:100%;border-collapse:separate;border-spacing:0;margin-top:40px;font-size:24px;background:var(--surface);
+  border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.mr-deck .tbl th{background:var(--accent-2);color:#fff;font-size:26px;font-weight:700;padding:18px 26px;text-align:left;white-space:nowrap}
+.mr-deck .tbl td{padding:17px 26px;border-top:1px solid var(--border);color:var(--text-1);line-height:1.45}
+.mr-deck .tbl .num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.mr-deck .tbl tr.hl td{background:rgba(30,86,160,.07);font-weight:700}
+.mr-deck .tbl tr.hl td.num{color:var(--accent)}
+.mr-deck .tbl td.sub{color:var(--text-2)}
+
+/* 키워드 배치 — [라벨][As-Is] ▶ [To-Be] (PPT 규칙 20) */
+.mr-deck .kw{display:flex;flex-direction:column;gap:22px;margin-top:44px}
+.mr-deck .kw .kw-row{display:grid;grid-template-columns:220px 1fr 70px 1fr;gap:0 18px;align-items:stretch}
+.mr-deck .kw .kw-lab{display:flex;align-items:center;justify-content:center;text-align:center;background:var(--accent-2);color:#fff;
+  border-radius:20px;padding:16px;font-size:25px;font-weight:800;line-height:1.35}
+.mr-deck .kw .box{background:var(--surface);border:2px solid var(--border-strong);border-radius:var(--radius);padding:20px 26px;font-size:25px;line-height:1.5;color:var(--text-1)}
+.mr-deck .kw .box h4{font-size:22px;font-weight:800;color:var(--text-3);margin:0 0 6px;letter-spacing:.02em}
+.mr-deck .kw .box.to{border-color:var(--accent);background:#f2f6fc}
+.mr-deck .kw .box.to h4{color:var(--accent)}
+.mr-deck .kw .arr{display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:40px}
+
+/* 번호 태그 — 도식과 설명에 같은 번호 (PPT 규칙 19) */
+.mr-deck .tag-no{display:inline-flex;flex:none;width:44px;height:44px;border-radius:50%;background:var(--accent);color:var(--accent-ink);
+  font-size:23px;font-weight:800;align-items:center;justify-content:center}
+.mr-deck .legend{display:grid;grid-template-columns:repeat(var(--n,4),1fr);gap:22px;margin-top:30px}
+.mr-deck .legend > div{display:flex;gap:16px;align-items:flex-start;font-size:23px;line-height:1.5;color:var(--text-2)}
+.mr-deck .legend b{display:block;font-size:26px;color:var(--text-1);margin-bottom:2px}
+
+/* 결론 띠 — 쪽당 하나, 그라데이션은 여기에만 (PPT 규칙 32) */
+.mr-deck .band{margin-top:36px;background:var(--grad);color:#fff;border-radius:var(--radius);padding:22px 34px;font-size:28px;font-weight:700;line-height:1.45}
+.mr-deck .band em{font-style:normal;color:#bfe0ff}
+
+/* 그래프 상자 — 인라인 SVG, 직접 라벨, 강조 막대 하나 */
+.mr-deck .chart{background:var(--surface);border-radius:var(--radius-lg);box-shadow:var(--shadow);padding:30px 40px 24px;margin-top:40px}
+.mr-deck .chart svg{width:100%;height:auto;display:block}
+.mr-deck .chart .cap{font-size:19px;color:var(--text-3);margin-top:8px}
+.mr-deck .srcs .m a{color:var(--accent);font-weight:700}
+.mr-deck .lens span b{color:inherit;flex:initial}
+
+/* ===== 2026-11-19 사용자 수정 반영 ===== */
+/* 내용 장 맨 위 소제목(label) 4pt 크게 */
+.mr-deck .slide:not(.cover) .label{font-size:calc(22px + 4pt)}
+.mr-deck .slide:not(.cover) .label::before{width:34px;height:7px}
+/* 시사점 상자: 글자 머리 없이 상자 양식 그대로, 장 맨 아래(주석 위)에 붙인다 */
+.mr-deck .lens{margin-top:auto;font-size:26px}
+.mr-deck .slide:not(.cover):not(.qa) > .lens:first-child{margin-top:0}
+/* 둥근 상자 + 띠 테두리(카드 위 굵은 색 띠) 디자인 금지 → 숫자 카드의 띠를 없앤다 */
+.mr-deck .kpi,.mr-deck .kpi.sub{border-top:0}
+.mr-deck .kpi .k{color:var(--accent);font-weight:800}
+/* 회사 템플릿 도식(쉐브론·연표·As-Is/To-Be·허브·SWOT) */
+.mr-deck .dg{margin-top:40px}
+.mr-deck .dg-svg{width:100%;height:auto;display:block}
+.mr-deck .dg-cols{display:grid;grid-template-columns:repeat(var(--n,4),1fr);gap:0 30px;margin-top:22px}
+.mr-deck .dg-cols p{margin:0;font-size:24px;line-height:1.6;color:var(--text-1)}
+.mr-deck .dg-cols.tl{gap:0 24px}
+/* 줄글 설명이 길어지는 칸 */
+.mr-deck .point p,.mr-deck .take p,.mr-deck .toc p{line-height:1.55}
+.mr-deck .kw .box{font-size:24px;line-height:1.55}
+/* 시사점 상자 — 두 문장 이상이면 문장마다 불릿 */
+.mr-deck .lens ul{margin:0;padding-left:1.1em;display:flex;flex-direction:column;gap:6px}
+.mr-deck .lens li{line-height:1.5}
+.mr-deck .lens li::marker{color:var(--accent-3)}
+
+</style>
+<style id="design-overrides">body.design-custom{--accent:#1e56a0;--accent-ink:#ffffff;--accent-2:#17212b;--grad:linear-gradient(120deg,#17212b,#1e56a0)}</style>
+</head>
+<body class="tpl-kr-seminar mr-deck design-custom">
+<div class="deck">
+  <section class="slide cover" data-title="오늘의 BIM / 연구개발 동향 / 2026. 11. 19.(목)">
+    <div style="max-width:1060px">
+      <span class="label">오늘의 BIM / 연구개발 동향 / 2026. 11. 19.(목)</span>
+      <h1>IFC 모델을 고치는 AI,<br><span>검증 체커</span>로 가르치다</h1>
+      <div class="who"><span>논문 3편</span><span>국책 연구개발사업 1건</span><span>원문 설명 자료</span></div>
+    </div>
+    <svg class="deco" aria-hidden="true" viewBox="0 0 520 520"> <g fill="none" stroke="#8fc3ff" stroke-width="5" opacity=".8"> <path d="M110 330 L260 410 L410 330 L260 250 Z"/> <path d="M110 330 L110 190 L260 110 L410 190 L410 330"/> <path d="M260 250 L260 110"/> </g> <g fill="none" stroke="#ffffff" stroke-width="3" opacity=".35" stroke-dasharray="10 10"> <path d="M110 190 L260 270 L410 190"/><path d="M260 270 L260 410"/> </g> <g fill="#0e6b6b" stroke="#ffffff" stroke-width="4"> <circle cx="110" cy="190" r="16"/><circle cx="410" cy="190" r="16"/><circle cx="260" cy="410" r="16"/><circle cx="260" cy="110" r="16"/> </g> <g transform="translate(330 70)"> <circle r="46" fill="#1e56a0" stroke="#ffffff" stroke-width="4"/> <path d="M-20 0 L-6 14 L22 -14" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/> </g> </svg>
+  </section>
+  <section class="slide" data-title="이번 주 원문 네 건">
+    <span class="label">이번 주 원문 네 건</span>
+    <h2 class="title">BIM 데이터를 <em>다음 단계로 넘기는</em> 연구가 이어졌습니다</h2>
+    <div class="toc anim-stagger-list" data-anim="stagger-list">
+      <div class="item"><div class="no">①</div><div><h3>IFC 편집 에이전트</h3><p>검증 체커 네 개의 판정을 훈련에 그대로 반영해 IFC 수정 성공률을 끌어올린 연구입니다.</p></div></div>
+      <div class="item"><div class="no">②</div><div><h3>FLOORA</h3><p>0.6B 크기의 건축 설계 전용 언어모델이 더 큰 범용 모델보다 좋은 평가를 받았습니다.</p></div></div>
+      <div class="item"><div class="no">③</div><div><h3>DM-BIM-BEM 파이프라인</h3><p>초기 설계의 비정형 모델을 BIM과 에너지모델로 자동 변환하는 과정을 제시했습니다.</p></div></div>
+      <div class="item"><div class="no">④</div><div><h3>BIM 디지털트윈 국책과제</h3><p>약 153억원 규모로 건물 운영 단계에서 BIM 디지털트윈을 실증하는 과제가 시작됐습니다.</p></div></div>
+    </div>
+    <p class="goal">논문 세 편은 arXiv 원문을, 국책과제는 국내 보도 두 건을 직접 확인해 정리했습니다.</p>
+    <div class="pg">2</div>
+  </section>
+  <section class="slide" data-title="① IFC 편집 에이전트 / 무엇을 했나">
+    <span class="label">① IFC 편집 에이전트 / 무엇을 했나</span>
+    <h2 class="title">편집 결과를 <em>체커 네 개</em>로 검증하며 모델을 훈련했습니다</h2>
+    <div class="split">
+      <div class="figure"><svg viewBox="0 0 600 380" role="img" aria-label="IfcGym 편집과 체커 검증, 훈련 반영 흐름"> <rect x="20" y="40" width="150" height="86" rx="14" fill="#17212b"/> <text x="95" y="78" fill="#fff" font-size="22" font-weight="700" text-anchor="middle">언어모델</text> <text x="95" y="106" fill="#9fbde6" font-size="17" text-anchor="middle">Qwen3.5 9B/27B</text> <path d="M170 83 H222" stroke="#7d8893" stroke-width="4" marker-end="url(#ar)"/> <rect x="226" y="40" width="160" height="86" rx="14" fill="#1e56a0"/> <text x="306" y="78" fill="#fff" font-size="22" font-weight="700" text-anchor="middle">IfcGym</text> <text x="306" y="106" fill="#dbe7f6" font-size="17" text-anchor="middle">코드로 IFC 직접 편집</text> <path d="M386 83 H436" stroke="#7d8893" stroke-width="4" marker-end="url(#ar)"/> <g font-size="18" font-weight="700" text-anchor="middle"> <rect x="440" y="20" width="140" height="40" rx="8" fill="#e8edeb"/><text x="510" y="47" fill="#17212b">유효성</text> <rect x="440" y="66" width="140" height="40" rx="8" fill="#e8edeb"/><text x="510" y="93" fill="#17212b">의도 부합</text> <rect x="440" y="112" width="140" height="40" rx="8" fill="#e8edeb"/><text x="510" y="139" fill="#17212b">종속성 처리</text> <rect x="440" y="158" width="140" height="40" rx="8" fill="#e8edeb"/><text x="510" y="185" fill="#17212b">무관 요소 보존</text> </g> <path d="M510 202 V300 H95 V132" fill="none" stroke="#0e6b6b" stroke-width="5" stroke-dasharray="12 8" marker-end="url(#ar2)"/> <rect x="170" y="276" width="270" height="50" rx="25" fill="#0e6b6b"/> <text x="305" y="309" fill="#fff" font-size="20" font-weight="700" text-anchor="middle">판정 결과 → SFT + GRPO 훈련</text> <defs> <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#7d8893"/></marker> <marker id="ar2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10 Z" fill="#0e6b6b"/></marker> </defs> </svg></div>
+      <div class="points anim-stagger-list" data-anim="stagger-list">
+        <div class="point"><div class="n">1</div><div><h3>배경</h3><p>지난 11월 12일 리포트에서 본 BIM-Edit/BIBIMBAP 공개 벤치마크에서 언어모델 점수는 50점 안팎에 머물렀습니다.</p></div></div>
+        <div class="point"><div class="n">2</div><div><h3>편집 환경 IfcGym</h3><p>연구팀은 언어모델이 실행 가능한 코드를 써서 IFC 모델을 직접 고치는 편집 환경을 만들었습니다.</p></div></div>
+        <div class="point"><div class="n">3</div><div><h3>체커 판정을 훈련에 반영</h3><p>유효성/의도/종속성/보존 네 가지 판정 결과를 SFT와 강화학습(GRPO)의 보상으로 함께 썼습니다.</p></div></div>
+      </div>
+    </div>
+    <p class="fn">※ 원문: Jiaxin Zhang 외 4인(난창대학교/충칭대학교/오사카대학교), “Learning to Edit IFC Building Models”, arXiv 2611.22307 (2026. 11. 17. 공개)</p>
+    <div class="pg">3</div>
+  </section>
+  <section class="slide" data-title="① IFC 편집 에이전트 / 결과">
+    <span class="label">① IFC 편집 에이전트 / 결과</span>
+    <h2 class="title">자체 벤치마크 성공률은 <em>86.78%</em>, 공개 벤치마크는 55점 안팎이었습니다</h2>
+    <table class="tbl">
+      <thead><tr><th>벤치마크</th><th>모델</th><th class="num">결과</th><th>비교 기준</th></tr></thead>
+      <tbody>
+        <tr><td>IfcEditBench</td><td>9B (SFT까지)</td><td class="num">79.15%</td><td class="sub">강화학습을 더하기 전 단계의 성공률입니다.</td></tr>
+        <tr class="hl"><td>IfcEditBench</td><td>9B (최종)</td><td class="num">86.78%</td><td class="sub">1,990개 과제에서 네 조건을 모두 통과한 비율입니다.</td></tr>
+        <tr><td>IfcEditBench</td><td>27B (최종)</td><td class="num">91.76%</td><td class="sub">같은 훈련 방식을 더 큰 모델에 적용했습니다.</td></tr>
+        <tr><td>BIM-Edit</td><td>9B (최종)</td><td class="num">55.19</td><td class="sub">벤치마크 저자가 보고한 최고점은 Gemini 3 Flash 49.48입니다.</td></tr>
+        <tr><td>BIBIMBAP</td><td>9B (최종)</td><td class="num">54.50</td><td class="sub">Claude Opus 4.6은 50.22, 논문이 직접 돌린 Kimi K3는 62.92입니다.</td></tr>
+      </tbody>
+    </table>
+    <div class="lens"><ul><li>체커 네 개를 모두 훈련에 넣자 의도/유효성 체커만 쓸 때보다 성공률이 4.83%p 높았습니다.</li><li>모델 크기보다 검증 장치를 훈련에 넣는 방식이 성공률을 더 크게 좌우합니다.</li></ul></div>
+    <p class="fn">※ BIM-Edit 점수는 논문 자체 채점기로 낸 값이라 공식 평가와 직접 비교하기 어렵다고 원문이 밝혔습니다. 출처: arXiv 2611.22307 표 5/6</p>
+    <div class="pg">4</div>
+  </section>
+  <section class="slide" data-title="② FLOORA / 건축 설계 전용 언어모델">
+    <span class="label">② FLOORA / 건축 설계 전용 언어모델</span>
+    <h2 class="title">0.6B 전용 모델이 <em>더 큰 범용 모델</em>을 앞섰습니다</h2>
+    <div class="chart"><svg viewBox="0 0 1600 430" role="img" aria-label="0.6B 전용 모델이 더 큰 범용 모델을 앞섰습니다"><line x1="360" y1="20" x2="360" y2="370" stroke="#d5dce2" stroke-width="2"/><text x="360" y="408" font-size="22" fill="#7d8893" text-anchor="middle">0</text><line x1="655" y1="20" x2="655" y2="370" stroke="#d5dce2" stroke-width="2" stroke-dasharray="6 8"/><text x="655" y="408" font-size="22" fill="#7d8893" text-anchor="middle">25</text><line x1="950" y1="20" x2="950" y2="370" stroke="#d5dce2" stroke-width="2" stroke-dasharray="6 8"/><text x="950" y="408" font-size="22" fill="#7d8893" text-anchor="middle">50</text><line x1="1245" y1="20" x2="1245" y2="370" stroke="#d5dce2" stroke-width="2" stroke-dasharray="6 8"/><text x="1245" y="408" font-size="22" fill="#7d8893" text-anchor="middle">75</text><line x1="1540" y1="20" x2="1540" y2="370" stroke="#d5dce2" stroke-width="2" stroke-dasharray="6 8"/><text x="1540" y="408" font-size="22" fill="#7d8893" text-anchor="middle">100%</text><text x="336" y="86" font-size="26" fill="#17212b" text-anchor="end">실제 건물 승률</text><rect x="360" y="50" width="1086" height="52" rx="6" fill="#1e56a0"/><text x="1462" y="87" font-size="28" font-weight="800" fill="#1e56a0">최대 92.0%</text><text x="336" y="196" font-size="26" fill="#17212b" text-anchor="end">합성 건물 승률</text><rect x="360" y="160" width="1133" height="52" rx="6" fill="#1e56a0"/><text x="1509" y="197" font-size="28" font-weight="800" fill="#1e56a0">96.0%</text><text x="336" y="306" font-size="26" fill="#17212b" text-anchor="end">사람 평가 1위</text><rect x="360" y="270" width="1054" height="52" rx="6" fill="#1e56a0"/><text x="1430" y="307" font-size="28" font-weight="800" fill="#1e56a0">89.3%</text></svg><p class="cap">승률: 비전언어모델 심사 기준으로 더 큰 범용 모델과 비교 / 사람 평가: 최고 모델로 뽑힌 비율</p></div>
+    <div class="lens"><span>구조화된 산출물이 필요한 설계 보조 기능은 거대 범용 모델 대신 작은 전용 모델 경로도 함께 검토할 만합니다.</span></div>
+    <p class="fn">※ 원문: Sahand Rezaei-Shoshtari 외 16인(Autodesk Research), “FLOORA”, arXiv 2609.36064 (2026. 9. 28. 공개)</p>
+    <div class="pg">5</div>
+  </section>
+  <section class="slide" data-title="③ DM-BIM-BEM 파이프라인 / Advanced Engineerin">
+    <span class="label">③ DM-BIM-BEM 파이프라인 / Advanced Engineering Informatics 75권</span>
+    <h2 class="title">초기 설계 모델이 <em>네 단계</em>를 거쳐 BIM과 에너지모델로 바뀝니다</h2>
+    <div class="dg"><svg role="img" class="dg-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1466 133" font-family="Pretendard, 'Noto Sans KR', 'Malgun Gothic', sans-serif"><defs></defs><path transform="translate(6.98 13.96)" d="M0 0H338.62L370.04 52.36L338.62 104.73H0Z" fill="#1e56a0" stroke="none" fill-rule="evenodd"/><text data-slot="1" data-box="10.5,15.4,363.1,101.9" data-size="32.0" data-align="middle" data-anchor="middle" font-size="32.0" font-weight="400" fill="#ffffff" text-anchor="middle"><tspan x="192.05" y="55.47">STEP 1</tspan><tspan x="192.05" y="97.71">기하 정제</tspan></text><path transform="translate(363.05 13.96)" d="M0 0H338.62L370.04 52.36L338.62 104.73H0L31.42 52.36Z" fill="#2a63ad" stroke="none" fill-rule="evenodd"/><text data-slot="2" data-box="366.5,15.4,363.1,101.9" data-size="32.0" data-align="middle" data-anchor="middle" font-size="32.0" font-weight="400" fill="#ffffff" text-anchor="middle"><tspan x="548.05" y="55.47">STEP 2</tspan><tspan x="548.05" y="97.71">공간 자동 생성</tspan></text><path transform="translate(719.13 13.96)" d="M0 0H338.62L370.04 52.36L338.62 104.73H0L31.42 52.36Z" fill="#3870ba" stroke="none" fill-rule="evenodd"/><text data-slot="3" data-box="722.6,15.4,363.1,101.9" data-size="32.0" data-align="middle" data-anchor="middle" font-size="32.0" font-weight="400" fill="#ffffff" text-anchor="middle"><tspan x="904.15" y="55.47">STEP 3</tspan><tspan x="904.15" y="97.71">위상 추출</tspan></text><path transform="translate(1075.20 13.96)" d="M0 0H338.62L370.04 52.36L338.62 104.73H0L31.42 52.36Z" fill="#4a7dc6" stroke="none" fill-rule="evenodd"/><text data-slot="4" data-box="1078.7,15.4,363.1,101.9" data-size="32.0" data-align="middle" data-anchor="middle" font-size="32.0" font-weight="400" fill="#ffffff" text-anchor="middle"><tspan x="1260.25" y="55.47">STEP 4</tspan><tspan x="1260.25" y="97.71">지식모델링</tspan></text></svg></div>
+    <div class="dg-cols chev anim-stagger-list" data-anim="stagger-list" style="--n:4"><p>설계 초기의 비정형(B-rep) 모델에서 겹치거나 끊긴 형상을 먼저 정리합니다.</p><p>정리된 형상에서 여러 자동 전략으로 실(공간)을 만들어 냅니다.</p><p>공간과 부재가 어떻게 맞닿아 있는지를 그래프 구조로 뽑아냅니다.</p><p>온톨로지에 맞춘 BIM을 만들고, 이를 EnergyPlus 에너지모델과 양방향으로 바꿉니다.</p></div>
+    <div class="lens"><span>설계 초기부터 온톨로지에 맞춘 데이터를 쌓아 두면 성능 시뮬레이션까지 자동으로 이어질 수 있습니다.</span></div>
+    <p class="fn">※ 원문: Jun Xiao, Borong Lin 외, arXiv 2601.16813 (2026. 1. 제출, 7. 개정) / 검증: 매개변수형, 스케치 기반, 실제 건물 데이터셋</p>
+    <div class="pg">6</div>
+  </section>
+  <section class="slide" data-title="④ 국내 / BIM 디지털트윈 건물에너지 국책과제">
+    <span class="label">④ 국내 / BIM 디지털트윈 건물에너지 국책과제</span>
+    <h2 class="title">약 153억원 과제가 <em>운영 단계</em>에서 BIM 디지털트윈을 실증합니다</h2>
+    <div class="kpis" style="--n:3">
+      <div class="kpi"><div class="k">총 연구개발비</div><div class="v">153<small>억원</small></div><p>주관기관 이에이트(E8)를 비롯해 한화 등 10개 업체/기관이 참여합니다.</p></div>
+      <div class="kpi"><div class="k">에너지 예측 정확도</div><div class="v">95<small>% 이상</small></div><p>시간대별 에너지 사용량을 95% 이상 정확도로 예측하는 것이 목표입니다.</p></div>
+      <div class="kpi"><div class="k">피크전력</div><div class="v">20<small>% 이상 감소</small></div><p>경기도청/킨텍스/서울대학교 등에 먼저 적용해 성능을 검증할 계획입니다.</p></div>
+    </div>
+    <div class="lens"><span>설계 단계에서 쌓은 BIM 데이터를 운영 단계 디지털트윈과 잇는 기능을 중기 로드맵에서 검토할 때입니다.</span></div>
+    <p class="fn">※ 과제명 ‘BIM 활용 디지털트윈 기반 건물에너지관리 시뮬레이터 개발 및 실증’ / 출처: 머니투데이 더벨(2026. 6. 10.), 머니투데이(2026. 8. 26.)</p>
+    <div class="pg">7</div>
+  </section>
+  <section class="slide" data-title="네 건을 함께 보면">
+    <span class="label">네 건을 함께 보면</span>
+    <h2 class="title">모두 BIM 데이터를 <em>다음 단계로 자동으로</em> 넘기는 연구입니다</h2>
+    <div class="dg"><svg role="img" class="dg-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1794 286" font-family="Pretendard, 'Noto Sans KR', 'Malgun Gothic', sans-serif"><defs><marker id="m1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#a9bfdc"/></marker></defs><path transform="translate(34.91 146.62)" d="M0 0L1731.49 0.00" fill="none" stroke="#a9bfdc" stroke-width="6.16" marker-end="url(#m1)"/><path transform="translate(146.57 13.96)" d="M27.93 0H181.53A27.93 27.93 0 0 1 209.45 27.93V27.93A27.93 27.93 0 0 1 181.53 55.85H27.93A27.93 27.93 0 0 1 0 27.93V27.93A27.93 27.93 0 0 1 27.93 0Z" fill="#1e56a0" stroke="none" fill-rule="evenodd"/><text data-slot="1" data-box="146.6,14.0,209.5,55.9" data-size="29.8" data-align="middle" data-anchor="middle" font-size="29.8" font-weight="400" fill="#ffffff" text-anchor="middle"><tspan x="251.33" y="51.49">편집</tspan></text><path transform="translate(235.24 130.56)" d="M0 16.06A16.06 16.06 0 1 0 32.12 16.06A16.06 16.06 0 1 0 0 16.06Z" fill="#ffffff" stroke="#1e56a0" stroke-width="3.69" fill-rule="evenodd"/><text data-slot="7" data-box="127.0,180.1,248.6,86.6" data-size="30.0" data-align="middle" data-anchor="start" font-size="30.0" font-weight="400" fill="#2e3a46" text-anchor="middle"><tspan x="251.28" y="209.51">① IFC 편집</tspan><tspan x="251.28" y="249.13">에이전트</tspan></text><path transform="translate(579.34 13.96)" d="M27.93 0H181.53A27.93 27.93 0 0 1 209.45 27.93V27.93A27.93 27.93 0 0 1 181.53 55.85H27.93A27.93 27.93 0 0 1 0 27.93V27.93A27.93 27.93 0 0 1 27.93 0Z" fill="#1e56a0" stroke="none" fill-rule="evenodd"/><text data-slot="2" data-box="579.3,14.0,209.5,55.9" data-size="29.8" data-align="middle" data-anchor="middle" font-size="29.8" font-weight="400" fill="#ffffff" text-anchor="middle"><tspan x="684.06" y="51.49">설계</tspan></text><path transform="translate(668.01 130.56)" d="M0 16.06A16.06 16.06 0 1 0 32.12 16.06A16.06 16.06 0 1 0 0 16.06Z" fill="#ffffff" stroke="#1e56a0" stroke-width="3.69" fill-rule="evenodd"/><text data-slot="8" data-box="559.8,180.1,248.6,86.6" data-size="30.0" data-align="middle" data-anchor="start" font-size="30.0" font-weight="400" fill="#2e3a46" text-anchor="middle"><tspan x="684.11" y="209.51">② FLOORA</tspan></text><path transform="translate(1012.11 13.96)" d="M27.93 0H181.53A27.93 27.93 0 0 1 209.45 27.93V27.93A27.93 27.93 0 0 1 181.53 55.85H27.93A27.93 27.93 0 0 1 0 27.93V27.93A27.93 27.93 0 0 1 27.93 0Z" fill="#1e56a0" stroke="none" fill-rule="evenodd"/><text data-slot="3" data-box="1012.1,14.0,209.5,55.9" data-size="29.8" data-align="middle" data-anchor="middle" font-size="29.8" font-weight="400" fill="#ffffff" text-anchor="middle"><tspan x="1116.90" y="51.49">성능 예측</tspan></text><path transform="translate(1100.78 130.56)" d="M0 16.06A16.06 16.06 0 1 0 32.12 16.06A16.06 16.06 0 1 0 0 16.06Z" fill="#ffffff" stroke="#1e56a0" stroke-width="3.69" fill-rule="evenodd"/><text data-slot="9" data-box="992.5,180.1,248.6,86.6" data-size="30.0" data-align="middle" data-anchor="start" font-size="30.0" font-weight="400" fill="#2e3a46" text-anchor="middle"><tspan x="1116.85" y="209.51">③ DM-BIM-BEM</tspan></text><path transform="translate(1444.89 13.96)" d="M27.93 0H181.53A27.93 27.93 0 0 1 209.45 27.93V27.93A27.93 27.93 0 0 1 181.53 55.85H27.93A27.93 27.93 0 0 1 0 27.93V27.93A27.93 27.93 0 0 1 27.93 0Z" fill="#1e56a0" stroke="none" fill-rule="evenodd"/><text data-slot="4" data-box="1444.9,14.0,209.5,55.9" data-size="29.8" data-align="middle" data-anchor="middle" font-size="29.8" font-weight="400" fill="#ffffff" text-anchor="middle"><tspan x="1549.64" y="51.49">운영</tspan></text><path transform="translate(1533.56 130.56)" d="M0 16.06A16.06 16.06 0 1 0 32.12 16.06A16.06 16.06 0 1 0 0 16.06Z" fill="#ffffff" stroke="#1e56a0" stroke-width="3.69" fill-rule="evenodd"/><text data-slot="10" data-box="1425.4,180.1,248.6,86.6" data-size="30.0" data-align="middle" data-anchor="start" font-size="30.0" font-weight="400" fill="#2e3a46" text-anchor="middle"><tspan x="1549.69" y="209.51">④ 국책과제</tspan></text></svg></div>
+    <div class="dg-cols tl anim-stagger-list" data-anim="stagger-list" style="--n:4"><p>검증 장치를 갖춘 자동 수정으로 모델 품질을 지키는 단계입니다.</p><p>구조화된 설계안을 작은 전용 모델이 만들어 내는 단계입니다.</p><p>초기 설계 모델을 에너지모델까지 자동으로 이어 성능을 예측합니다.</p><p>운영 데이터와 BIM을 디지털트윈으로 묶어 실제 건물에서 검증합니다.</p></div>
+    <div class="pg">8</div>
+  </section>
+  <section class="slide" data-title="우리가 먼저 챙길 것">
+    <span class="label">우리가 먼저 챙길 것</span>
+    <h2 class="title"><em>검증 장치</em>와 설계~운영 데이터 연계가 우선입니다</h2>
+    <div class="takeaways anim-stagger-list" data-anim="stagger-list">
+      <div class="take"><div class="k">1</div><div><h3>IFC 자동 수정에는 체커를 함께</h3><p>유효성/의도/종속성/보존 검증을 훈련과 평가에 함께 넣고, 성공률을 공개 지표로 꾸준히 추적합니다.</p></div></div>
+      <div class="take"><div class="k">2</div><div><h3>설계 보조는 소형 전용 모델도 비교</h3><p>범용 대형 모델만 보지 말고, 비용과 정확도 양쪽에서 작은 전용 모델 경로를 함께 따져 봅니다.</p></div></div>
+      <div class="take"><div class="k">3</div><div><h3>설계 데이터를 운영 단계와 연결</h3><p>CDE에 쌓인 설계 데이터를 운영 디지털트윈으로 잇는 기능을 중기 로드맵에 올려 둡니다.</p></div></div>
+    </div>
+    <div class="pg">9</div>
+  </section>
+  <section class="slide" data-title="원문은 아래 링크에서 확인할 수 있습니다">
+    <h2 class="title">원문은 아래 링크에서 확인할 수 있습니다</h2>
+    <ul class="srcs">
+      <li><span class="no">①</span><div><div class="t">Learning to Edit IFC Building Models: Verifiable Checkers as the Training Signal for Dependency-Aware Editing Agents</div><div class="m"><a href="https://arxiv.org/abs/2611.22307" target="_blank" rel="noopener">arXiv 2611.22307 ↗</a> · 2026. 11. 17.</div></div></li>
+      <li><span class="no">②</span><div><div class="t">FLOORA: A Human-Aligned Domain-Specific Language Model for Architectural Design</div><div class="m"><a href="https://arxiv.org/abs/2609.36064" target="_blank" rel="noopener">arXiv 2609.36064 ↗</a> · 2026. 9. 28.</div></div></li>
+      <li><span class="no">③</span><div><div class="t">A Fully Automated DM-BIM-BEM Pipeline Enabling Graph-Based Intelligence, Interoperability, and Performance-Driven Early Design</div><div class="m"><a href="https://arxiv.org/abs/2601.16813" target="_blank" rel="noopener">arXiv 2601.16813 ↗</a> · Advanced Engineering Informatics 75 (2026)</div></div></li>
+      <li><span class="no">④</span><div><div class="t">E8, 153억 BIM 디지털트윈 건물에너지 국책과제 선정 / 한화 건설부문, AI 활용 건물에너지 효율화 국책과제 참여</div><div class="m"><a href="https://www.mt.co.kr/stock/2026/06/10/2026061009059629576" target="_blank" rel="noopener">머니투데이 더벨 ↗</a> · <a href="https://www.mt.co.kr/estate/2026/08/26/2026082610142091369" target="_blank" rel="noopener">머니투데이 ↗</a></div></div></li>
+    </ul>
+    <div class="pg">10</div>
+  </section>
+</div>
+<script>
+/* html-ppt :: runtime.js
+ * Keyboard-driven deck runtime. Zero dependencies.
+ *
+ * Features:
+ *   ← → / space / PgUp PgDn / Home End  navigation
+ *   F  fullscreen
+ *   S  presenter mode (opens a NEW WINDOW with current/next slide preview + notes + timer)
+ *       The original window stays as audience view, synced via BroadcastChannel.
+ *       Slide previews use CSS transform:scale() at design resolution for pixel-perfect layout.
+ *   N  quick notes overlay (bottom drawer)
+ *   O  slide overview grid
+ *   T  cycle themes (reads data-themes on <html> or <body>)
+ *   A  cycle demo animation on current slide
+ *   URL hash #/N  deep-link to slide N (1-based)
+ *   Progress bar auto-managed
+ */
+(function () {
+  'use strict';
+
+  const ANIMS = ['fade-up','fade-down','fade-left','fade-right','rise-in','drop-in',
+    'zoom-pop','blur-in','glitch-in','typewriter','neon-glow','shimmer-sweep',
+    'gradient-flow','stagger-list','counter-up','path-draw','parallax-tilt',
+    'card-flip-3d','cube-rotate-3d','page-turn-3d','perspective-zoom',
+    'marquee-scroll','kenburns','confetti-burst','spotlight','morph-shape','ripple-reveal'];
+
+  /* Every class the runtime treats as speaker notes. base.css hides the same
+   * set from the audience — if you add one here, add it there too. */
+  const NOTE_SEL = '.notes, aside.notes, .speaker-notes';
+
+  function ready(fn){ if(document.readyState!='loading')fn(); else document.addEventListener('DOMContentLoaded',fn);}
+
+  /* ========== Parse URL for preview-only mode ==========
+   * When loaded as iframe.src = "index.html?preview=3", runtime enters a
+   * locked single-slide mode: only slide N is visible, no chrome, no keys,
+   * no hash updates. This is how the presenter window shows pixel-perfect
+   * previews — by loading the actual deck file in an iframe and telling it
+   * to display only a specific slide.
+   */
+  function getPreviewIdx() {
+    const m = /[?&]preview=(\d+)/.exec(location.search || '');
+    return m ? parseInt(m[1], 10) - 1 : -1;
+  }
+
+  /* ========== Design-canvas fit (issue #20) ==========
+   * Slides are authored against a fixed canvas (1920x1080 by default). The
+   * canvas is scaled — never reflowed — to fit whatever viewport it lands in,
+   * so the browser view, the presenter preview, the overview thumbnail and a
+   * headless PNG render are all the same picture.
+   *
+   * Opt out with <body data-fit="fluid">. Override the canvas per deck with
+   * <div class="deck" data-w="1080" data-h="1440"> (e.g. a 3:4 小红书 post).
+   */
+  function initCanvasFit(deck) {
+    if (document.body.getAttribute('data-fit') === 'fluid') return;
+
+    const w = parseInt(deck.getAttribute('data-w'), 10) || 1920;
+    const h = parseInt(deck.getAttribute('data-h'), 10) || 1080;
+    deck.style.setProperty('--deck-w', w + 'px');
+    deck.style.setProperty('--deck-h', h + 'px');
+
+    function fit() {
+      const scale = Math.min(window.innerWidth / w, window.innerHeight / h);
+      deck.style.setProperty('--deck-scale', String(scale));
+    }
+    fit();
+    window.addEventListener('resize', fit);
+    if (window.visualViewport) window.visualViewport.addEventListener('resize', fit);
+    /* Webfonts can land after first paint; re-fit once they do. */
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit).catch(function(){});
+  }
+
+  ready(function () {
+    const deck = document.querySelector('.deck');
+    if (!deck) return;
+    const slides = Array.from(deck.querySelectorAll('.slide'));
+    if (!slides.length) return;
+
+    initCanvasFit(deck);
+
+    /* ===== custom logo (issue #11) =====
+     * Deliberately initialised BEFORE the preview-mode branch below: the
+     * presenter's "pixel-perfect" preview is the audience view, so it has to
+     * carry the logo too. A hand-authored <img class="deck-logo"> is left
+     * exactly where it is — base.css styles both paths identically, so a deck
+     * can have a logo with runtime.js absent entirely.
+     */
+    const logoEl = (function initLogo(){
+      const attr = (n) => document.body.getAttribute(n) || document.documentElement.getAttribute(n);
+      let el = deck.querySelector(':scope > .deck-logo');
+      if (!el) {
+        const src = attr('data-logo');
+        if (!src) return null;
+        el = document.createElement('img');
+        el.className = 'deck-logo';
+        el.src = src;
+        el.alt = attr('data-logo-alt') || '';
+        deck.appendChild(el);
+      }
+      if (!el.hasAttribute('data-pos')) {
+        el.setAttribute('data-pos', attr('data-logo-position') || 'top-right');
+      }
+      /* Custom props go on .deck, not on the element: the element inherits
+         them, and the print rules (which paint the logo per page on
+         .slide::after) can read them too. An inline --logo-* on a
+         hand-authored element wins for the element, so mirror it up. */
+      const mirror = (attrName, prop) => {
+        const v = (attrName && attr(attrName)) || el.style.getPropertyValue(prop);
+        if (v) deck.style.setProperty(prop, v.trim());
+      };
+      mirror('data-logo-size', '--logo-size');
+      mirror('data-logo-opacity', '--logo-opacity');
+      mirror(null, '--logo-inset-x');
+      mirror(null, '--logo-inset-y');
+
+      /* Print can't use the element itself — see the @media print note in
+         base.css. Hand the URL and the corner to the per-page painter.
+         Use el.src, not getAttribute('src'): a relative url() inside a custom
+         property is resolved against the stylesheet that *uses* the var()
+         (assets/base.css), not against the deck, so it must be absolute. */
+      const src = el.src;
+      if (src) {
+        deck.style.setProperty('--logo-print', 'url("' + src.replace(/["\\]/g, '\\$&') + '")');
+        deck.setAttribute('data-logo-print', el.getAttribute('data-pos'));
+      }
+      return el;
+    })();
+
+    /* Per-slide opt-out: <section class="slide" data-no-logo> — covers and
+       full-bleed image slides usually carry their own branding. */
+    function syncLogo(slide){
+      if (!logoEl) return;
+      logoEl.style.display = (slide && slide.hasAttribute('data-no-logo')) ? 'none' : '';
+    }
+
+    const previewOnlyIdx = getPreviewIdx();
+    const isPreviewMode = previewOnlyIdx >= 0 && previewOnlyIdx < slides.length;
+
+    /* ===== Preview-only mode: show one slide, hide everything else ===== */
+    if (isPreviewMode) {
+      function showSlide(i) {
+        slides.forEach((s, j) => {
+          const active = (j === i);
+          s.classList.toggle('is-active', active);
+          s.style.display = active ? '' : 'none';
+          if (active) {
+            s.style.opacity = '1';
+            s.style.transform = 'none';
+            s.style.pointerEvents = 'auto';
+          }
+        });
+      }
+      showSlide(previewOnlyIdx);
+      syncLogo(slides[previewOnlyIdx]);
+      /* Hide chrome that the presenter shouldn't see in preview */
+      const hideSel = '.progress-bar, .notes-overlay, .overview, ' + NOTE_SEL;
+      document.querySelectorAll(hideSel).forEach(el => { el.style.display = 'none'; });
+      document.documentElement.setAttribute('data-preview', '1');
+      document.body.setAttribute('data-preview', '1');
+      /* Auto-detect theme base path for theme switching in preview mode */
+      function getPreviewThemeBase() {
+        const base = document.documentElement.getAttribute('data-theme-base');
+        if (base) return base;
+        const tl = document.getElementById('theme-link');
+        if (tl) {
+          const raw = tl.getAttribute('href') || '';
+          const ls = raw.lastIndexOf('/');
+          if (ls >= 0) return raw.substring(0, ls + 1);
+        }
+        return 'assets/themes/';
+      }
+      const previewThemeBase = getPreviewThemeBase();
+
+      /* Listen for postMessage from parent presenter window:
+       *  - preview-goto: switch visible slide WITHOUT reloading
+       *  - preview-theme: switch theme CSS link to match audience window */
+      window.addEventListener('message', function(e) {
+        if (!e.data) return;
+        if (e.data.type === 'preview-goto') {
+          const n = parseInt(e.data.idx, 10);
+          if (n >= 0 && n < slides.length) { showSlide(n); syncLogo(slides[n]); }
+        } else if (e.data.type === 'preview-theme' && e.data.name) {
+          let link = document.getElementById('theme-link');
+          if (!link) {
+            link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.id = 'theme-link';
+            document.head.appendChild(link);
+          }
+          link.href = previewThemeBase + e.data.name + '.css';
+          document.documentElement.setAttribute('data-theme', e.data.name);
+        }
+      });
+      /* Signal to parent that preview iframe is ready */
+      try { window.parent && window.parent.postMessage({ type: 'preview-ready' }, '*'); } catch(e) {}
+      return;
+    }
+
+    let idx = 0;
+    const total = slides.length;
+
+    /* ===== BroadcastChannel for presenter sync ===== */
+    const CHANNEL_NAME = 'html-ppt-presenter-' + location.pathname;
+    let bc;
+    try { bc = new BroadcastChannel(CHANNEL_NAME); } catch(e) { bc = null; }
+
+    // Are we running inside the presenter popup? (legacy flag, now unused)
+    const isPresenterWindow = false;
+
+    /* ===== progress bar ===== */
+    let bar = document.querySelector('.progress-bar');
+    if (!bar) {
+      bar = document.createElement('div');
+      bar.className = 'progress-bar';
+      bar.innerHTML = '<span></span>';
+      document.body.appendChild(bar);
+    }
+    const barFill = bar.querySelector('span');
+
+    /* ===== notes overlay (N key) ===== */
+    let notes = document.querySelector('.notes-overlay');
+    if (!notes) {
+      notes = document.createElement('div');
+      notes.className = 'notes-overlay';
+      document.body.appendChild(notes);
+    }
+
+    /* ===== overview grid (O key) ===== */
+    let overview = document.querySelector('.overview');
+    if (!overview) {
+      overview = document.createElement('div');
+      overview.className = 'overview';
+      slides.forEach((s, i) => {
+        const t = document.createElement('div');
+        t.className = 'thumb';
+        // Force 16:9 aspect ratio robustly
+        t.style.padding = '0 0 56.25% 0';
+        t.style.height = '0';
+        t.style.position = 'relative';
+        t.style.overflow = 'hidden';
+
+        const title = s.getAttribute('data-title') ||
+          (s.querySelector('h1,h2,h3')||{}).textContent || ('Slide '+(i+1));
+        
+        // Create a container for the mini-slide
+        const mini = document.createElement('div');
+        mini.className = 'mini-slide';
+        mini.style.position = 'absolute';
+        mini.style.top = '0';
+        mini.style.left = '0';
+        mini.style.width = '1920px';
+        mini.style.height = '1080px';
+        mini.style.transformOrigin = 'top left';
+        mini.style.pointerEvents = 'none';
+        mini.style.background = 'var(--bg)';
+        
+        // Clone the slide content
+        const clone = s.cloneNode(true);
+        clone.className = 'slide is-active'; // force active styles
+        clone.style.position = 'absolute';
+        clone.style.inset = '0';
+        clone.style.transform = 'none';
+        clone.style.opacity = '1';
+        clone.style.padding = '72px 96px'; // ensure padding is kept
+        
+        mini.appendChild(clone);
+        t.appendChild(mini);
+
+        // Add the number and title overlay
+        const overlay = document.createElement('div');
+        overlay.style.position = 'absolute';
+        overlay.style.inset = '0';
+        overlay.style.background = 'linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, transparent 40%, transparent 60%, rgba(0,0,0,0.8) 100%)';
+        overlay.style.color = '#fff';
+        overlay.style.zIndex = '10';
+        overlay.style.pointerEvents = 'none';
+        
+        const n = document.createElement('div');
+        n.className = 'n';
+        n.textContent = i + 1;
+        n.style.position = 'absolute';
+        n.style.top = '12px';
+        n.style.left = '16px';
+        n.style.fontWeight = '700';
+        n.style.fontSize = '16px';
+        n.style.color = '#fff';
+        n.style.textShadow = '0 1px 4px rgba(0,0,0,0.8)';
+        
+        const text = document.createElement('div');
+        text.className = 't';
+        text.textContent = title.trim().slice(0,80);
+        text.style.position = 'absolute';
+        text.style.bottom = '12px';
+        text.style.left = '16px';
+        text.style.right = '16px';
+        text.style.fontWeight = '600';
+        text.style.fontSize = '14px';
+        text.style.color = '#fff';
+        text.style.textShadow = '0 1px 4px rgba(0,0,0,0.8)';
+        
+        overlay.appendChild(n);
+        overlay.appendChild(text);
+        t.appendChild(overlay);
+
+        t.addEventListener('click', () => { go(i); toggleOverview(false); });
+        overview.appendChild(t);
+      });
+      document.body.appendChild(overview);
+    }
+
+    /* ===== navigation ===== */
+    function go(n, fromRemote){
+      n = Math.max(0, Math.min(total-1, n));
+      slides.forEach((s,i) => {
+        s.classList.toggle('is-active', i===n);
+        s.classList.toggle('is-prev', i<n);
+      });
+      idx = n;
+      syncLogo(slides[n]);
+      barFill.style.width = ((n+1)/total*100)+'%';
+      const numEl = document.querySelector('.slide-number');
+      if (numEl) { numEl.setAttribute('data-current', n+1); numEl.setAttribute('data-total', total); }
+
+      // notes (bottom overlay)
+      const note = slides[n].querySelector(NOTE_SEL);
+      notes.innerHTML = note ? note.innerHTML : '';
+
+      // hash
+      const hashTarget = '#/'+(n+1);
+      if (location.hash !== hashTarget && !isPresenterWindow) {
+        history.replaceState(null,'', hashTarget);
+      }
+
+      // re-trigger entry animations
+      slides[n].querySelectorAll('[data-anim]').forEach(el => {
+        const a = el.getAttribute('data-anim');
+        el.classList.remove('anim-'+a);
+        void el.offsetWidth;
+        el.classList.add('anim-'+a);
+      });
+
+      // counter-up
+      slides[n].querySelectorAll('.counter').forEach(el => {
+        const target = parseFloat(el.getAttribute('data-to')||el.textContent);
+        const dur = parseInt(el.getAttribute('data-dur')||'1200',10);
+        const start = performance.now();
+        const from = 0;
+        function tick(now){
+          const t = Math.min(1,(now-start)/dur);
+          const v = from + (target-from)*(1-Math.pow(1-t,3));
+          el.textContent = (target % 1 === 0) ? Math.round(v) : v.toFixed(1);
+          if (t<1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      });
+
+      // Broadcast to other window (audience ↔ presenter)
+      if (!fromRemote && bc) {
+        bc.postMessage({ type: 'go', idx: n });
+      }
+    }
+
+    /* ===== listen for remote navigation / theme changes ===== */
+    if (bc) {
+      bc.onmessage = function(e) {
+        if (!e.data) return;
+        if (e.data.type === 'go' && typeof e.data.idx === 'number') {
+          go(e.data.idx, true);
+        } else if (e.data.type === 'theme' && e.data.name) {
+          /* Sync theme across windows */
+          const i = themes.indexOf(e.data.name);
+          if (i >= 0) themeIdx = i;
+          applyTheme(e.data.name);
+        }
+      };
+    }
+
+    function toggleNotes(force){ notes.classList.toggle('open', force!==undefined?force:!notes.classList.contains('open')); }
+    function toggleOverview(force){
+      const isOpen = force!==undefined ? force : !overview.classList.contains('open');
+      overview.classList.toggle('open', isOpen);
+      if (isOpen) {
+        requestAnimationFrame(() => {
+          const thumbs = overview.querySelectorAll('.thumb');
+          if (thumbs.length) {
+            const scale = thumbs[0].clientWidth / 1920;
+            overview.querySelectorAll('.mini-slide').forEach(m => {
+              m.style.transform = 'scale(' + scale + ')';
+            });
+          }
+        });
+      }
+    }
+
+    /* ========== PRESENTER MODE — Magnetic-card popup window ========== */
+    /* Opens a new window with 4 draggable, resizable cards:
+     *   CURRENT  — iframe(?preview=N)   pixel-perfect preview of current slide
+     *   NEXT     — iframe(?preview=N+1) pixel-perfect preview of next slide
+     *   SCRIPT   — large speaker notes (逐字稿)
+     *   TIMER    — elapsed timer + page counter + controls
+     * Cards remember position/size in localStorage.
+     * Two windows sync via BroadcastChannel.
+     */
+    let presenterWin = null;
+
+    function openPresenterWindow() {
+      if (presenterWin && !presenterWin.closed) {
+        presenterWin.focus();
+        return;
+      }
+
+      // Build absolute URL of THIS deck file (without hash/query)
+      const deckUrl = location.protocol + '//' + location.host + location.pathname;
+
+      // Collect slide titles + notes (HTML strings)
+      const slideMeta = slides.map((s, i) => {
+        const note = s.querySelector(NOTE_SEL);
+        return {
+          title: s.getAttribute('data-title') ||
+            (s.querySelector('h1,h2,h3')||{}).textContent || ('Slide '+(i+1)),
+          notes: note ? note.innerHTML : ''
+        };
+      });
+
+      /* Capture current theme so presenter previews match the audience */
+      const currentTheme = root.getAttribute('data-theme') || (themes[themeIdx] || '');
+      const presenterHTML = buildPresenterHTML(deckUrl, slideMeta, total, idx, CHANNEL_NAME, currentTheme);
+
+      presenterWin = window.open('', 'html-ppt-presenter', 'width=1280,height=820,menubar=no,toolbar=no');
+      if (!presenterWin) {
+        alert('请允许弹出窗口以使用演讲者视图');
+        return;
+      }
+      presenterWin.document.open();
+      presenterWin.document.write(presenterHTML);
+      presenterWin.document.close();
+    }
+
+    function buildPresenterHTML(deckUrl, slideMeta, total, startIdx, channelName, currentTheme) {
+      /* Notes are authored HTML. Escaping "<" keeps a literal <\/script> in a
+         slide's notes from closing the inline script that carries this JSON —
+         which would kill the whole presenter init. */
+      const embed = (v) => JSON.stringify(v).replace(/</g, '\\u003c');
+      const metaJSON = embed(slideMeta);
+      const deckUrlJSON = embed(deckUrl);
+      const channelJSON = embed(channelName);
+      const themeJSON = embed(currentTheme || '');
+      const storageKey = 'html-ppt-presenter:' + location.pathname;
+
+      // Build the document as a single template string for clarity
+      return `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Presenter View</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 100%; height: 100%; overflow: hidden;
+    background: #1a1d24;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(88,166,255,.04), transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(188,140,255,.04), transparent 50%);
+    color: #e6edf3;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Pretendard","Noto Sans SC","Noto Sans KR","Malgun Gothic", sans-serif;
+  }
+  /* Stage: positioned area where cards live */
+  #stage { position: absolute; inset: 0; overflow: hidden; }
+
+  /* Magnetic card */
+  .pcard {
+    position: absolute;
+    background: #0d1117;
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.02);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+    min-width: 180px; min-height: 100px;
+    transition: box-shadow .2s, border-color .2s;
+  }
+
+  /* Default geometry. The cards used to get position and size ONLY from
+     applyLayout(), which runs at the very end of the init — so anything that
+     stopped that script (a blocked inline script under CSP, a stale layout in
+     localStorage, any throw in the wiring above it) left four cards collapsed
+     on top of each other and just the hint bar visible (#14). These rules make
+     the presenter usable with zero JS; applyLayout() overrides them with px. */
+  #card-cur   { left: 16px; top: 16px;
+                width: calc(55% - 24px);  height: calc((100% - 36px) * 0.62 - 16px); }
+  #card-nxt   { left: calc(55% + 8px); top: 16px;
+                width: calc(45% - 24px);  height: calc((100% - 36px) * 0.42 - 16px); }
+  #card-notes { left: calc(55% + 8px); top: calc((100% - 36px) * 0.42 + 8px);
+                width: calc(45% - 24px);  height: calc((100% - 36px) * 0.58 - 16px); }
+  #card-timer { left: 16px; top: calc((100% - 36px) * 0.62 + 8px);
+                width: calc(55% - 24px);  height: calc((100% - 36px) * 0.38 - 16px); }
+
+  .pcard.dragging { box-shadow: 0 16px 48px rgba(0,0,0,.6), 0 0 0 2px rgba(88,166,255,.5); border-color: #58a6ff; transition: none; z-index: 9999; }
+  .pcard.resizing { box-shadow: 0 16px 48px rgba(0,0,0,.6), 0 0 0 2px rgba(63,185,80,.5); border-color: #3fb950; transition: none; z-index: 9999; }
+  .pcard:hover { border-color: rgba(88,166,255,.3); }
+
+  /* Card header (drag handle) */
+  .pcard-head {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 12px;
+    background: rgba(255,255,255,.04);
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    cursor: move;
+    user-select: none;
+    flex-shrink: 0;
+  }
+  .pcard-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--dot-color, #58a6ff); flex-shrink: 0; }
+  .pcard-title {
+    font-size: 11px; letter-spacing: .15em; text-transform: uppercase;
+    font-weight: 700; color: #8b949e; flex: 1;
+  }
+  .pcard-meta { font-size: 11px; color: #6e7681; }
+
+  /* Card body */
+  .pcard-body { flex: 1; position: relative; overflow: hidden; min-height: 0; }
+
+  /* Preview cards (CURRENT/NEXT) — iframe-based pixel-perfect render */
+  .pcard-preview .pcard-body { background: #000; }
+  .pcard-preview iframe {
+    position: absolute; top: 0; left: 0;
+    width: 1920px; height: 1080px;
+    border: none;
+    transform-origin: top left;
+    pointer-events: none;
+    background: transparent;
+  }
+  .pcard-preview .preview-end {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: #484f58; font-size: 14px; letter-spacing: .12em;
+  }
+
+  /* Notes card */
+  .pcard-notes .pcard-body {
+    padding: 14px 18px;
+    overflow-y: auto;
+    font-size: 18px; line-height: 1.75;
+    color: #d0d7de;
+    font-family: "Pretendard","Noto Sans SC","Noto Sans KR","Malgun Gothic", -apple-system, sans-serif;
+  }
+  .pcard-notes .pcard-body p { margin: 0 0 .7em 0; }
+  .pcard-notes .pcard-body strong { color: #f0883e; }
+  .pcard-notes .pcard-body em { color: #58a6ff; font-style: normal; }
+  .pcard-notes .pcard-body code {
+    font-family: "SF Mono", monospace; font-size: .9em;
+    background: rgba(255,255,255,.08); padding: 1px 6px; border-radius: 4px;
+  }
+  .pcard-notes .empty { color: #484f58; font-style: italic; }
+
+  /* Timer card */
+  .pcard-timer .pcard-body {
+    display: flex; flex-direction: column; gap: 14px;
+    padding: 18px 20px; justify-content: center;
+  }
+  .timer-display {
+    font-family: "SF Mono", "JetBrains Mono", monospace;
+    font-size: 42px; font-weight: 700;
+    color: #3fb950;
+    letter-spacing: .04em;
+    line-height: 1;
+  }
+  .timer-row {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 14px; color: #8b949e;
+  }
+  .timer-row .label { font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: #6e7681; }
+  .timer-row .val { color: #e6edf3; font-weight: 600; font-family: "SF Mono", monospace; }
+  .timer-controls { display: flex; gap: 8px; flex-wrap: wrap; }
+  .timer-btn {
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.1);
+    color: #e6edf3;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .timer-btn:hover { background: rgba(88,166,255,.15); border-color: #58a6ff; }
+  .timer-btn:active { transform: translateY(1px); }
+
+  /* Resize handle */
+  .pcard-resize {
+    position: absolute; right: 0; bottom: 0;
+    width: 18px; height: 18px;
+    cursor: nwse-resize;
+    background: linear-gradient(135deg, transparent 50%, rgba(255,255,255,.25) 50%, rgba(255,255,255,.25) 60%, transparent 60%, transparent 70%, rgba(255,255,255,.25) 70%, rgba(255,255,255,.25) 80%, transparent 80%);
+    z-index: 5;
+  }
+  .pcard-resize:hover { background: linear-gradient(135deg, transparent 50%, #58a6ff 50%, #58a6ff 60%, transparent 60%, transparent 70%, #58a6ff 70%, #58a6ff 80%, transparent 80%); }
+
+  /* Bottom hint bar */
+  .hint-bar {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: rgba(0,0,0,.6);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255,255,255,.08);
+    padding: 6px 16px;
+    font-size: 11px; color: #8b949e;
+    display: flex; gap: 18px; align-items: center;
+    z-index: 1000;
+  }
+  .hint-bar kbd {
+    background: rgba(255,255,255,.08);
+    padding: 1px 6px; border-radius: 3px;
+    font-family: "SF Mono", monospace;
+    font-size: 10px;
+    border: 1px solid rgba(255,255,255,.1);
+    color: #e6edf3;
+  }
+  .hint-bar .reset-layout {
+    margin-left: auto;
+    background: transparent; border: 1px solid rgba(255,255,255,.15);
+    color: #8b949e; padding: 3px 10px; border-radius: 4px;
+    font-size: 11px; cursor: pointer; font-family: inherit;
+  }
+  .hint-bar .reset-layout:hover { background: rgba(248,81,73,.15); border-color: #f85149; color: #f85149; }
+
+  body.is-dragging-card * { user-select: none !important; }
+  body.is-dragging-card iframe { pointer-events: none !important; }
+</style>
+</head>
+<body>
+
+<div id="stage">
+  <div class="pcard pcard-preview" id="card-cur" style="--dot-color:#58a6ff">
+    <div class="pcard-head" data-drag>
+      <span class="pcard-dot"></span>
+      <span class="pcard-title">CURRENT</span>
+      <span class="pcard-meta" id="cur-meta">—</span>
+    </div>
+    <div class="pcard-body"><iframe id="iframe-cur"></iframe></div>
+    <div class="pcard-resize" data-resize></div>
+  </div>
+
+  <div class="pcard pcard-preview" id="card-nxt" style="--dot-color:#bc8cff">
+    <div class="pcard-head" data-drag>
+      <span class="pcard-dot"></span>
+      <span class="pcard-title">NEXT</span>
+      <span class="pcard-meta" id="nxt-meta">—</span>
+    </div>
+    <div class="pcard-body"><iframe id="iframe-nxt"></iframe></div>
+    <div class="pcard-resize" data-resize></div>
+  </div>
+
+  <div class="pcard pcard-notes" id="card-notes" style="--dot-color:#f0883e">
+    <div class="pcard-head" data-drag>
+      <span class="pcard-dot"></span>
+      <span class="pcard-title">SPEAKER SCRIPT · 逐字稿</span>
+    </div>
+    <div class="pcard-body" id="notes-body"></div>
+    <div class="pcard-resize" data-resize></div>
+  </div>
+
+  <div class="pcard pcard-timer" id="card-timer" style="--dot-color:#3fb950">
+    <div class="pcard-head" data-drag>
+      <span class="pcard-dot"></span>
+      <span class="pcard-title">TIMER</span>
+    </div>
+    <div class="pcard-body">
+      <div class="timer-display" id="timer-display">00:00</div>
+      <div class="timer-row">
+        <span class="label">Slide</span>
+        <span class="val" id="timer-count">1 / ${total}</span>
+      </div>
+      <div class="timer-controls">
+        <button class="timer-btn" id="btn-prev">← Prev</button>
+        <button class="timer-btn" id="btn-next">Next →</button>
+        <button class="timer-btn" id="btn-reset">⏱ Reset</button>
+      </div>
+    </div>
+    <div class="pcard-resize" data-resize></div>
+  </div>
+</div>
+
+<div class="hint-bar">
+  <span><kbd>← →</kbd> 翻页</span>
+  <span><kbd>R</kbd> 重置计时</span>
+  <span><kbd>Esc</kbd> 关闭</span>
+  <span style="color:#6e7681">拖动卡片头部移动 · 拖动右下角调整大小</span>
+  <button class="reset-layout" id="reset-layout">重置布局</button>
+</div>
+
+<script>
+(function(){
+  var slideMeta = ${metaJSON};
+  var total = ${total};
+  var idx = ${startIdx};
+  var deckUrl = ${deckUrlJSON};
+  var STORAGE_KEY = ${embed(storageKey)};
+  var bc;
+  try { bc = new BroadcastChannel(${channelJSON}); } catch(e) {}
+
+  var iframeCur = document.getElementById('iframe-cur');
+  var iframeNxt = document.getElementById('iframe-nxt');
+  var notesBody = document.getElementById('notes-body');
+  var curMeta = document.getElementById('cur-meta');
+  var nxtMeta = document.getElementById('nxt-meta');
+  var timerDisplay = document.getElementById('timer-display');
+  var timerCount = document.getElementById('timer-count');
+
+  /* Lay the cards out before anything else. This used to be the LAST statement
+     of the init, so every line below it was a single point of failure for the
+     whole presenter's visibility (#14). Function declarations hoist, so this is
+     safe here. */
+  applyLayout(readLayout());
+
+  /* ===== Default card layout ===== */
+  var CARD_IDS = ['card-cur','card-nxt','card-notes','card-timer'];
+  var MIN_W = 180, MIN_H = 100;
+
+  function defaultLayout() {
+    /* A popup that opened minimised or in a background tab can report 0 here;
+       the old code turned that into negative widths, which CSS discards. */
+    var w = Math.max(640, window.innerWidth || 0);
+    var h = Math.max(400, (window.innerHeight || 0) - 36); /* room for hint bar */
+    return {
+      'card-cur':   { x: 16,        y: 16,            w: Math.round(w*0.55) - 24, h: Math.round(h*0.62) - 16 },
+      'card-nxt':   { x: Math.round(w*0.55) + 8, y: 16, w: w - Math.round(w*0.55) - 24, h: Math.round(h*0.42) - 16 },
+      'card-notes': { x: Math.round(w*0.55) + 8, y: Math.round(h*0.42) + 8, w: w - Math.round(w*0.55) - 24, h: h - Math.round(h*0.42) - 16 },
+      'card-timer': { x: 16,        y: Math.round(h*0.62) + 8, w: Math.round(w*0.55) - 24, h: h - Math.round(h*0.62) - 16 }
+    };
+  }
+
+  /* ===== Apply / save / restore layout ===== */
+  function applyLayout(layout) {
+    Object.keys(layout).forEach(function(id){
+      var el = document.getElementById(id);
+      var l = layout[id];
+      if (el && l) {
+        el.style.left = l.x + 'px';
+        el.style.top = l.y + 'px';
+        el.style.width = l.w + 'px';
+        el.style.height = l.h + 'px';
+      }
+    });
+    rescaleAll();
+  }
+  /* A layout restored from localStorage was written against whatever window
+     size the deck was last presented at. Replayed in a smaller window it puts
+     every card off-screen, and there is no way back because the layout is
+     sticky — so clamp it into view and reject anything malformed. */
+  function sanitizeLayout(layout) {
+    if (!layout || typeof layout !== 'object') return null;
+    var vw = Math.max(MIN_W, window.innerWidth || 0);
+    var vh = Math.max(MIN_H, window.innerHeight || 0);
+    var out = {};
+    for (var i = 0; i < CARD_IDS.length; i++) {
+      var l = layout[CARD_IDS[i]];
+      if (!l) return null;
+      var cw = Math.min(Math.max(+l.w || 0, MIN_W), vw);
+      var ch = Math.min(Math.max(+l.h || 0, MIN_H), vh);
+      var cx = Math.min(Math.max(+l.x || 0, 0), Math.max(0, vw - MIN_W));
+      var cy = Math.min(Math.max(+l.y || 0, 0), Math.max(0, vh - 40));
+      if (!isFinite(cw) || !isFinite(ch) || !isFinite(cx) || !isFinite(cy)) return null;
+      out[CARD_IDS[i]] = { x: cx, y: cy, w: cw, h: ch };
+    }
+    return out;
+  }
+  function readLayout() {
+    var saved = null;
+    try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY)); } catch(e) {}
+    return sanitizeLayout(saved) || defaultLayout();
+  }
+  function saveLayout() {
+    var layout = {};
+    CARD_IDS.forEach(function(id){
+      var el = document.getElementById(id);
+      if (el) {
+        layout[id] = {
+          x: parseInt(el.style.left,10) || 0,
+          y: parseInt(el.style.top,10) || 0,
+          w: parseInt(el.style.width,10) || 300,
+          h: parseInt(el.style.height,10) || 200
+        };
+      }
+    });
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(layout)); } catch(e) {}
+  }
+
+  /* ===== iframe rescale to fit card body ===== */
+  function rescaleIframe(iframe) {
+    if (!iframe || iframe.style.display === 'none') return;
+    var body = iframe.parentElement;
+    var cw = body.clientWidth, ch = body.clientHeight;
+    if (!cw || !ch) return;
+    var s = Math.min(cw / 1920, ch / 1080);
+    iframe.style.transform = 'scale(' + s + ')';
+    /* Center the scaled iframe in the body */
+    var sw = 1920 * s, sh = 1080 * s;
+    iframe.style.left = Math.max(0, (cw - sw) / 2) + 'px';
+    iframe.style.top = Math.max(0, (ch - sh) / 2) + 'px';
+  }
+  function rescaleAll() {
+    rescaleIframe(iframeCur);
+    rescaleIframe(iframeNxt);
+  }
+  window.addEventListener('resize', rescaleAll);
+
+  /* ===== Drag (move card by header) ===== */
+  document.querySelectorAll('[data-drag]').forEach(function(handle){
+    handle.addEventListener('mousedown', function(e){
+      if (e.button !== 0) return;
+      var card = handle.closest('.pcard');
+      if (!card) return;
+      e.preventDefault();
+      card.classList.add('dragging');
+      document.body.classList.add('is-dragging-card');
+      var startX = e.clientX, startY = e.clientY;
+      var startL = parseInt(card.style.left,10) || 0;
+      var startT = parseInt(card.style.top,10)  || 0;
+      function onMove(ev){
+        var nx = Math.max(0, Math.min(window.innerWidth - 100, startL + ev.clientX - startX));
+        var ny = Math.max(0, Math.min(window.innerHeight - 50, startT + ev.clientY - startY));
+        card.style.left = nx + 'px';
+        card.style.top = ny + 'px';
+      }
+      function onUp(){
+        card.classList.remove('dragging');
+        document.body.classList.remove('is-dragging-card');
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+        saveLayout();
+      }
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+    });
+  });
+
+  /* ===== Resize (drag bottom-right corner) ===== */
+  document.querySelectorAll('[data-resize]').forEach(function(handle){
+    handle.addEventListener('mousedown', function(e){
+      if (e.button !== 0) return;
+      var card = handle.closest('.pcard');
+      if (!card) return;
+      e.preventDefault(); e.stopPropagation();
+      card.classList.add('resizing');
+      document.body.classList.add('is-dragging-card');
+      var startX = e.clientX, startY = e.clientY;
+      var startW = parseInt(card.style.width,10)  || card.offsetWidth;
+      var startH = parseInt(card.style.height,10) || card.offsetHeight;
+      function onMove(ev){
+        var nw = Math.max(180, startW + ev.clientX - startX);
+        var nh = Math.max(100, startH + ev.clientY - startY);
+        card.style.width = nw + 'px';
+        card.style.height = nh + 'px';
+        if (card.querySelector('iframe')) rescaleIframe(card.querySelector('iframe'));
+      }
+      function onUp(){
+        card.classList.remove('resizing');
+        document.body.classList.remove('is-dragging-card');
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+        rescaleAll();
+        saveLayout();
+      }
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+    });
+  });
+
+  /* ===== Preview iframe ready tracking =====
+   * Each iframe loads the deck ONCE with ?preview=1 on init. Subsequent
+   * slide changes are sent via postMessage('preview-goto') so the iframe
+   * just toggles visibility of a different .slide — no reload, no flicker.
+   */
+  var iframeReady = { cur: false, nxt: false };
+  var currentTheme = ${themeJSON};
+  window.addEventListener('message', function(e) {
+    if (!e.data || e.data.type !== 'preview-ready') return;
+    var iframe = null;
+    if (e.source === iframeCur.contentWindow) {
+      iframeReady.cur = true;
+      iframe = iframeCur;
+      postPreviewGoto(iframeCur, idx);
+    } else if (e.source === iframeNxt.contentWindow) {
+      iframeReady.nxt = true;
+      iframe = iframeNxt;
+      postPreviewGoto(iframeNxt, idx + 1 < total ? idx + 1 : idx);
+    }
+    /* Sync current theme to the iframe */
+    if (iframe && currentTheme) {
+      try { iframe.contentWindow.postMessage({ type: 'preview-theme', name: currentTheme }, '*'); } catch(err) {}
+    }
+    if (iframe) rescaleIframe(iframe);
+  });
+
+  function postPreviewGoto(iframe, n) {
+    try {
+      iframe.contentWindow.postMessage({ type: 'preview-goto', idx: n }, '*');
+    } catch(e) {}
+  }
+
+  /* ===== Update content =====
+   * Smooth (no-reload) navigation: send postMessage to iframes instead of
+   * resetting src. Iframes stay loaded, just switch visible .slide.
+   */
+  function update(n) {
+    n = Math.max(0, Math.min(total - 1, n));
+    idx = n;
+
+    /* Current preview — postMessage (smooth) */
+    if (iframeReady.cur) postPreviewGoto(iframeCur, n);
+    curMeta.textContent = (n + 1) + '/' + total;
+
+    /* Next preview */
+    if (n + 1 < total) {
+      iframeNxt.style.display = '';
+      var endEl = document.querySelector('#card-nxt .preview-end');
+      if (endEl) endEl.remove();
+      if (iframeReady.nxt) postPreviewGoto(iframeNxt, n + 1);
+      nxtMeta.textContent = (n + 2) + '/' + total;
+    } else {
+      iframeNxt.style.display = 'none';
+      var body = document.querySelector('#card-nxt .pcard-body');
+      if (body && !body.querySelector('.preview-end')) {
+        var end = document.createElement('div');
+        end.className = 'preview-end';
+        end.textContent = '— END OF DECK —';
+        body.appendChild(end);
+      }
+      nxtMeta.textContent = 'END';
+    }
+
+    /* Notes */
+    var note = slideMeta[n].notes;
+    notesBody.innerHTML = note || '<span class="empty">（这一页还没有逐字稿）</span>';
+
+    /* Timer count */
+    timerCount.textContent = (n + 1) + ' / ' + total;
+  }
+
+  /* ===== Timer ===== */
+  var tStart = Date.now();
+  setInterval(function(){
+    var s = Math.floor((Date.now() - tStart) / 1000);
+    var mm = String(Math.floor(s/60)).padStart(2,'0');
+    var ss = String(s%60).padStart(2,'0');
+    timerDisplay.textContent = mm + ':' + ss;
+  }, 1000);
+  function resetTimer(){ tStart = Date.now(); timerDisplay.textContent = '00:00'; }
+
+  /* ===== BroadcastChannel sync ===== */
+  if (bc) {
+    bc.onmessage = function(e){
+      if (!e.data) return;
+      if (e.data.type === 'go') update(e.data.idx);
+      else if (e.data.type === 'theme' && e.data.name) {
+        currentTheme = e.data.name;
+        /* Forward theme change to preview iframes */
+        [iframeCur, iframeNxt].forEach(function(iframe){
+          try {
+            iframe.contentWindow.postMessage({ type: 'preview-theme', name: e.data.name }, '*');
+          } catch(err) {}
+        });
+      }
+    };
+  }
+  function go(n) {
+    update(n);
+    if (bc) bc.postMessage({ type: 'go', idx: idx });
+  }
+
+  /* ===== Buttons ===== */
+  document.getElementById('btn-prev').addEventListener('click', function(){ go(idx - 1); });
+  document.getElementById('btn-next').addEventListener('click', function(){ go(idx + 1); });
+  document.getElementById('btn-reset').addEventListener('click', resetTimer);
+  document.getElementById('reset-layout').addEventListener('click', function(){
+    if (confirm('恢复默认卡片布局？')) {
+      try { localStorage.removeItem(STORAGE_KEY); } catch(e){}
+      applyLayout(defaultLayout());
+    }
+  });
+
+  /* ===== Keyboard ===== */
+  document.addEventListener('keydown', function(e){
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    switch(e.key) {
+      case 'ArrowRight': case ' ': case 'PageDown': go(idx + 1); e.preventDefault(); break;
+      case 'ArrowLeft':  case 'PageUp':   go(idx - 1); e.preventDefault(); break;
+      case 'Home': go(0); break;
+      case 'End':  go(total - 1); break;
+      case 'r': case 'R': resetTimer(); break;
+      case 'Escape': window.close(); break;
+    }
+  });
+
+  /* ===== Iframe load → rescale (catches initial size) ===== */
+  iframeCur.addEventListener('load', function(){ rescaleIframe(iframeCur); });
+  iframeNxt.addEventListener('load', function(){ rescaleIframe(iframeNxt); });
+
+  /* ===== Init =====
+   * Load each iframe ONCE with the deck file. After they post
+   * 'preview-ready', all subsequent navigation is via postMessage
+   * (smooth, no reload, no flicker).
+   */
+  try {
+    iframeCur.src = deckUrl + '?preview=' + (idx + 1);
+    if (idx + 1 < total) iframeNxt.src = deckUrl + '?preview=' + (idx + 2);
+    /* Initialize notes/timer/count without touching iframes */
+    var m = slideMeta[idx] || {};
+    notesBody.innerHTML = m.notes || '<span class="empty">（这一页还没有逐字稿）</span>';
+    curMeta.textContent = (idx + 1) + '/' + total;
+    nxtMeta.textContent = (idx + 2) + '/' + total;
+    timerCount.textContent = (idx + 1) + ' / ' + total;
+  } catch (e) {
+    /* Report it, but never let it blank the cards. */
+    if (window.console && console.error) console.error('[html-ppt] presenter init:', e);
+  }
+})();
+</` + `script>
+</body></html>`;
+    }
+
+    function fullscreen(){ const el=document.documentElement;
+      if (!document.fullscreenElement) el.requestFullscreen&&el.requestFullscreen();
+      else document.exitFullscreen&&document.exitFullscreen();
+    }
+
+    // theme cycling
+    const root = document.documentElement;
+    const themesAttr = root.getAttribute('data-themes') || document.body.getAttribute('data-themes');
+    const themes = themesAttr ? themesAttr.split(',').map(s=>s.trim()).filter(Boolean) : [];
+    let themeIdx = 0;
+
+    // Auto-detect theme base path from existing <link id="theme-link">
+    let themeBase = root.getAttribute('data-theme-base');
+    if (!themeBase) {
+      const existingLink = document.getElementById('theme-link');
+      if (existingLink) {
+        // el.getAttribute('href') gives the raw relative path written in HTML
+        const rawHref = existingLink.getAttribute('href') || '';
+        const lastSlash = rawHref.lastIndexOf('/');
+        themeBase = lastSlash >= 0 ? rawHref.substring(0, lastSlash + 1) : 'assets/themes/';
+      } else {
+        themeBase = 'assets/themes/';
+      }
+    }
+
+    function applyTheme(name) {
+      let link = document.getElementById('theme-link');
+      if (!link) {
+        link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.id = 'theme-link';
+        document.head.appendChild(link);
+      }
+      link.href = themeBase + name + '.css';
+      root.setAttribute('data-theme', name);
+      const ind = document.querySelector('.theme-indicator');
+      if (ind) ind.textContent = name;
+    }
+    function cycleTheme(fromRemote){
+      if (!themes.length) return;
+      themeIdx = (themeIdx+1) % themes.length;
+      const name = themes[themeIdx];
+      applyTheme(name);
+      /* Broadcast to other window (audience ↔ presenter) */
+      if (!fromRemote && bc) bc.postMessage({ type: 'theme', name: name });
+    }
+
+    // animation cycling on current slide
+    let animIdx = 0;
+    function cycleAnim(){
+      animIdx = (animIdx+1) % ANIMS.length;
+      const a = ANIMS[animIdx];
+      const target = slides[idx].querySelector('[data-anim-target]') || slides[idx];
+      ANIMS.forEach(x => target.classList.remove('anim-'+x));
+      void target.offsetWidth;
+      target.classList.add('anim-'+a);
+      target.setAttribute('data-anim', a);
+      const ind = document.querySelector('.anim-indicator');
+      if (ind) ind.textContent = a;
+    }
+
+    document.addEventListener('keydown', function (e) {
+      if (e.metaKey||e.ctrlKey||e.altKey) return;
+      switch (e.key) {
+        case 'ArrowRight': case ' ': case 'PageDown': case 'Enter': go(idx+1); e.preventDefault(); break;
+        case 'ArrowLeft': case 'PageUp': case 'Backspace': go(idx-1); e.preventDefault(); break;
+        case 'Home': go(0); break;
+        case 'End': go(total-1); break;
+        case 'f': case 'F': fullscreen(); break;
+        case 's': case 'S': openPresenterWindow(); break;
+        case 'n': case 'N': toggleNotes(); break;
+        case 'o': case 'O': toggleOverview(); break;
+        case 't': case 'T': cycleTheme(); break;
+        case 'a': case 'A': cycleAnim(); break;
+        case 'Escape': toggleOverview(false); toggleNotes(false); break;
+      }
+    });
+
+    /* ===== Touch navigation =====
+     * Phones have no arrow keys (#15). Swipe left for next, right for prev.
+     *
+     * Deliberately passive: we never call preventDefault, so pinch-zoom and
+     * any native scrolling keep working and the browser is free to scroll
+     * while we are still deciding. A gesture only counts as a swipe if it is
+     * single-finger, clearly horizontal, long enough and quick enough —
+     * otherwise it falls through untouched.
+     */
+    (function initTouchNav(){
+      /* No capability sniffing on purpose. Touch listeners cost nothing on a
+         device that never fires them, and `ontouchstart in window` /
+         maxTouchPoints both misreport on touchscreen laptops and some
+         tablets — a guard here would silently remove the feature on exactly
+         the devices that need it. */
+      var SWIPE_MIN_PX = 50;    // shorter than this is a tap or a wobble
+      var SWIPE_RATIO  = 1.5;   // must be this much more horizontal than vertical
+      var SWIPE_MAX_MS = 800;   // slower than this is a drag, not a swipe
+
+      var x0 = 0, y0 = 0, t0 = 0, tracking = false;
+
+      function interactive(target) {
+        if (!target || !target.closest) return false;
+        /* Don't steal the gesture from the overview grid, the notes drawer,
+           or anything the author made scrollable or tappable. */
+        return !!target.closest('.overview, .notes-overlay, a, button, input, textarea, select, [data-no-swipe]');
+      }
+
+      document.addEventListener('touchstart', function(e){
+        if (e.touches.length !== 1 || interactive(e.target)) { tracking = false; return; }
+        x0 = e.touches[0].clientX;
+        y0 = e.touches[0].clientY;
+        t0 = Date.now();
+        tracking = true;
+      }, { passive: true });
+
+      document.addEventListener('touchmove', function(e){
+        /* A second finger means pinch-zoom — abandon the swipe. */
+        if (e.touches.length > 1) tracking = false;
+      }, { passive: true });
+
+      document.addEventListener('touchend', function(e){
+        if (!tracking) return;
+        tracking = false;
+        var t = e.changedTouches && e.changedTouches[0];
+        if (!t) return;
+        if (Date.now() - t0 > SWIPE_MAX_MS) return;
+        var dx = t.clientX - x0, dy = t.clientY - y0;
+        if (Math.abs(dx) < SWIPE_MIN_PX) return;
+        if (Math.abs(dx) < Math.abs(dy) * SWIPE_RATIO) return;
+        go(dx < 0 ? idx + 1 : idx - 1);
+      }, { passive: true });
+
+      document.addEventListener('touchcancel', function(){ tracking = false; }, { passive: true });
+    })();
+
+    // hash deep-link
+    function fromHash(){
+      const m = /^#\/(\d+)/.exec(location.hash||'');
+      if (m) go(Math.max(0, parseInt(m[1],10)-1));
+    }
+    window.addEventListener('hashchange', fromHash);
+    fromHash();
+    go(idx);
+  });
+})();
+
+</script>
+<script>
+/* 오늘의 BIM 원문 설명 자료 — 클릭·마우스 휠로 장 넘기기
+ *
+ * - 화면 클릭: 다음 장. 화면 왼쪽 1/4을 클릭하면 이전 장.
+ *   링크·버튼·글자 선택 중에는 넘기지 않는다.
+ * - 마우스 휠: 아래로 돌리면 다음 장, 위로 돌리면 이전 장.
+ *   한 번 돌릴 때(터치패드 관성 포함) 한 장만 넘어가도록 묶어서 처리한다.
+ * - 리포트 페이지 안에 끼워 보일 때(iframe)는 첫 장에서 위로, 마지막 장에서 아래로
+ *   돌리면 넘기지 않고 바깥 페이지가 스크롤되게 둔다(페이지에 갇히지 않게).
+ * 장 이동은 runtime.js 의 주소(#/N) 연결을 그대로 쓴다.
+ */
+(function () {
+  if (/[?&]preview=/.test(location.search)) return;          // 발표자 화면 미리보기 창은 제외
+  var embedded = (function () { try { return window.self !== window.top; } catch (e) { return true; } })();
+
+  function slides() { return document.querySelectorAll('.deck > .slide'); }
+  /* 주소(#/N) 변경은 브라우저가 잠시 뒤에 처리한다. 그 사이에 빠르게 또 누르면 아직 바뀌기 전 장을
+     기준으로 계산해 한 장을 건너뛰므로, 요청한 장(pending)을 기억해 두고 그것을 현재 장으로 본다. */
+  var pending = null;
+  function active() {
+    var s = slides();
+    for (var i = 0; i < s.length; i++) if (s[i].classList.contains('is-active')) return i;
+    return 0;
+  }
+  function current() {
+    var a = active();
+    if (pending !== null && pending !== a) return pending;
+    pending = null;
+    return a;
+  }
+  window.addEventListener('hashchange', function () { setTimeout(function () { if (pending === active()) pending = null; }, 0); });
+  function last() { return slides().length - 1; }
+  function goTo(n) {
+    n = Math.max(0, Math.min(last(), n));
+    if (n === current()) return;
+    pending = n;
+    location.replace('#/' + (n + 1));                          // 방문 기록을 쌓지 않는다
+  }
+  function blocked(t) {
+    return !!(t && t.closest && t.closest('a, button, input, textarea, select, label, .overview, .notes-overlay, [data-no-click]'));
+  }
+
+  /* ----- 클릭 ----- */
+  var downX = 0, downY = 0;
+  document.addEventListener('mousedown', function (e) { downX = e.clientX; downY = e.clientY; });
+  document.addEventListener('click', function (e) {
+    if (e.button !== 0 || e.defaultPrevented || e.shiftKey || e.ctrlKey || e.metaKey || e.altKey) return;
+    if (blocked(e.target)) return;
+    if (Math.abs(e.clientX - downX) > 6 || Math.abs(e.clientY - downY) > 6) return;   // 드래그(글자 고르기)는 넘기지 않음
+    var back = e.clientX < window.innerWidth * 0.25;
+    goTo(current() + (back ? -1 : 1));
+  });
+
+  /* ----- 마우스 휠 ----- */
+  var acc = 0, lockUntil = 0;
+  var STEP = 40;          // 이만큼 굴러야 한 장 (터치패드 미세 움직임 무시)
+  var GAP = 450;          // 한 장 넘긴 뒤 최소 대기(ms)
+  var QUIET = 180;        // 관성 스크롤이 이어지는 동안은 대기를 늘려 한 번에 한 장만
+
+  window.addEventListener('wheel', function (e) {
+    if (e.ctrlKey) return;                                       // Ctrl+휠 = 확대/축소
+    if (e.target && e.target.closest && e.target.closest('.overview, .notes-overlay, [data-no-wheel]')) return;
+    var dy = e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? 400 : 1);
+    if (Math.abs(dy) < Math.abs(e.deltaX)) return;               // 가로 스크롤은 무시
+    var dir = dy > 0 ? 1 : -1, n = current();
+    if (embedded && ((dir > 0 && n === last()) || (dir < 0 && n === 0))) return;  // 끝에서는 바깥 페이지 스크롤
+    e.preventDefault();
+    var now = Date.now();
+    if (now < lockUntil) { lockUntil = Math.max(lockUntil, now + QUIET); acc = 0; return; }
+    acc += dy;
+    if (Math.abs(acc) < STEP) return;
+    acc = 0; lockUntil = now + GAP;
+    goTo(n + dir);
+  }, { passive: false });
+
+  /* 클릭으로 넘길 수 있음을 알리도록 커서 모양 */
+  var st = document.createElement('style');
+  /* 빠르게 여러 번 클릭할 때 글자가 선택돼 파랗게 칠해지지 않게 한다. 출처 주석·원문 목록은 복사할 수 있게 둔다. */
+  st.textContent = '.deck .slide{cursor:pointer;-webkit-user-select:none;user-select:none}' +
+                   '.deck .slide .fn,.deck .slide .srcs{-webkit-user-select:text;user-select:text}';
+  document.head.appendChild(st);
+})();
+
+</script>
+</body></html>
