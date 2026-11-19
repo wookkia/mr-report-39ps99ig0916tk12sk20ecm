@@ -234,16 +234,119 @@
     <dl class="titleblock">
       <div><dt>발행</dt><dd>평일 오전 8시</dd></div>
       <div><dt>주제</dt><dd>요일마다 다른 5개 주제</dd></div>
-      <div class="rev"><dt>개정</dt><dd class="mono">최종 갱신 2026-11-18</dd></div>
+      <div class="rev"><dt>개정</dt><dd class="mono">최종 갱신 2026-11-19</dd></div>
     </dl>
   </header>
 
   <section class="today">
     <div class="today-bar">
       <span class="tag">오늘의 리포트</span>
-      <span class="when mono">2026-11-18 (수) &middot; 실무자 의견 파악</span>
+      <span class="when mono">2026-11-19 (목) &middot; 연구개발 동향 파악</span>
     </div>
     <div class="today-body report">
+<div class="r-head">
+  <h3>IFC 모델을 고치는 AI, 검증 체커로 가르치면 정답률이 얼마나 오를까요?</h3>
+  <p class="meta">2026-11-19 (목) &middot; Asia/Seoul &middot; 접근: 관련도 우선 + 최신성 보정(최근 12개월 우선, 신규 3개월 포함) &middot; 소스: arXiv 원문(WebFetch) 3건&middot;Advanced Engineering Informatics 원문(WebFetch)&middot;국내 보도 2건(WebFetch) &middot; 키워드: BIM, openBIM, IFC, 디지털트윈, generative AI construction, BIM quality validation &middot; 중복 제외: 10-29&middot;11-05&middot;11-12 회차에서 다룬 문헌</p>
+  <p class="lead">이번 주 BIM 연구개발 분야에서는 논문 세 편과 국내 국책 연구개발사업 한 건을 확인하였습니다. 11월 17일 공개된 논문은 지난 11월 12일 리포트에서 다룬 IFC 편집 벤치마크들의 정답률을 검증 체커로 모델을 훈련해 끌어올렸고, 오토데스크 AI랩은 거대 언어모델보다 작은 도메인 특화 모델이 건축 설계 과제에서 더 나은 결과를 낸다는 연구를 내놓았습니다. 칭화대학교 연구팀은 설계 초기 단계의 비정형 모델을 BIM과 에너지모델로 자동 전환하는 파이프라인을 발표하였고, 국내에서는 경기도청&middot;킨텍스&middot;서울대학교를 실증 대상으로 삼은 153억원 규모의 BIM 디지털트윈 건물에너지 국책과제도 눈에 띄었습니다. 그렇다면 이 네 가지 소식은 각각 무엇을 보여주었을까요? 오늘 리포트에서는 그 내용을 자세히 살펴보겠습니다.</p>
+</div>
+<div class="r-sec">
+  <h4><span class="k">01</span> 핵심 요약</h4>
+  <ul>
+    <li><strong>난창대학교&middot;충칭대학교&middot;오사카대학교 연구팀이 11월 17일 공개한 논문에서 검증 체커 네 가지로 훈련한 모델이 자체 벤치마크 IfcEditBench에서 86.78%(27B 모델은 91.76%)의 정답률을 기록해, 공개 벤치마크인 BIM-Edit(55.19%)&middot;BIBIMBAP(54.50%)의 기존 정답률을 크게 웃돌았습니다.</strong></li>
+    <li>오토데스크 AI랩의 건축 설계 전용 언어모델 FLOORA는 0.6B 규모로도 실제 건물 평가에서 92.0%, 합성 건물 평가에서 96.0%의 승률을 기록하며 더 큰 범용 모델을 앞섰습니다.</li>
+    <li>칭화대학교 건축학부 연구팀은 비정형 설계 모델을 지식그래프 기반 BIM과 에너지모델(BEM) 사이에서 자동으로 오가게 하는 파이프라인을 Advanced Engineering Informatics에 발표하였습니다.</li>
+    <li>기후에너지환경부의 &lsquo;BIM 활용 디지털트윈 기반 건물에너지관리 시뮬레이터 개발 및 실증&rsquo; 국책과제는 153억원 규모로 경기도청&middot;킨텍스&middot;서울대학교에서 실증하며, 에너지 예측 정확도 95% 이상&middot;피크전력 20% 이상 감소를 목표로 합니다.</li>
+  </ul>
+</div>
+<div class="r-sec">
+  <h4><span class="k">02</span> 상세 발견사항</h4>
+
+  <div class="src">
+    <div class="s-name">① 검증 체커로 가르친 IFC 편집 에이전트, 정답률 50%대를 넘어서다</div>
+    <p>지난 11월 12일 리포트에서 소개한 BIBIMBAP와 BIM-Edit 두 벤치마크는 대규모 언어모델이 IFC 데이터를 생성&middot;수정하는 과제에서 정답률이 50%대에 머문다는 한계를 보여주었습니다.</p>
+    <p>난창대학교&middot;충칭대학교&middot;오사카대학교 연구팀(Jiaxin Zhang 등 5인)은 11월 17일 공개한 논문에서 이 한계를 넘어서는 학습 방법을 제시하였습니다. 연구팀은 언어모델이 실행 가능한 코드로 IFC를 직접 편집하는 환경 IfcGym을 만들고, 유효성&middot;의도 부합성&middot;종속성 처리&middot;무관 요소 보존 네 가지 체커로 편집 결과를 검증하였습니다. 이 체커들의 판정 결과를 감독 미세조정(SFT)과 그룹 상대 정책 최적화(GRPO) 훈련에 함께 반영하는 방식으로 Qwen3.5 계열 모델을 훈련한 결과, 자체 벤치마크 IfcEditBench(1,990개 과제)에서 9B 모델이 <strong>86.78%</strong>, 27B 모델이 <strong>91.76%</strong>의 정답률을 기록하였습니다. 같은 모델을 공개 벤치마크에 적용했을 때도 BIM-Edit 55.19%, BIBIMBAP 54.50%로 나타나, 지난 회차에서 본 50%대 한계를 크게 웃돌았습니다. 네 가지 체커를 모두 쓴 모델은 의도&middot;유효성 체커만 쓴 모델보다 정답률이 4.83%포인트 높았습니다.</p>
+    <p>&rsaquo; 우리 관점 시사점: NeXura가 LLM으로 IFC를 자동 수정하는 기능을 넓힐 때, 모델 크기를 키우기보다 유효성&middot;의도&middot;종속성&middot;보존을 확인하는 체커 네 가지를 함께 훈련 과정에 반영하는 쪽이 정답률을 더 크게 끌어올릴 수 있다는 근거입니다.</p>
+    <div class="links"><a href="https://arxiv.org/abs/2611.22307" target="_blank" rel="noopener">arXiv &middot; Learning to Edit IFC Building Models: Verifiable Checkers as the Training Signal for Dependency-Aware Editing Agents</a></div>
+  </div>
+
+  <div class="src">
+    <div class="s-name">② 오토데스크 AI랩, 작은 전용 모델이 범용 모델을 앞서다</div>
+    <p>거대 언어모델은 무엇이든 생성할 수 있지만, 건축 설계처럼 구조화된 결과물이 필요한 과제에는 범용 모델의 자유로운 출력이 오히려 걸림돌이 될 수 있습니다.</p>
+    <p>오토데스크 AI랩의 Sahand Rezaei-Shoshtari 등 17인은 9월 28일 공개한 논문에서 건축 설계 전용 언어모델 FLOORA를 제시하였습니다. 연구팀은 토큰 효율적인 전용 언어(DSL)와 전용 토큰화, 도메인 특화 사전학습에 지도학습(SFT)과 사람의 선호도&middot;검증 가능한 보상을 반영한 강화학습(RL)을 더해 0.6B 규모로 모델을 만들었습니다. 평가 결과 더 큰 범용 모델과 비교해 실제 건물 평가에서 <strong>92.0%</strong>, 합성 건물 평가에서 <strong>96.0%</strong>의 승률을 기록하였고, 사람 평가에서도 <strong>89.3%</strong>의 경우 FLOORA의 결과물이 최고로 선택되었습니다.</p>
+    <p>&rsaquo; 우리 관점 시사점: 구조화된 산출물이 필요한 설계 과제에서는 거대 범용 모델보다 작고 전용화된 모델이 더 효율적일 수 있다는 뜻이므로, NeXura의 설계 보조 기능도 전용 소형 모델 경로를 함께 검토할 만합니다.</p>
+    <div class="links"><a href="https://arxiv.org/abs/2609.36064" target="_blank" rel="noopener">arXiv &middot; FLOORA: A Human-Aligned Domain-Specific Language Model for Architectural Design</a></div>
+  </div>
+
+  <div class="src">
+    <div class="s-name">③ 칭화대학교, 초기 설계 모델을 BIM과 에너지모델로 자동으로 오가게 하다</div>
+    <p>설계 초기 단계의 비정형(B-rep) 모델은 자유롭게 모양을 바꿀 수 있지만, 그 상태로는 BIM도 에너지 성능 시뮬레이션(BEM)도 바로 돌릴 수 없어 사람이 다시 모델링해야 했습니다.</p>
+    <p>칭화대학교 건축학부의 Jun Xiao, Borong Lin 등 연구팀은 Advanced Engineering Informatics 75권(2026)에 게재한 논문에서 기하 정제, 복수의 자동 공간 생성, 그래프 기반 공간&middot;요소 위상 추출, 온톨로지 정렬 지식모델링 네 단계를 거쳐 비정형 모델을 지식그래프 기반 BIM으로, 다시 EnergyPlus 에너지모델로 양방향 전환하는 완전 자동화 파이프라인을 제시하였습니다. 매개변수형&middot;스케치 기반&middot;실제 건물 데이터셋으로 검증한 결과 위상 재구성이 안정적으로 유지되었고 신뢰할 수 있는 에너지 성능 모델이 만들어졌습니다.</p>
+    <p>&rsaquo; 우리 관점 시사점: 설계 초기 단계부터 온톨로지로 정렬된 데이터를 쌓아 두면 이후 성능 시뮬레이션까지 자동으로 이어질 수 있다는 것을 보여주므로, NeXura CDE도 초기 설계 데이터의 온톨로지 정렬을 앞단에서 미리 챙겨 둘 근거가 됩니다.</p>
+    <div class="links"><a href="https://arxiv.org/abs/2601.16813" target="_blank" rel="noopener">arXiv(저널게재: Advanced Engineering Informatics) &middot; A Fully Automated DM-BIM-BEM Pipeline Enabling Graph-Based Intelligence, Interoperability, and Performance-Driven Early Design</a></div>
+  </div>
+
+  <div class="src">
+    <div class="s-name">④ 국내 &mdash; 153억원 규모 BIM 디지털트윈 건물에너지 국책과제, 세 곳에서 실증</div>
+    <p>국내에서는 논문보다 먼저 실제 건물에 BIM과 디지털트윈을 적용하는 국책 연구개발사업이 올해 본격적으로 움직이고 있습니다.</p>
+    <p>기후에너지환경부가 추진하는 2026년도 에너지기술개발사업 가운데 &lsquo;BIM 활용 디지털트윈 기반 건물에너지관리 시뮬레이터 개발 및 실증&rsquo; 과제는 6월 10일 이에이트(E8)를 주관연구개발기관으로, 한화 등 10개 업체&middot;기관을 참여기관으로 선정하였습니다. 연구개발비는 약 153억원이며, 건물의 구조와 설비 정보를 3D로 구현한 모델에 실제 운영 데이터와 IoT 센서 정보를 연결해 건물 운영 상황을 디지털 공간에서 실시간으로 확인하는 플랫폼을 만드는 것이 목표입니다. 한화 건설부문은 디지털트윈 기술로 건물 운영&middot;유지관리를 검증하는 역할을 맡아 경기도청&middot;킨텍스&middot;서울대학교를 실증 대상으로 삼았고, 과제는 시간대별 에너지 예측 정확도 <strong>95%</strong> 이상, 피크전력 <strong>20%</strong> 이상 감소를 목표로 합니다.</p>
+    <p>&rsaquo; 우리 관점 시사점: 공공 발주처(경기도청)와 대형 시설(킨텍스)&middot;대학(서울대학교)을 한 과제에서 함께 실증한다는 것은 BIM 디지털트윈 투자가 운영 단계로 확장되고 있다는 뜻이므로, NeXura CDE도 설계 단계에서 쌓은 데이터를 운영 단계 디지털트윈과 잇는 연계 기능을 검토할 만합니다.</p>
+    <div class="links"><a href="https://www.mt.co.kr/stock/2026/06/10/2026061009059629576" target="_blank" rel="noopener">머니투데이(더벨) &middot; E8, 153억 BIM 디지털트윈 건물에너지 국책과제 선정</a><a href="https://www.mt.co.kr/estate/2026/08/26/2026082610142091369" target="_blank" rel="noopener">머니투데이 &middot; 한화 건설부문, AI 활용 건물에너지 효율화 국책과제 참여</a></div>
+  </div>
+
+  <p>또한, 이 네 가지 소식은 서로 다른 단계를 다루면서도 공통적으로 BIM 데이터를 다음 단계(편집&middot;설계&middot;성능예측&middot;운영)로 자동으로 넘기는 연결고리를 만드는 중이라는 결론을 말하고 있습니다.</p>
+</div>
+<div class="r-sec">
+  <h4><span class="k">03</span> 시사점 / 액션 아이디어</h4>
+  <p>앞서 살펴본 내용에 따르면, LLM 기반 IFC 편집과 생성형 설계는 검증 장치를 갖추면 정답률이 크게 오르고 있고, 설계부터 운영까지 데이터를 잇는 자동화&middot;실증 투자도 함께 커지고 있다는 것을 확인할 수 있는데요, 그렇다면 우리는 이 흐름에서 무엇을 먼저 챙겨야 할까요? 바로 검증 레이어를 갖춘 자동화 기능과 설계&ndash;운영 데이터 연계입니다.</p>
+  <ul>
+    <li><b>LLM으로 IFC를 자동 수정&middot;생성하는 기능을 넓힐 때는 유효성&middot;의도&middot;종속성&middot;보존을 확인하는 체커를 훈련 과정에 함께 반영해, 정답률을 공개 지표로 추적할 필요가 있습니다.</b></li>
+    <li>예를 들어 구조화된 산출물이 중요한 설계 보조 기능이라면, <b>거대 범용 모델 대신 FLOORA처럼 작고 전용화된 모델 경로를 비용&middot;정확도 양쪽에서 함께 검토할 필요가 있습니다.</b></li>
+    <li><b>국내 BIM 디지털트윈 국책과제가 설계&middot;운영 데이터를 잇는 방향으로 투자되고 있으므로, NeXura CDE도 설계 단계 데이터를 운영 단계 디지털트윈에 연결하는 기능을 중기 로드맵에 올려 둘 필요가 있습니다.</b></li>
+  </ul>
+</div>
+<div class="r-sec">
+  <h4><span class="k">04</span> 이번 조사 방법 개선 제안</h4>
+  <ul>
+    <li><b>논문뿐 아니라 관련도가 높은 국내 BIM&middot;디지털트윈 국책 R&amp;D 사업(선정&middot;참여&middot;실증 소식)도 목요일 조사에 보조로 포함합니다.</b> 이번 회차에서 &lsquo;BIM 디지털트윈 건물에너지관리 시뮬레이터&rsquo; 국책과제가 논문보다 더 구체적인 국내 실증 사례와 수치를 제공하였습니다. &rarr; 반영함</li>
+    <li>arXiv ID 앞 네 자리(YYMM)로 신규성을 확인하는 방법이 이번에도 유용했습니다(2611=2026년 11월 제출 논문을 바로 식별). 계속 활용합니다.</li>
+    <li>국내 일부 매체(공학저널 등) 사이트는 SSL 인증서 오류로 WebFetch 직접 조회가 막히는 경우가 있어, 같은 소식을 다룬 다른 매체 기사로 바로 전환해 보완하였습니다(폴백 원칙 적용).</li>
+  </ul>
+</div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><h2>요일별 분석 주제</h2><span class="rule"></span><span class="sec-hint">요일을 눌러 지난 리포트 보기</span></div>
+    <div class="week">
+      <button type="button" class="day" data-dow="월"><span class="d">월</span><span class="t">BIM 업계 동향</span><span class="m">전문지·뉴스 브리핑</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="화"><span class="d">화</span><span class="t">입찰·수주 동향</span><span class="m">나라장터·KAIA 공고</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="수"><span class="d">수</span><span class="t">실무자 의견</span><span class="m">커뮤니티 인사이트</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day on" data-dow="목"><span class="d">목</span><span class="t">연구개발 동향</span><span class="m">Scholar·AURIC 논문</span><span class="cnt" hidden></span></button>
+      <button type="button" class="day" data-dow="금"><span class="d">금</span><span class="t">역량강화 인사이트</span><span class="m">전문가 연설 분석</span><span class="cnt" hidden></span></button>
+    </div>
+    <div class="day-reports" id="dayReports" hidden>
+      <div class="dr-head"><span id="drTitle"></span><button type="button" class="dr-close" id="drClose" title="닫기">✕</button></div>
+      <ul class="dr-list" id="drList"></ul>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><h2>동작 방식</h2><span class="rule"></span></div>
+    <div class="flow">
+      <div class="step"><span class="n">1</span><div class="st">조사</div><p class="sp">평일 아침, 그날 요일 주제로 웹과 공공 데이터를 조사해 리포트를 씁니다.</p></div>
+      <div class="step"><span class="n">2</span><div class="st">게시</div><p class="sp">새 리포트를 이 페이지 맨 위에 올리고 지난 리포트는 아래로 옮깁니다.</p></div>
+      <div class="step"><span class="n">3</span><div class="st">열람</div><p class="sp">PC에서는 Chrome에 바로 열리고, 다른 기기에서는 이 주소로 봅니다.</p></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="sec-h"><h2>지난 리포트</h2><span class="rule"></span></div>
+    <details class="arch">
+      <summary>지난 리포트 전체 보기 (최신순)</summary>
+      <div class="arch-item">
+        <details class="sub-arch">
+          <summary>2026-11-18 (수) &middot; 실무자 의견 파악 &mdash; Revit이 반년 만에 닷넷 버전을 바꾸면, 애드인은 버틸 수 있을까요?</summary>
+          <div class="body">
 <div class="r-head">
   <h3>Revit이 반년 만에 닷넷 버전을 바꾸면, 애드인은 버틸 수 있을까요?</h3>
   <p class="meta">2026-11-18 (수) &middot; Asia/Seoul &middot; 소스: Autodesk Community Revit 포럼(직접 조회 403 &rarr; WebSearch 스니펫 기반)&middot;pyRevit GitHub 이슈&middot;pyRevit 공식 포럼(직접 조회)&middot;한국BIM평가원 공지(직접 조회)&middot;DC인사이드 건설정보모델링(BIM) 마이너 갤러리(직접 조회)&middot;Revit Add-ons 블로그(직접 조회) &middot; 키워드: BIM, Revit, openBIM</p>
@@ -312,37 +415,9 @@
     <li>Reddit 관련 검색은 이번 회차에도 BIM&middot;Revit 전용 서브레딧 글을 찾지 못했습니다. &lsquo;reddit Revit BIM&rsquo; 조합은 유지하되, 검색 키워드를 그 주 이슈어(예: &lsquo;.NET 10&rsquo;)로 구체화해 다시 시도합니다.</li>
   </ul>
 </div>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="sec-h"><h2>요일별 분석 주제</h2><span class="rule"></span><span class="sec-hint">요일을 눌러 지난 리포트 보기</span></div>
-    <div class="week">
-      <button type="button" class="day" data-dow="월"><span class="d">월</span><span class="t">BIM 업계 동향</span><span class="m">전문지·뉴스 브리핑</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day" data-dow="화"><span class="d">화</span><span class="t">입찰·수주 동향</span><span class="m">나라장터·KAIA 공고</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day on" data-dow="수"><span class="d">수</span><span class="t">실무자 의견</span><span class="m">커뮤니티 인사이트</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day" data-dow="목"><span class="d">목</span><span class="t">연구개발 동향</span><span class="m">Scholar·AURIC 논문</span><span class="cnt" hidden></span></button>
-      <button type="button" class="day" data-dow="금"><span class="d">금</span><span class="t">역량강화 인사이트</span><span class="m">전문가 연설 분석</span><span class="cnt" hidden></span></button>
-    </div>
-    <div class="day-reports" id="dayReports" hidden>
-      <div class="dr-head"><span id="drTitle"></span><button type="button" class="dr-close" id="drClose" title="닫기">✕</button></div>
-      <ul class="dr-list" id="drList"></ul>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="sec-h"><h2>동작 방식</h2><span class="rule"></span></div>
-    <div class="flow">
-      <div class="step"><span class="n">1</span><div class="st">조사</div><p class="sp">평일 아침, 그날 요일 주제로 웹과 공공 데이터를 조사해 리포트를 씁니다.</p></div>
-      <div class="step"><span class="n">2</span><div class="st">게시</div><p class="sp">새 리포트를 이 페이지 맨 위에 올리고 지난 리포트는 아래로 옮깁니다.</p></div>
-      <div class="step"><span class="n">3</span><div class="st">열람</div><p class="sp">PC에서는 Chrome에 바로 열리고, 다른 기기에서는 이 주소로 봅니다.</p></div>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="sec-h"><h2>지난 리포트</h2><span class="rule"></span></div>
-    <details class="arch">
-      <summary>지난 리포트 전체 보기 (최신순)</summary>
+          </div>
+        </details>
+      </div>
       <div class="arch-item">
         <details class="sub-arch">
           <summary>2026-11-17 (화) &middot; 입찰&middot;수주 동향 &mdash; 나라장터 입찰공고 42건 가운데 건설&middot;BIM과 맞닿은 사업은 몇 건이었을까요?</summary>
@@ -4863,7 +4938,7 @@
 
   <footer>
     MORNING ROUTINE CONSOLE · v1 · Asia/Seoul<br>
-    자동 조사 → 게시 → 알림 파이프라인 · 소스: 요일별 모닝루틴 플레이북 · 최종 갱신 2026-11-18
+    자동 조사 → 게시 → 알림 파이프라인 · 소스: 요일별 모닝루틴 플레이북 · 최종 갱신 2026-11-19
   </footer>
 </div>
 <button class="pdfbtn" id="pdfBtn" title="오늘 리포트를 PDF로 저장 (인쇄 → PDF로 저장)">🖨 PDF 저장</button>
